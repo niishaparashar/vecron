@@ -1,6 +1,6 @@
 # vecron
 A Hybrid Opportunity Recommendation System Using Vectorisation &amp; Filtering Techniques
-# Vecron – ML-Powered Job Opportunity Aggregation System
+
 
 Vecron is a machine-learning–powered job opportunity aggregation system designed to collect, clean, structure, and analyze job listings from multiple sources. Instead of functioning as a user-facing recommendation engine (at least for now), Vecron focuses on building a high-quality opportunity dataset using ML-assisted logic for classification, filtering, and scoring.
 
