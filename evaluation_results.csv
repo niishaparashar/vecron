@@ -1,0 +1,2 @@
+precision_at_5,recall_at_5,f1_score_at_5,coverage,diversity,users_evaluated,train_size,test_size
+0.0,0.0,0,0.5694444444444444,0.35250000000000004,50,490,144

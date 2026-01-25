@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Vekron Admin | Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* ---------- Header ---------- */
+    .header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 25px 50px;
+      z-index: 10;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 260px;
+      background: var(--header-bg);
+      border-right: 1px solid var(--border);
+      padding: 30px 20px;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .logo {
+      color: #10b981;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 40px;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 12px 15px;
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .nav-item.active,
+    .nav-item:hover {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      opacity: 1;
+    }
+
+    /* ---------- Main ---------- */
+    .main-wrapper {
+      margin-left: 260px;
+      padding: 40px 60px;
+      width: 100%;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    /* ---------- Stats ---------- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 25px;
+      border-radius: 16px;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #10b981;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Table ---------- */
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 15px 25px;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: 0.5;
+      background: var(--secondary-bg);
+      text-align: left;
+    }
+
+    td {
+      padding: 18px 25px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-circle {
+      width: 36px;
+      height: 36px;
+      background: #10b981;
+      border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div id="auth-controls"></div>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">Vekron.</div>
+  <a href="admin.html" class="nav-item active">Dashboard</a>
+  <a href="#" class="nav-item">Analytics</a>
+</aside>
+
+<!-- Main -->
+<main class="main-wrapper">
+
+  <div class="dashboard-header">
+    <h1>Admin Insights</h1>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-number" id="total-users">0</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-number" id="today-users">0</div>
+      <div class="stat-label">Registered Today</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-number" id="total-interactions">0</div>
+      <div class="stat-label">Interactions</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-number" id="top-skill">-</div>
+      <div class="stat-label">Top Skill</div>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="table-card">
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Email</th>
+          <th>Experience</th>
+          <th>Skills</th>
+          <th>Location</th>
+          <th>Joined</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script>
+
+<script>
+document.documentElement.setAttribute("data-theme", "dark");
+
+async function loadAdminData() {
+  try {
+    const analytics = await fetch("/admin/analytics").then(r => r.json());
+    const usersRes = await fetch("/admin/users?limit=1000").then(r => r.json());
+
+    document.getElementById("total-users").textContent =
+      analytics.total_users || 0;
+
+    document.getElementById("today-users").textContent =
+      analytics.registered_today || 0;
+
+    document.getElementById("total-interactions").textContent =
+      analytics.total_interactions || 0;
+
+    document.getElementById("top-skill").textContent =
+    analytics.top_skills.map(s => s.skill).join(", ");
+
+
+    const tbody = document.querySelector("#users-table tbody");
+    tbody.innerHTML = "";
+
+    (usersRes.users || []).forEach(user => {
+      const initials = user.full_name
+        ? user.full_name[0].toUpperCase()
+        : "?";
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${user.user_id}</td>
+        <td>
+          <div class="user-info">
+            <div class="avatar-circle">${initials}</div>
+            <div>${user.full_name || "New User"}</div>
+          </div>
+        </td>
+        <td>${user.email || "-"}</td>
+        <td><span style="color:#10b981">${user.experience_level || "Junior"}</span></td>
+        <td>${user.skills || "-"}</td>
+        <td>${user.preferred_location || "Remote"}</td>
+        <td>${user.joined_on ? new Date(user.joined_on).toLocaleDateString() : "-"}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("Admin dashboard failed:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadAdminData);
+</script>
+
+</body>
+</html>

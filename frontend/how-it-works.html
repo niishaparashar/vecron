@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Vekron Works | Vekron</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f8fffe;
+      color: #333;
+      line-height: 1.7;
+    }
+    .header {
+      background: white;
+      padding: 20px 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #10b981;
+    }
+    .nav-links a {
+      margin: 0 20px;
+      text-decoration: none;
+      color: #666;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 48px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #111;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 60px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    section {
+      margin-bottom: 100px;
+    }
+    h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+      color: #10b981;
+      border-bottom: 3px solid #10b981;
+      padding-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    ul {
+      font-size: 18px;
+      padding-left: 30px;
+    }
+    li {
+      margin-bottom: 15px;
+    }
+    .diagram {
+      background: #f0fdf4;
+      border: 2px solid #10b981;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin: 40px 0;
+      font-family: monospace;
+      font-size: 16px;
+      color: #10b981;
+    }
+    .code {
+      background: #f1f5f9;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: monospace;
+    }
+    footer {
+      background: #111827;
+      color: #e0e0e0;
+      padding: 60px 20px 30px;
+      margin-top: 100px;
+      text-align: center;
+    }
+    .footer-links a {
+      color: #999;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+    .footer-links a:hover {
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">Vekron</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="#">About</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>How Vekron Works</h1>
+    <p class="subtitle">
+      Vekron uses a hybrid machine learning recommender system that combines content-based and collaborative filtering to deliver highly personalized job and internship recommendations.
+    </p>
+
+    <section>
+      <h2>1. Overview of the Hybrid Recommender</h2>
+      <p>
+        Vekron's engine blends two powerful approaches:
+      </p>
+      <ul>
+        <li><strong>Content-Based Filtering</strong>: Matches jobs to your explicit profile (skills, experience level, preferred category, location, workplace).</li>
+        <li><strong>Collaborative Filtering</strong>: Learns from your interactions (view, save, apply) and behavior of similar users.</li>
+      </ul>
+      <p>
+        Final score = 0.6 × Content Score + 0.4 × Collaborative Score (weights tuned for best performance).
+      </p>
+      <p>
+        This hybrid approach solves the "cold start" problem (new users get good recs from profile) and improves over time with interactions.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. Content-Based Filtering</h2>
+      <p>
+        Recommends jobs similar to your profile using text and categorical features.
+      </p>
+      <ul>
+        <li>Text features: User skills vs. job skills_required + description</li>
+        <li>Categorical filters: experience_level, preferred_category, location, workplace_type</li>
+      </ul>
+      <p><strong>Key Technique:</strong> TF-IDF + Cosine Similarity</p>
+      <div class="diagram">
+        User Skills ("Python, React, Machine Learning")<br>
+        → TF-IDF Vectorizer → User Vector<br>
+        <br>
+        Job Skills/Description → TF-IDF Vector → Job Vector<br>
+        <br>
+        ↓<br>
+        Cosine Similarity Score (0-1)<br>
+        ↓<br>
+        Filter by category, experience, location<br>
+        ↓<br>
+        Content-Based Score
+      </div>
+      <a href=""
+      <p>
+        TF-IDF weights rare skills higher, cosine similarity measures how "close" your profile is to a job.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Collaborative Filtering</h2>
+      <p>
+        Learns from user behavior: "Users like you applied to these jobs."
+      </p>
+      <ul>
+        <li>Interaction weights: View = 1, Save = 3, Apply = 5</li>
+        <li>User-Item matrix built from interactions table</li>
+      </ul>
+      <p><strong>Key Technique:</strong> Matrix Factorization (SVD)</p>
+      <div class="diagram">
+        User-Item Matrix (users × jobs × interaction score)<br>
+        ↓<br>
+        Singular Value Decomposition (SVD)<br>
+        ↓<br>
+        Predict missing scores using latent factors<br>
+        ↓<br>
+        Collaborative Score
+      </div>
+      <p>
+        SVD discovers hidden patterns (e.g., "users who like ML also like AWS roles").
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Hybrid Scoring & Ranking</h2>
+      <p>
+        Final recommendation list:
+      </p>
+      <ul>
+        <li>Normalize both scores to 0-1 range</li>
+        <li>Weighted sum: final_score = 0.6 × content + 0.4 × collaborative</li>
+        <li>Sort descending, take top 20</li>
+        <li>Attach explanation (e.g., "High match on Python and Machine Learning")</li>
+      </ul>
+      <div class="diagram">
+        Content Score + Collaborative Score<br>
+        → Normalize → Weighted Hybrid → Sort → Top N + Explanation
+      </div>
+    </section>
+
+    <section>
+      <h2>5. System Workflow</h2>
+      <div class="diagram">
+        1. User registers → creates profile (2-step onboarding)<br>
+        2. Profile saved → content vector built<br>
+        3. User views/saves/applies → interactions logged<br>
+        4. Matrix updated → collaborative model improves<br>
+        5. Dashboard calls /recommend/{user_id} → hybrid engine runs<br>
+        6. Personalized jobs returned with explanations
+      </div>
+      <p>
+        The system is real-time: every interaction immediately influences future recommendations.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Why This Works So Well</h2>
+      <ul>
+        <li><strong>Personalization</strong>: Matches your exact skills and preferences</li>
+        <li><strong>Learning</strong>: Gets smarter with every click</li>
+        <li><strong>No Spam</strong>: Strict filtering + relevance scoring</li>
+        <li><strong>Cold Start Safe</strong>: New users get great recs from profile alone</li>
+      </ul>
+    </section>
+
+    <p style="text-align: center; font-size: 18px; margin-top: 60px;">
+      Ready to experience intelligent matching? <a href="index.html" style="color: #10b981; font-weight: bold;">Get Started →</a>
+    </p>
+  </div>
+
+  <footer style="background: #111827; color: #e0e0e0; padding: 40px 20px; text-align: center;">
+    <p><a href="index.html" style="color: #999; margin: 0 15px; text-decoration: none;">Home</a> |
+       <a href="explore.html" style="color: #999; margin: 0 15px; text-decoration: none;">Explore</a> |
+       <a href="how-it-works.html" style="color: #10b981; margin: 0 15px; text-decoration: none;">How It Works</a> |
+       <a href="#" style="color: #999; margin: 0 15px; text-decoration: none;">About</a></p>
+    <p style="margin-top: 20px; color: #666;">© 2026 Vekron. Personalized opportunities for how you learn and grow.</p>
+  </footer>
+
+</body>
+</html>

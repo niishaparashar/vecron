@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complete Your Profile</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Extra styles to match inspiration */
+    .profile-card {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .progress {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+      color: #666;
+    }
+    .step {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      background: #e0e0e0;
+      border-radius: 50%;
+      margin: 0 10px;
+    }
+    .step.active {
+      background: #4CAF50;
+      color: white;
+    }
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .pill {
+      padding: 10px 20px;
+      border: 1px solid #ddd;
+      border-radius: 30px;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill.selected {
+      background: #4CAF50;
+      color: white;
+      border-color: #4CAF50;
+    }
+    select[multiple] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      height: 150px;
+    }
+    .continue-btn {
+      width: 100%;
+      padding: 15px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+    .skip {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  
+ 
+  <div class="profile-card">
+    <div class="progress">
+      <span class="step active">1</span>
+      <span>—</span>
+      <span class="step">2</span>
+    </div>
+
+    <h2 style="text-align: center;">Your Background</h2>
+    <p style="text-align: center; color: #666;">Help us understand you</p>
+
+    <label><strong>Current Status</strong></label>
+    <div class="pill-group">
+      <div class="pill" onclick="selectPill(this, 'current_status')">Student</div>
+      <div class="pill" onclick="selectPill(this, 'current_status')">Fresher</div>
+      <div class="pill" onclick="selectPill(this, 'current_status')">Professional</div>
+      <div class="pill" onclick="selectPill(this, 'current_status')">Career Switcher</div>
+    </div>
+
+    <label><strong>Field of Study / Work</strong></label>
+    <div class="pill-group">
+      <div class="pill" onclick="selectPill(this, 'field')">Computer Science</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Information Technology</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Data Science</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Electrical Engineering</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Mechanical Engineering</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Design</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Business</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Marketing</div>
+      <div class="pill" onclick="selectPill(this, 'field')">Other</div>
+    </div>
+
+    <label><strong>Experience Level</strong></label>
+    <div class="pill-group">
+      <div class="pill" onclick="selectPill(this, 'experience')">Beginner</div>
+      <div class="pill" onclick="selectPill(this, 'experience')">Intermediate</div>
+      <div class="pill" onclick="selectPill(this, 'experience')">Advanced</div>
+    </div>
+
+    <label><strong>Preferred Location</strong></label>
+    <input type="text" id="location" placeholder="e.g. Bangalore, Remote" style="width:100%; padding:10px; margin:10px 0;">
+
+    <label><strong>Preferred Workplace</strong></label>
+    <div class="pill-group">
+      <div class="pill" onclick="selectPill(this, 'workplace')">Remote</div>
+      <div class="pill" onclick="selectPill(this, 'workplace')">Onsite</div>
+      <div class="pill" onclick="selectPill(this, 'workplace')">Hybrid</div>
+    </div>
+
+    <button class="continue-btn" onclick="saveBackgroundAndNext()">Continue →</button>
+
+    <div class="skip" onclick="window.location.href='dashboard.html'">Skip for now</div>
+  </div>
+     <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="text-align: center; padding: 40px; width: 350px; background: white; border-radius: 16px;">
+      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
+      <div>
+        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 10px; cursor: pointer; font-weight: bold;">Yes</button>
+        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #e5e7eb; color: #333; border: none; border-radius: 30px; margin: 0 10px; cursor: pointer; font-weight: bold;">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+  // Track selected pills
+  const selected = {
+    current_status: "",
+    field: "",
+    experience: "",
+    workplace: ""
+  };
+
+  function selectPill(element, category) {
+    // Deselect others in same category
+    document.querySelectorAll(`.pill[onclick*="${category}"]`).forEach(p => p.classList.remove("selected"));
+    element.classList.add("selected");
+    selected[category] = element.textContent.trim();
+  }
+
+  // THIS IS THE ONLY FUNCTION FOR CONTINUE BUTTON
+  function saveBackgroundAndNext() {
+    // Get values from selected pills
+    const tempProfile = {
+      experience_level: selected.experience || "Beginner",
+      preferred_category: selected.field || "Data",
+      preferred_location: document.getElementById("location")?.value || "Anywhere",
+      preferred_workplace: selected.workplace || "Remote"
+    };
+
+    // Save to localStorage for skills page
+    localStorage.setItem("temp_profile", JSON.stringify(tempProfile));
+
+    // Redirect to next page
+    window.location.href = "skills.html";
+  }
+
+  
+</script>
+</body>
+</html>
