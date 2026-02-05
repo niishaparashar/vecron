@@ -1,51 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background: #0a0e1a; margin: 0; padding: 0;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vekron - Personalized Opportunities</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f8fffe;
-      color: #333;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0e1a !important;
+      color: #e2e8f0 !important;
     }
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 20px 60px;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: rgba(15, 20, 25, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     .logo {
-      font-size: 28px;
-      font-weight: bold;
+      font-size: 24px;
+      font-weight: 700;
       color: #10b981;
+      letter-spacing: -0.5px;
     }
     .nav-links a {
-      margin: 0 20px;
+      margin: 0 25px;
       text-decoration: none;
-      color: #666;
+      color: #94a3b8;
       font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: #10b981;
     }
     .auth-buttons button {
       padding: 10px 24px;
-      border: none;
-      border-radius: 30px;
-      font-weight: bold;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     .sign-in-btn {
       background: transparent;
-      color: #333;
-      margin-right: 10px;
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-right: 12px;
+    }
+    .sign-in-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
     }
     .get-started-btn {
       background: #10b981;
       color: white;
+    }
+    .get-started-btn:hover {
+      background: #059669;
+      transform: translateY(-1px);
     }
     .hero {
       text-align: center;
@@ -66,13 +87,17 @@
       font-size: 56px;
       line-height: 1.2;
       margin-bottom: 20px;
+      color: #f1f5f9;
     }
     .hero-title span {
-      color: #10b981;
+      background: linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .hero-subtitle {
       font-size: 18px;
-      color: #666;
+      color: #94a3b8;
       margin-bottom: 50px;
       line-height: 1.6;
     }
@@ -87,17 +112,28 @@
       background: #10b981;
       color: white;
       border: none;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .primary-cta:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
     }
     .secondary-cta {
-      background: transparent;
-      color: #333;
-      border: 2px solid #ddd;
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .secondary-cta:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     /* How It Works Section */
     .how-section {
       padding: 100px 20px;
-      background: white;
+      background: #0f1419;
       text-align: center;
     }
     .how-title {
@@ -120,7 +156,8 @@
       margin: 0 auto;
     }
     .step-card {
-      background: white;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.05);
@@ -268,7 +305,8 @@
       display: flex;
     }
     .modal-content {
-      background: white;
+      background: #0f1419;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 40px;
       border-radius: 16px;
       width: 400px;
@@ -311,6 +349,44 @@
       text-decoration: none;
       font-weight: bold;
     }
+    /* Profile Dropdown (match explore/dashboard) */
+    .profile-dropdown { position: relative; }
+    .profile-button { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); border: 2px solid rgba(16, 185, 129, 0.3); color: white; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .profile-button:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .dropdown-menu { position: absolute; top: 50px; right: 0; background: #0f1419; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); min-width: 200px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 1000; }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-item { padding: 12px 20px; color: #e2e8f0; text-decoration: none; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: rgba(255, 255, 255, 0.05); }
+    .dropdown-item:first-child:hover { border-radius: 12px 12px 0 0; }
+    .dropdown-item:last-child:hover { border-radius: 0 0 12px 12px; }
+    .dropdown-icon { width: 18px; height: 18px; }
+
+    .auth-controls { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-left: auto; }
+
+    /* Profile Drawer (match explore/dashboard) */
+    .profile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 26, 0.8); backdrop-filter: blur(4px); z-index: 999; }
+    .profile-overlay.hidden { display: none; }
+    .profile-drawer { position: fixed; right: 0; top: 0; height: 100vh; width: 450px; max-width: 90%; background: #0f1419; border-left: 1px solid rgba(255, 255, 255, 0.1); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5); transform: translateX(100%); transition: transform 0.3s ease; z-index: 1000; overflow-y: auto; }
+    .profile-drawer:not(.hidden) { transform: translateX(0); }
+    .profile-drawer.hidden { transform: translateX(100%); }
+    .profile-header { padding: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; }
+    .profile-header h2 { font-size: 20px; font-weight: 600; color: #f1f5f9; }
+    .close-btn { background: transparent; border: none; color: #64748b; font-size: 32px; cursor: pointer; padding: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: color 0.2s ease; }
+    .close-btn:hover { color: #f1f5f9; }
+    .profile-section { padding: 24px; }
+    .profile-section.hidden { display: none; }
+    .profile-row { margin-bottom: 24px; }
+    .label { display: block; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .value { color: #cbd5e1; font-size: 15px; }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-chips span { background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 6px 12px; border-radius: 6px; font-size: 13px; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .primary-btn { width: 100%; padding: 14px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-top: 20px; }
+    .primary-btn:hover { background: #059669; transform: translateY(-1px); }
+    #profile-edit label { display: block; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px; }
+    #profile-edit select, #profile-edit input { width: 100%; padding: 12px 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #e2e8f0; font-size: 14px; transition: all 0.2s ease; }
+    #profile-edit select:focus, #profile-edit input:focus { outline: none; border-color: #10b981; background: rgba(255, 255, 255, 0.03); }
+    #profile-edit select option { background: #0f1419; color: #e2e8f0; }
   </style>
 </head>
 <body>
@@ -335,35 +411,8 @@
     </p>
     <div class="cta-buttons">
       <button class="primary-cta" onclick="openModal('register-modal')">Get Started →</button>
-      <button class="secondary-cta" onclick="window.location.href='dashboard.html'">Explore Opportunities</button>
     </div>
   </section>
-
-  <!-- How Vekron Works -->
-  <section class="how-section">
-    <h2 class="how-title">How Vekron Works</h2>
-    <p class="how-subtitle">Our machine learning algorithms understand your unique profile to surface opportunities that actually matter.</p>
-    <div class="steps">
-      <div class="step-card">
-        <div class="step-icon">🎯</div>
-        <h3 class="step-title">Step 1 — Understand You</h3>
-        <p class="step-desc">VEKRON transforms your skills, experience, and preferences into a structured ML profile.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-icon">✨</div>
-        <h3 class="step-title">Step 2 — Match Intelligently</h3>
-        <p class="step-desc">Hybrid recommendation models score thousands of opportunities to find the best fit.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-icon">📈</div>
-        <h3 class="step-title">Step 3 — Learn From You</h3>
-        <p class="step-desc">Your interactions continuously refine recommendations, making them smarter over time.</p>
-      </div>
-    </div>
-  </section>
-
-  
-  
 
   <!-- Logged In Hero (Hidden by default) -->
   <section class="hero logged-in-hero" id="logged-in-hero" style="display: none;">
@@ -374,6 +423,217 @@
     <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">
       Go to Dashboard →
     </button>
+  </section>
+
+  <!-- How Vekron Works -->
+  <section class="how-section">
+    <h2 class="how-title">How Vekron Works</h2>
+    <p class="how-subtitle">Our machine learning algorithms understand your unique profile to surface opportunities that actually matter.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon">🎯</div>
+        <h3 class="step-title">Step 1 — Understand You</h3>
+        <p class="step-desc">VEKRON transforms your skills, experience, and preferences into a structured ML profile that captures your unique strengths and career goals.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">✨</div>
+        <h3 class="step-title">Step 2 — Match Intelligently</h3>
+        <p class="step-desc">Hybrid recommendation models score thousands of opportunities in real-time, analyzing fit across skills, experience, location, and cultural alignment.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">📈</div>
+        <h3 class="step-title">Step 3 — Learn From You</h3>
+        <p class="step-desc">Your interactions continuously refine recommendations, making them smarter over time. The more you use Vekron, the better it gets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section style="padding: 100px 20px; max-width: 1400px; margin: 0 auto;">
+    <h2 style="text-align: center; font-size: clamp(32px, 4vw, 42px); margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; color: #f1f5f9;">Why Choose Vekron?</h2>
+    <p style="text-align: center; font-size: 18px; color: #64748b; margin-bottom: 80px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+      Built for modern job seekers who deserve better than generic job boards
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 32px;">
+      <!-- Feature 1 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">AI-Powered Matching</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">Advanced machine learning models analyze your profile against thousands of opportunities to find perfect matches you'd never discover manually.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">Real-Time Updates</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">Get notified instantly when new opportunities match your profile. Never miss a great opportunity because you checked too late.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">Privacy First</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">Your data is yours. We never sell your information to recruiters. You control who sees your profile and when.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">Skill-Based Matching</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">We match based on actual skills and potential, not just keywords on a resume. Perfect for career switchers and self-taught professionals.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">Transparent Insights</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">See exactly why each opportunity was recommended. Understand your market value and what skills are in demand in real-time.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div style="background: #0f1419; padding: 48px 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease;">
+        <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </div>
+        <h3 style="font-size: 22px; margin-bottom: 18px; font-weight: 600; color: #f1f5f9;">Global Reach</h3>
+        <p style="color: #94a3b8; line-height: 1.7; font-size: 16px;">Find remote opportunities worldwide or local positions in your area. Filter by location, work style, and company culture.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section style="padding: 100px 20px; background: #0f1419;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <h2 style="text-align: center; font-size: clamp(32px, 4vw, 42px); margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; color: #f1f5f9;">Loved by Job Seekers</h2>
+      <p style="text-align: center; font-size: 18px; color: #64748b; margin-bottom: 80px;">
+        See what our users have to say
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 32px;">
+        <!-- Testimonial 1 -->
+        <div style="background: #0f1419; padding: 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div style="color: #f59e0b; margin-bottom: 20px; font-size: 18px; display: flex; gap: 4px;">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+          <p style="color: #cbd5e1; line-height: 1.7; margin-bottom: 24px; font-size: 16px;">
+            "Vekron found me a perfect remote position that I would never have discovered on traditional job boards. The AI recommendations are incredibly accurate."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">A</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Ananya Sharma</div>
+              <div style="font-size: 13px; color: #64748b;">Software Engineer</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div style="background: #0f1419; padding: 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div style="color: #f59e0b; margin-bottom: 20px; font-size: 18px; display: flex; gap: 4px;">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+          <p style="color: #cbd5e1; line-height: 1.7; margin-bottom: 24px; font-size: 16px;">
+            "As a career switcher, Vekron helped me find companies that valued my transferable skills over traditional experience. Game changer!"
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">R</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Rahul Verma</div>
+              <div style="font-size: 13px; color: #64748b;">Data Analyst</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div style="background: #0f1419; padding: 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div style="color: #f59e0b; margin-bottom: 20px; font-size: 18px; display: flex; gap: 4px;">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+          <p style="color: #cbd5e1; line-height: 1.7; margin-bottom: 24px; font-size: 16px;">
+            "The personalization is incredible. Every recommendation feels hand-picked for me. Saved me hours of searching through irrelevant listings."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">P</div>
+            <div>
+              <div style="font-weight: 600; color: #f1f5f9;">Priya Patel</div>
+              <div style="font-size: 13px; color: #64748b;">Product Designer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section style="padding: 100px 20px; max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; text-align: center;">
+      <div>
+        <div style="font-size: 48px; font-weight: 700; color: #10b981; margin-bottom: 12px;">10K+</div>
+        <div style="color: #64748b; font-size: 16px;">Active Opportunities</div>
+      </div>
+      <div>
+        <div style="font-size: 48px; font-weight: 700; color: #10b981; margin-bottom: 12px;">95%</div>
+        <div style="color: #64748b; font-size: 16px;">Match Satisfaction</div>
+      </div>
+      <div>
+        <div style="font-size: 48px; font-weight: 700; color: #10b981; margin-bottom: 12px;">500+</div>
+        <div style="color: #64748b; font-size: 16px;">Partner Companies</div>
+      </div>
+      <div>
+        <div style="font-size: 48px; font-weight: 700; color: #10b981; margin-bottom: 12px;">24/7</div>
+        <div style="color: #64748b; font-size: 16px;">Real-Time Updates</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section style="padding: 100px 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2 style="font-size: clamp(32px, 4vw, 48px); margin-bottom: 24px; font-weight: 700; letter-spacing: -0.5px; color: #f1f5f9;">
+        Ready to Find Your Perfect Opportunity?
+      </h2>
+      <p style="font-size: 18px; color: #94a3b8; margin-bottom: 40px; line-height: 1.7;">
+        Join thousands of professionals who are finding better opportunities with Vekron's intelligent matching system.
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <button class="primary-cta" onclick="openModal('register-modal')" style="padding: 18px 40px; font-size: 18px;">
+          Start Free Today →
+        </button>
+        <button class="secondary-cta" onclick="window.location.href='explore.html'" style="padding: 18px 40px; font-size: 18px;">
+          Browse Opportunities
+        </button>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
@@ -409,13 +669,69 @@
   </footer>
 
   <!-- Logout Confirmation Modal -->
-  <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: white; padding: 40px; border-radius: 16px; text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
+  <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 14, 26, 0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #0f1419; border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 16px; text-align: center; width: 350px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);">
+      <h3 style="margin-bottom: 30px; color: #f1f5f9;">Are you sure you want to log out?</h3>
       <div>
-        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">Yes</button>
-        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #e5e7eb; color: #333; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">No</button>
+        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 8px; margin: 0 8px; cursor: pointer; font-weight: 600;">Yes, log me out</button>
+        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: rgba(255, 255, 255, 0.05); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; margin: 0 8px; cursor: pointer; font-weight: 600;">Cancel</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Profile Drawer -->
+  <div id="profile-overlay" class="profile-overlay hidden" style="display:none;"></div>
+  <div id="profile-drawer" class="profile-drawer hidden" style="display:none;">
+    <div class="profile-header" style="padding: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="font-size: 20px; font-weight: 600; color: #f1f5f9;">Your Profile</h2>
+      <button class="close-btn" onclick="closeProfile()" style="background: transparent; border: none; color: #64748b; font-size: 32px; cursor: pointer; padding: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">×</button>
+    </div>
+
+    <!-- VIEW MODE -->
+    <div id="profile-view" class="profile-section" style="padding: 24px;">
+      <div class="profile-row" style="margin-bottom: 16px;">
+        <div class="label" style="font-size: 12px; color: #64748b; text-transform: uppercase;">Full Name</div>
+        <div id="pv-name" class="value" style="color: #cbd5e1;">Not set</div>
+      </div>
+
+      <div class="profile-row" style="margin-bottom: 16px;">
+        <div class="label" style="font-size: 12px; color: #64748b; text-transform: uppercase;">Email</div>
+        <div id="pv-email" class="value" style="color: #cbd5e1;"></div>
+      </div>
+
+      <div class="profile-row" style="margin-bottom: 16px;">
+        <div class="label" style="font-size: 12px; color: #64748b; text-transform: uppercase;">Experience Level</div>
+        <div id="pv-exp" class="value" style="color: #cbd5e1;"></div>
+      </div>
+
+      <div class="profile-row" style="margin-bottom: 16px;">
+        <div class="label" style="font-size: 12px; color: #64748b; text-transform: uppercase;">Skills</div>
+        <div id="pv-skills" class="skill-chips" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+      </div>
+
+      <button class="primary-btn" onclick="enableEdit()" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600;">Update Profile</button>
+    </div>
+
+    <!-- EDIT MODE -->
+    <div id="profile-edit" class="profile-section hidden" style="padding: 24px; display: none;">
+      <label style="display:block; font-size:12px; color:#64748b; text-transform:uppercase;">Experience Level</label>
+      <select id="experience_level" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; border-radius: 8px;">
+        <option>Beginner</option>
+        <option>Intermediate</option>
+        <option>Advanced</option>
+      </select>
+
+      <label style="display:block; font-size:12px; color:#64748b; text-transform:uppercase; margin-top:14px;">Skills</label>
+      <input id="skills" placeholder="Python, React, ML" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; border-radius: 8px;">
+
+      <label style="display:block; font-size:12px; color:#64748b; text-transform:uppercase; margin-top:14px;">Preferred Workplace</label>
+      <select id="preferred_workplace" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; border-radius: 8px;">
+        <option>Remote</option>
+        <option>Hybrid</option>
+        <option>Onsite</option>
+      </select>
+
+      <button class="primary-btn" onclick="saveProfile()" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 16px;">Save Changes</button>
     </div>
   </div>
 
@@ -445,8 +761,7 @@
   </div>
 
   <script src="js/api.js"></script>
-  <script src="script.js"></script>
-
+  
   <script>
     function openModal(modalId) {
       document.getElementById(modalId).classList.add("active");
@@ -472,10 +787,32 @@
         document.getElementById("logged-in-hero").style.display = "block";
         document.getElementById("welcome-name").textContent = `Welcome back, ${fullName}!`;
 
-        // Update header buttons
+        // Update header buttons: exact same markup as explore/dashboard
         document.getElementById("auth-buttons").innerHTML = `
-          <button onclick="window.location.href='dashboard.html'" style="padding: 10px 24px; background: transparent; color: #333; border: 1px solid #ddd; border-radius: 30px; font-weight: bold; cursor: pointer; margin-right: 10px;">Dashboard</button>
-          <button onclick="showLogoutModal()" style="padding: 10px 24px; background: #ef4444; color: white; border: none; border-radius: 30px; font-weight: bold; cursor: pointer;">Logout</button>
+          <div class="auth-controls" id="auth-controls">
+            <div class="profile-dropdown">
+              <button class="profile-button" id="profileBtn" onclick="toggleDropdown()">
+                <span id="profileInitial">${(fullName || 'U').charAt(0).toUpperCase()}</span>
+              </button>
+              <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" onclick="openProfile(); toggleDropdown();">
+                  <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  View Profile
+                </div>
+                <div class="dropdown-item" onclick="showLogoutModal(); toggleDropdown();">
+                  <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  Logout
+                </div>
+              </div>
+            </div>
+          </div>
         `;
       } else {
         // Not logged in — keep default
@@ -485,6 +822,114 @@
         `;
       }
     }
+
+    // Logout modal helpers (shared behavior)
+    function showLogoutModal() {
+      const m = document.getElementById('logout-modal');
+      if (m) m.classList.add('active');
+    }
+    function closeLogoutModal() {
+      const m = document.getElementById('logout-modal');
+      if (m) m.classList.remove('active');
+    }
+    function confirmLogout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    // Dropdown helpers (match explore/dashboard)
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      if (!dropdown) return;
+      dropdown.classList.toggle('show');
+    }
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdownMenu');
+      const profileBtn = document.getElementById('profileBtn');
+      if (!dropdown || !profileBtn) return;
+      if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // Profile Drawer logic
+    function qs(id){ return document.getElementById(id); }
+    function populateProfileView(data){
+      qs('pv-name').textContent = data.full_name || localStorage.getItem('full_name') || 'Not set';
+      qs('pv-email').textContent = data.email || localStorage.getItem('email') || '';
+      qs('pv-exp').textContent = data.experience_level || localStorage.getItem('experience_level') || '';
+      const skillsStr = (data.skills || localStorage.getItem('skills') || '') + '';
+      const chips = qs('pv-skills');
+      if (chips) {
+        chips.innerHTML = '';
+        if (skillsStr.trim().length) {
+          skillsStr.split(',').map(s=>s.trim()).filter(Boolean).slice(0,20).forEach(s=>{
+            const span = document.createElement('span');
+            span.textContent = s;
+            span.style.background = 'rgba(16,185,129,0.15)';
+            span.style.color = '#10b981';
+            span.style.padding = '6px 12px';
+            span.style.borderRadius = '6px';
+            span.style.border = '1px solid rgba(16,185,129,0.2)';
+            span.style.fontSize = '13px';
+            chips.appendChild(span);
+          });
+        }
+      }
+      const exp = data.experience_level || localStorage.getItem('experience_level') || 'Beginner';
+      const pw = data.preferred_workplace || localStorage.getItem('preferred_workplace') || 'Remote';
+      const sk = skillsStr;
+      if (qs('experience_level')) qs('experience_level').value = exp;
+      if (qs('preferred_workplace')) qs('preferred_workplace').value = pw;
+      if (qs('skills')) qs('skills').value = sk;
+    }
+    async function fetchProfileSafe(){
+      try{
+        const token = localStorage.getItem('access_token');
+        if(!token) return {};
+        const me = await apiFetch('/auth/me');
+        return me || {};
+      }catch(e){ return {}; }
+    }
+    async function openProfile(){
+      const overlay = qs('profile-overlay');
+      const drawer = qs('profile-drawer');
+      if (!overlay || !drawer) return;
+      const data = await fetchProfileSafe();
+      populateProfileView(data);
+      overlay.style.display = 'block';
+      drawer.style.display = 'block';
+      overlay.classList.remove('hidden');
+      drawer.classList.remove('hidden');
+    }
+    function closeProfile(){
+      const overlay = qs('profile-overlay');
+      const drawer = qs('profile-drawer');
+      if (overlay) { overlay.style.display = 'none'; overlay.classList.add('hidden'); }
+      if (drawer) { drawer.style.display = 'none'; drawer.classList.add('hidden'); }
+      if (qs('profile-view') && qs('profile-edit')) { qs('profile-view').style.display = ''; qs('profile-view').classList.remove('hidden'); qs('profile-edit').style.display = 'none'; qs('profile-edit').classList.add('hidden'); }
+    }
+    function enableEdit(){
+      if (qs('profile-view') && qs('profile-edit')) { qs('profile-view').style.display = 'none'; qs('profile-view').classList.add('hidden'); qs('profile-edit').style.display = ''; qs('profile-edit').classList.remove('hidden'); }
+    }
+    async function saveProfile(){
+      const payload = {
+        experience_level: qs('experience_level')?.value || 'Beginner',
+        skills: qs('skills')?.value || '',
+        preferred_workplace: qs('preferred_workplace')?.value || 'Remote',
+      };
+      try{ await apiFetch('/auth/complete-profile', { method:'POST', body: JSON.stringify(payload) }); } catch(e){}
+      localStorage.setItem('experience_level', payload.experience_level);
+      localStorage.setItem('skills', payload.skills);
+      localStorage.setItem('preferred_workplace', payload.preferred_workplace);
+      populateProfileView(payload);
+      if (qs('profile-view') && qs('profile-edit')) { qs('profile-view').style.display = ''; qs('profile-view').classList.remove('hidden'); qs('profile-edit').style.display = 'none'; qs('profile-edit').classList.add('hidden'); }
+    }
+
+    // Logout modal helpers
+    function showLogoutModal(){ const m = document.getElementById('logout-modal'); if(m){ m.style.display='flex'; m.classList.add('active'); } }
+    function closeLogoutModal(){ const m = document.getElementById('logout-modal'); if(m){ m.style.display='none'; m.classList.remove('active'); } }
+    function confirmLogout(){ localStorage.clear(); window.location.href = 'index.html'; }
 
     document.addEventListener("DOMContentLoaded", updateLandingPage);
   </script>
