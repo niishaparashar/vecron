@@ -3,253 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>How Vekron Works | Vekron</title>
+  <title>Technical Documentation | Vekron Engine</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    :root {
+      --bg-dark: #0f1419;
+      --paper-dark: #1a1f2e;
+      --accent-green: #10b981;
+      --text-main: #e4e6eb;
+      --text-muted: #8b92a8;
+      --border-dim: #2a3142;
+      --code-bg: #011627;
+      --glass: rgba(255, 255, 255, 0.03);
+    }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f8fffe;
-      color: #333;
-      line-height: 1.7;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
     }
+
+    /* --- NAVIGATION --- */
     .header {
-      background: white;
-      padding: 20px 60px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 15px 60px;
+      background: var(--paper-dark);
+      border-bottom: 1px solid var(--border-dim);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #10b981;
-    }
-    .nav-links a {
-      margin: 0 20px;
+    .logo-nav { display: flex; align-items: center; gap: 25px; }
+    .logo { font-size: 26px; font-weight: bold; color: var(--accent-green); text-decoration: none; }
+    
+    /* --- BACK BUTTON STYLING --- */
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
       text-decoration: none;
-      color: #666;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border-dim);
+      transition: all 0.3s ease;
     }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 20px;
+
+    .back-btn:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.05);
+      transform: translateX(-4px);
     }
-    h1 {
-      font-size: 48px;
-      text-align: center;
-      margin-bottom: 20px;
-      color: #111;
+
+    /* --- GUIDE LAYOUT --- */
+    .guide-wrapper {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 30px;
     }
-    .subtitle {
-      text-align: center;
-      font-size: 20px;
-      color: #666;
-      margin-bottom: 60px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    section {
-      margin-bottom: 100px;
-    }
-    h2 {
-      font-size: 36px;
-      margin-bottom: 30px;
-      color: #10b981;
-      border-bottom: 3px solid #10b981;
-      padding-bottom: 10px;
-    }
-    p {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    ul {
-      font-size: 18px;
-      padding-left: 30px;
-    }
-    li {
-      margin-bottom: 15px;
-    }
-    .diagram {
-      background: #f0fdf4;
-      border: 2px solid #10b981;
+
+    /* Sidebar Table of Contents */
+    .toc-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      padding: 20px;
+      background: var(--paper-dark);
       border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-      margin: 40px 0;
-      font-family: monospace;
-      font-size: 16px;
-      color: #10b981;
+      border: 1px solid var(--border-dim);
     }
-    .code {
-      background: #f1f5f9;
+    .toc-sidebar h5 { color: var(--accent-green); margin-bottom: 15px; font-size: 12px; letter-spacing: 1px; }
+    .toc-sidebar a { display: block; color: var(--text-muted); text-decoration: none; font-size: 14px; margin-bottom: 10px; transition: 0.3s; }
+    .toc-sidebar a:hover { color: var(--accent-green); }
+
+    .doc-main {
+      background: var(--paper-dark);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 60px;
+    }
+
+    /* --- COMPONENTS --- */
+    section { margin-bottom: 80px; scroll-margin-top: 120px; }
+    h2 { color: var(--accent-green); border-bottom: 1px solid var(--border-dim); padding-bottom: 10px; margin-bottom: 30px; }
+    
+    .schematic {
+      background: var(--code-bg);
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 25px;
+      margin: 25px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #9cdcfe;
+      overflow-x: auto;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .info-card {
+      background: var(--glass);
       padding: 20px;
       border-radius: 8px;
-      overflow-x: auto;
-      margin: 20px 0;
-      font-family: monospace;
+      border-top: 2px solid var(--accent-green);
     }
-    footer {
-      background: #111827;
-      color: #e0e0e0;
-      padding: 60px 20px 30px;
-      margin-top: 100px;
+
+    .formula {
+      display: block;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 15px;
+      border-radius: 6px;
       text-align: center;
+      color: var(--accent-green);
+      font-weight: bold;
+      margin: 15px 0;
     }
-    .footer-links a {
-      color: #999;
-      margin: 0 15px;
-      text-decoration: none;
-    }
-    .footer-links a:hover {
-      color: #10b981;
-    }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border-dim); padding: 40px; text-align: center; margin-top: 60px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 15px; }
   </style>
 </head>
 <body>
 
   <header class="header">
-    <div class="logo">Vekron</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="explore.html">Explore</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="#">About</a>
+    <div class="logo-nav">
+      <a href="index.html" class="back-btn">
+        <span>←</span> Back
+      </a>
+      <a href="index.html" class="logo">Vekron</a>
     </div>
   </header>
 
-  <div class="container">
-    <h1>How Vekron Works</h1>
-    <p class="subtitle">
-      Vekron uses a hybrid machine learning recommender system that combines content-based and collaborative filtering to deliver highly personalized job and internship recommendations.
-    </p>
+  <div class="guide-wrapper">
+    <aside class="toc-sidebar">
+      <h5>SYSTEM MODULES</h5>
+      <a href="#hybrid">01. Hybrid Recommender</a>
+      <a href="#content">02. Content-Based Pipeline</a>
+      <a href="#collaborative">03. Collaborative SVD</a>
+      <a href="#ranking">04. Hybrid Scoring</a>
+      <a href="#workflow">05. System Workflow</a>
+      <a href="#metrics">06. Evaluation Metrics</a>
+    </aside>
 
-    <section>
-      <h2>1. Overview of the Hybrid Recommender</h2>
-      <p>
-        Vekron's engine blends two powerful approaches:
-      </p>
-      <ul>
-        <li><strong>Content-Based Filtering</strong>: Matches jobs to your explicit profile (skills, experience level, preferred category, location, workplace).</li>
-        <li><strong>Collaborative Filtering</strong>: Learns from your interactions (view, save, apply) and behavior of similar users.</li>
-      </ul>
-      <p>
-        Final score = 0.6 × Content Score + 0.4 × Collaborative Score (weights tuned for best performance).
-      </p>
-      <p>
-        This hybrid approach solves the "cold start" problem (new users get good recs from profile) and improves over time with interactions.
-      </p>
-    </section>
+    <main class="doc-main">
+      <section id="hybrid">
+        <h2>1. Overview of the Hybrid Recommender</h2>
+        <p>Vekron's engine is a <strong>High-Fidelity Recommender System</strong> designed to mitigate common algorithmic pitfalls like the "Cold Start" and "Popularity Bias."</p>
+        
+        
 
-    <section>
-      <h2>2. Content-Based Filtering</h2>
-      <p>
-        Recommends jobs similar to your profile using text and categorical features.
-      </p>
-      <ul>
-        <li>Text features: User skills vs. job skills_required + description</li>
-        <li>Categorical filters: experience_level, preferred_category, location, workplace_type</li>
-      </ul>
-      <p><strong>Key Technique:</strong> TF-IDF + Cosine Similarity</p>
-      <div class="diagram">
-        User Skills ("Python, React, Machine Learning")<br>
-        → TF-IDF Vectorizer → User Vector<br>
-        <br>
-        Job Skills/Description → TF-IDF Vector → Job Vector<br>
-        <br>
-        ↓<br>
-        Cosine Similarity Score (0-1)<br>
-        ↓<br>
-        Filter by category, experience, location<br>
-        ↓<br>
-        Content-Based Score
-      </div>
-      <a href=""
-      <p>
-        TF-IDF weights rare skills higher, cosine similarity measures how "close" your profile is to a job.
-      </p>
-    </section>
+        <div class="info-grid">
+          <div class="info-card">
+            <h4>Content-Based Filtering</h4>
+            <p>Analyzes item metadata and user explicit features.</p>
+          </div>
+          <div class="info-card">
+            <h4>Collaborative Filtering</h4>
+            <p>Latent factor analysis through interaction matrices.</p>
+          </div>
+        </div>
 
-    <section>
-      <h2>3. Collaborative Filtering</h2>
-      <p>
-        Learns from user behavior: "Users like you applied to these jobs."
-      </p>
-      <ul>
-        <li>Interaction weights: View = 1, Save = 3, Apply = 5</li>
-        <li>User-Item matrix built from interactions table</li>
-      </ul>
-      <p><strong>Key Technique:</strong> Matrix Factorization (SVD)</p>
-      <div class="diagram">
-        User-Item Matrix (users × jobs × interaction score)<br>
-        ↓<br>
-        Singular Value Decomposition (SVD)<br>
-        ↓<br>
-        Predict missing scores using latent factors<br>
-        ↓<br>
-        Collaborative Score
-      </div>
-      <p>
-        SVD discovers hidden patterns (e.g., "users who like ML also like AWS roles").
-      </p>
-    </section>
+        <div class="formula">
+          Final Score = (α × Content Score) + (β × Collaborative Score) <br>
+          <span style="font-size: 12px; font-weight: normal; color: #8b92a8;">Where α=0.6 and β=0.4 (Optimized for precision)</span>
+        </div>
+      </section>
 
-    <section>
-      <h2>4. Hybrid Scoring & Ranking</h2>
-      <p>
-        Final recommendation list:
-      </p>
-      <ul>
-        <li>Normalize both scores to 0-1 range</li>
-        <li>Weighted sum: final_score = 0.6 × content + 0.4 × collaborative</li>
-        <li>Sort descending, take top 20</li>
-        <li>Attach explanation (e.g., "High match on Python and Machine Learning")</li>
-      </ul>
-      <div class="diagram">
-        Content Score + Collaborative Score<br>
-        → Normalize → Weighted Hybrid → Sort → Top N + Explanation
-      </div>
-    </section>
+      <section id="content">
+        <h2>2. Content-Based Filtering (The Vector Space)</h2>
+        <p>Every user profile and job posting is projected into a high-dimensional vector space using <strong>TF-IDF Vectorization</strong>.</p>
+        
+        <div class="schematic">
+          [VECTORIZATION SCHEMATIC]<br>
+          Input: User_Skills["Python", "React", "AI"]<br>
+          Tokenization -> Stopword Removal -> N-gram Analysis<br>
+          Output: Vector [0.45, 0.00, 0.89, 0.12 ...]<br><br>
+          Function: CosineSimilarity(U, J) = (U · J) / (||U|| ||J||)
+        </div>
 
-    <section>
-      <h2>5. System Workflow</h2>
-      <div class="diagram">
-        1. User registers → creates profile (2-step onboarding)<br>
-        2. Profile saved → content vector built<br>
-        3. User views/saves/applies → interactions logged<br>
-        4. Matrix updated → collaborative model improves<br>
-        5. Dashboard calls /recommend/{user_id} → hybrid engine runs<br>
-        6. Personalized jobs returned with explanations
-      </div>
-      <p>
-        The system is real-time: every interaction immediately influences future recommendations.
-      </p>
-    </section>
+        
 
-    <section>
-      <h2>6. Why This Works So Well</h2>
-      <ul>
-        <li><strong>Personalization</strong>: Matches your exact skills and preferences</li>
-        <li><strong>Learning</strong>: Gets smarter with every click</li>
-        <li><strong>No Spam</strong>: Strict filtering + relevance scoring</li>
-        <li><strong>Cold Start Safe</strong>: New users get great recs from profile alone</li>
-      </ul>
-    </section>
+        <p><strong>Processing Details:</strong></p>
+        <ul>
+          <li><strong>Text Features:</strong> Skills are prioritized over raw descriptions.</li>
+          <li><strong>Categorical Constraints:</strong> Hard filters applied for <code>experience_level</code> and <code>workplace_type</code>.</li>
+        </ul>
+      </section>
 
-    <p style="text-align: center; font-size: 18px; margin-top: 60px;">
-      Ready to experience intelligent matching? <a href="index.html" style="color: #10b981; font-weight: bold;">Get Started →</a>
-    </p>
+      <section id="collaborative">
+        <h2>3. Collaborative Filtering (Matrix Factorization)</h2>
+        <p>Using <strong>Singular Value Decomposition (SVD)</strong>, we decompose the User-Item interaction matrix into latent factors representing "hidden" preferences.</p>
+
+        <div class="schematic">
+          [MATRIX DECOMPOSITION]<br>
+          R (User-Item Matrix) ≈ U Σ Vᵀ<br>
+          - U: User features (Latent Space)<br>
+          - Σ: Singular values (Strength of factors)<br>
+          - Vᵀ: Item features (Latent Space)
+        </div>
+
+        
+
+        <div class="info-grid">
+          <div class="info-card">
+            <h4>Interaction Weights</h4>
+            <p>View: 1 | Save: 3 | Apply: 5</p>
+          </div>
+          <div class="info-card">
+            <h4>Learning Rate</h4>
+            <p>Stochastic Gradient Descent (SGD) at η=0.005</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="ranking">
+        <h2>4. Hybrid Scoring & Ranking Logic</h2>
+        <p>Before delivery, scores from heterogeneous models are normalized using <strong>Min-Max Scaling</strong> to ensure interoperability.</p>
+        
+        <div class="schematic">
+          STEP 1: Calculate Sc_content(u, i)<br>
+          STEP 2: Calculate Sc_collab(u, i)<br>
+          STEP 3: Normalize Sc_normalized = (Sc - min) / (max - min)<br>
+          STEP 4: Sort Descending -> Take Top 20
+        </div>
+      </section>
+
+      <section id="workflow">
+        <h2>5. Real-Time System Workflow</h2>
+        <div class="info-grid" style="grid-template-columns: 1fr;">
+          <div class="info-card" style="border-left: 3px solid var(--accent-green); border-top: none;">
+            <strong>Step 1:</strong> User onboarding generates <code>profile_vector_v1</code>.
+          </div>
+          <div class="info-card" style="border-left: 3px solid var(--accent-green); border-top: none;">
+            <strong>Step 2:</strong> Interaction stream updates the <code>interactions_table</code>.
+          </div>
+          <div class="info-card" style="border-left: 3px solid var(--accent-green); border-top: none;">
+            <strong>Step 3:</strong> Inference engine runs hybrid computation on <code>/recommend/{id}</code>.
+          </div>
+          <div class="info-card" style="border-left: 3px solid var(--accent-green); border-top: none;">
+            <strong>Step 4:</strong> Dynamic explanations are rendered based on feature proximity.
+          </div>
+        </div>
+      </section>
+
+      <section id="metrics">
+        <h2>6. Evaluation Metrics</h2>
+        <p>Vekron measures success using industry-standard precision metrics.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h4>MRR (Mean Reciprocal Rank)</h4>
+            <p>Measures how high the first relevant item appears.</p>
+          </div>
+          <div class="info-card">
+            <h4>Precision@K</h4>
+            <p>Percentage of relevant items in the top 10/20 results.</p>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <footer style="background: #111827; color: #e0e0e0; padding: 40px 20px; text-align: center;">
-    <p><a href="index.html" style="color: #999; margin: 0 15px; text-decoration: none;">Home</a> |
-       <a href="explore.html" style="color: #999; margin: 0 15px; text-decoration: none;">Explore</a> |
-       <a href="how-it-works.html" style="color: #10b981; margin: 0 15px; text-decoration: none;">How It Works</a> |
-       <a href="#" style="color: #999; margin: 0 15px; text-decoration: none;">About</a></p>
-    <p style="margin-top: 20px; color: #666;">© 2026 Vekron. Personalized opportunities for how you learn and grow.</p>
+  <footer>
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="how-it-works.html">How It Works</a>
+    </div>
+    <p style="margin-top: 20px; font-size: 13px; color: var(--text-muted);">© 2026 Vekron Systems. Technical Documentation V2.1</p>
   </footer>
 
 </body>

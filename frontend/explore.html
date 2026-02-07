@@ -5,122 +5,224 @@
   <title>Vekron | Explore Opportunities</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body { background: #f8f9fa; margin: 0; padding: 0; }
+    body { 
+      background: #0f1419; 
+      margin: 0; 
+      padding: 0; 
+      color: #e4e6eb;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* SHARED HEADER STYLES */
     .header {
-      background: white;
-      padding: 20px 40px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo { font-size: 24px; font-weight: bold; color: #10b981; }
-    .welcome {
-      margin: 40px 40px 20px;
-      font-size: 32px;
-      font-weight: bold;
-    }
-    .subtitle { color: #666; margin-bottom: 30px; }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 0 40px 40px; }
-    .stat-card { background: white; padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-    .stat-number { font-size: 36px; font-weight: bold; color: #10b981; }
-    .stat-label { color: #666; font-size: 14px; }
-    .section-title {
-      margin: 0 40px 20px;
-      font-size: 24px;
+      background: #1a1f2e;
+      padding: 20px 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
+      border-bottom: 1px solid #2a3142;
+    }
+    
+    .logo-nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    
+    .logo { 
+      font-size: 28px; 
+      font-weight: bold; 
+      color: #10b981;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    /* SLIDING NAVBAR STYLES */
+    #nav-buttons {
+      position: relative;
+      display: flex;
       gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 5px;
+      border-radius: 35px;
+      border: 1px solid #2a3142;
     }
+
+    .nav-indicator {
+      position: absolute;
+      height: calc(100% - 10px);
+      top: 5px;
+      left: 0;
+      background: #10b981;
+      border-radius: 30px;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 1;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .nav-btn {
+      position: relative;
+      z-index: 2;
+      padding: 10px 24px;
+      color: #8b92a8;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .nav-btn.active { color: #0f1419; }
+    .nav-btn:hover:not(.active) { color: #10b981; }
+
+    .auth-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      margin-left: auto;
+    }
+
+    /* PROFILE UI */
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      color: #0f1419;
+      border: 3px solid #10b981;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 65px;
+      right: 0;
+      background: #1a1f2e;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid #2a3142;
+      min-width: 200px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .profile-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      padding: 16px 20px;
+      color: #e4e6eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      border-bottom: 1px solid #2a3142;
+      transition: 0.2s;
+    }
+
+    .dropdown-item:hover { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .dropdown-item.logout-item:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    /* CONTENT STYLES */
+    .welcome { margin: 40px 60px 10px; font-size: 32px; font-weight: bold; }
+    .subtitle { color: #8b92a8; margin: 0 60px 30px; }
+    
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 0 60px 40px; }
+    .stat-card { 
+      background: #1a1f2e; padding: 20px; border-radius: 16px; 
+      text-align: center; border: 1px solid #2a3142; 
+    }
+    .stat-number { font-size: 36px; font-weight: bold; color: #10b981; }
+    .stat-label { color: #8b92a8; font-size: 14px; }
+
+    .section-title {
+      margin: 0 60px 20px; font-size: 24px; display: flex;
+      align-items: center; gap: 10px;
+    }
+
     .jobs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 20px;
-      margin: 0 40px 40px;
+      gap: 20px; margin: 0 60px 40px;
     }
     
     .job-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
+      background: #1a1f2e; border-radius: 16px; padding: 24px;
+      border: 1px solid #2a3142; transition: all 0.3s ease;
     }
-    .job-card:hover { transform: translateY(-5px); }
-    .match-badge {
-      background: #ecfdf5;
-      color: #10b981;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
-    .job-title { font-size: 20px; font-weight: bold; margin: 10px 0; }
-    .company { color: #666; }
-    .meta { display: flex; gap: 15px; margin: 15px 0; color: #666; font-size: 14px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+    .job-card:hover { transform: translateY(-5px); border-color: #10b981; }
+    
+    .job-title { font-size: 20px; font-weight: bold; margin: 0 0 8px 0; }
+    .company { color: #8b92a8; margin-bottom: 16px; display: block;}
+    .meta { display: flex; gap: 15px; margin-bottom: 20px; color: #8b92a8; font-size: 14px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tag {
-      background: #f0fdf4;
-      color: #10b981;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
+      background: rgba(16, 185, 129, 0.1); color: #10b981;
+      padding: 6px 12px; border-radius: 20px; font-size: 13px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
     }
-    .posted { color: #999; font-size: 14px; }
-    .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #666;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 8px 16px;
-  border-radius: 30px;
-  transition: all 0.2s;
-}
-
-.nav-links a:hover {
-  background: #f0fdf4;
-  color: #10b981;
-  
-}
+    .posted { color: #6b7280; font-size: 13px; margin-top: 20px; border-top: 1px solid #2a3142; padding-top: 15px;}
   </style>
 </head>
 <body>
-  
 
- 
- 
-<div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="explore.html">Explore</a>
+  <div class="header">
+    <div class="logo-nav">
+      <div class="logo">Vekron</div>
+      <div id="nav-buttons"></div>
+    </div>
     
+    <div class="auth-controls" id="auth-controls">
+      <div class="profile-icon" onclick="toggleProfileDropdown()" id="profile-icon">
+        <span id="profile-initials">U</span>
+      </div>
+      <div class="profile-dropdown" id="profile-dropdown">
+        <div class="dropdown-item" onclick="openProfile(); closeProfileDropdown();">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>My Profile</span>
+        </div>
+        <div class="dropdown-item logout-item" onclick="showLogoutModal(); closeProfileDropdown();">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
   </div>
+  
   <div class="container">
     <h1 class="welcome">Explore All Opportunities</h1>
     <p class="subtitle">Browse all available jobs and internships</p>
 
     <div class="stats" id="stats"></div>
 
-    <h2 class="section-title">All Opportunities</h2>
+    <h2 class="section-title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      All Opportunities
+    </h2>
 
     <div class="jobs-grid" id="all-opportunities"></div>
   </div>
-  
 
-  <!-- Logout Modal (same as dashboard) -->
-  <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: white; padding: 40px; border-radius: 16px; text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
-      <div>
-        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">Yes</button>
-        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #e5e7eb; color: #333; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">No</button>
-      </div>
+  <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #1a1f2e; padding: 40px; border-radius: 16px; text-align: center; width: 350px; border: 1px solid #2a3142;">
+      <h3 style="margin-bottom: 30px; color: #e4e6eb;">Are you sure you want to log out?</h3>
+      <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">Yes</button>
+      <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #2a3142; color: #e4e6eb; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">No</button>
     </div>
   </div>
 
@@ -128,39 +230,27 @@
   <script src="script.js"></script>
 
   <script>
+    function toggleProfileDropdown() { document.getElementById('profile-dropdown').classList.toggle('active'); }
+    function closeProfileDropdown() { document.getElementById('profile-dropdown').classList.remove('active'); }
+    
+    document.addEventListener('click', function(event) {
+      const profileIcon = document.getElementById('profile-icon');
+      const dropdown = document.getElementById('profile-dropdown');
+      if (profileIcon && !profileIcon.contains(event.target) && !dropdown.contains(event.target)) { closeProfileDropdown(); }
+    });
+
     async function loadAllOpportunities() {
       try {
-        // Fetch all jobs (you'll need this endpoint)
         const data = await fetch("/opportunities/all").then(res => res.json());
-
         const container = document.getElementById("all-opportunities");
         container.innerHTML = "";
-
         const jobs = data.opportunities || data || [];
 
-        if (jobs.length === 0) {
-          container.innerHTML = "<p>No opportunities available at the moment.</p>";
-          return;
-        }
-
-        // Update stats
         document.getElementById("stats").innerHTML = `
-          <div class="stat-card">
-            <div class="stat-number">${jobs.length}</div>
-            <div class="stat-label">Total Opportunities</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${Math.floor(jobs.length / 3)}</div>
-            <div class="stat-label">Internships</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${Math.floor(jobs.length / 2)}</div>
-            <div class="stat-label">Full-time</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">Fresh Listings</div>
-          </div>
+          <div class="stat-card"><div class="stat-number">${jobs.length}</div><div class="stat-label">Total Opportunities</div></div>
+          <div class="stat-card"><div class="stat-number">${Math.floor(jobs.length / 3)}</div><div class="stat-label">Internships</div></div>
+          <div class="stat-card"><div class="stat-number">${Math.floor(jobs.length / 2)}</div><div class="stat-label">Full-time</div></div>
+          <div class="stat-card"><div class="stat-number">100%</div><div class="stat-label">Fresh Listings</div></div>
         `;
 
         jobs.forEach(job => {
@@ -168,30 +258,88 @@
           card.className = "job-card";
           card.innerHTML = `
             <div class="job-title">${job.title}</div>
-            <div class="company">${job.company_name}</div>
+            <span class="company">${job.company_name}</span>
             <div class="meta">
               <span>📍 ${job.location || 'Remote'}</span>
               <span>🎓 ${job.experience_level || 'Any'}</span>
             </div>
             <div class="tags">
-              ${job.skills_required ? job.skills_required.split(',').slice(0,6).map(s => `<span class="tag">${s.trim()}</span>`).join('') : ''}
-              ${job.skills_required && job.skills_required.split(',').length > 6 ? '<span class="tag">+ more</span>' : ''}
+              ${job.skills_required ? job.skills_required.split(',').slice(0,4).map(s => `<span class="tag">${s.trim()}</span>`).join('') : ''}
             </div>
             <div class="posted">Posted recently</div>
           `;
           container.appendChild(card);
         });
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("all-opportunities").innerHTML = "<p>Failed to load opportunities.</p>";
-      }
+      } catch (err) { console.error(err); }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      const fullName = localStorage.getItem("full_name") || "User";
+      document.getElementById('profile-initials').textContent = fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
       loadAllOpportunities();
-      updateHeader();  // for logout button
     });
   </script>
+  <!-- PROFILE OVERLAY -->
+<div id="profile-overlay" class="profile-overlay hidden"></div>
+
+<!-- PROFILE DRAWER -->
+<div id="profile-drawer" class="profile-drawer hidden">
+
+  <div class="profile-header">
+    <h2>Your Profile</h2>
+    <button class="close-btn" onclick="closeProfile()">×</button>
+  </div>
+
+  <!-- VIEW MODE -->
+  <div id="profile-view" class="profile-section">
+
+    <div class="profile-row">
+      <span class="label">Full Name</span>
+      <span id="pv-name" class="value">Not set</span>
+    </div>
+
+    <div class="profile-row">
+      <span class="label">Email</span>
+      <span id="pv-email" class="value"></span>
+    </div>
+
+    <div class="profile-row">
+      <span class="label">Experience Level</span>
+      <span id="pv-exp" class="value"></span>
+    </div>
+
+    <div class="profile-row">
+      <span class="label">Skills</span>
+      <div id="pv-skills" class="skill-chips"></div>
+    </div>
+
+    <button class="primary-btn" onclick="enableEdit()">Update</button>
+  </div>
+
+  <!-- EDIT MODE -->
+  <div id="profile-edit" class="profile-section hidden">
+
+    <label>Experience Level</label>
+    <select id="experience_level">
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+    </select>
+
+    <label>Skills</label>
+    <input id="skills" placeholder="Python, React, ML">
+
+    <label>Preferred Workplace</label>
+    <select id="preferred_workplace">
+      <option>Remote</option>
+      <option>Hybrid</option>
+      <option>Onsite</option>
+    </select>
+
+    <button class="primary-btn" onclick="saveProfile()">Save Changes</button>
+  </div>
+
+</div>
+
 </body>
 </html>

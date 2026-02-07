@@ -45,11 +45,12 @@ def register(user: RegisterSchema):
 #------------------LOGIN------------------------
 @router.post("/login")
 def login(user: LoginSchema):
+
     conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT user_id, password_hash
+        SELECT user_id, password_hash, full_name, email
         FROM users
         WHERE email=?
     """, (user.email,))
@@ -57,20 +58,28 @@ def login(user: LoginSchema):
     row = cursor.fetchone()
     conn.close()
 
-    if not row or not verify_password(user.password, row["password_hash"]):
+    if not row:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    #jwt verfication
+    user_id, password_hash, full_name, email = row
+
+    if not verify_password(user.password, password_hash):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
     from app.core.security import create_access_token
 
     access_token = create_access_token(
-        data={"sub": str(row["user_id"])}
+        data={"sub": str(user_id)}
     )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user_id": row["user_id"]
+        "user_id": user_id,
+        "full_name": full_name,
+        "email": email
     }
+
 
 #-----------------COMPLETE PROFILE-----------------------
 @router.post("/complete-profile")

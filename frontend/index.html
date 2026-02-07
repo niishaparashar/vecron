@@ -9,108 +9,192 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f8fffe;
-      color: #333;
+      background: #0f1419;
+      color: #e4e6eb;
     }
+
+    /* --- UNIFIED HEADER & SLIDING NAV --- */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 20px 60px;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: #1a1f2e;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      border-bottom: 1px solid #2a3142;
     }
+
+    .logo-nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
     .logo {
       font-size: 28px;
       font-weight: bold;
       color: #10b981;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
     }
-    .nav-links a {
-      margin: 0 20px;
-      text-decoration: none;
-      color: #666;
-      font-weight: 500;
+
+    #nav-buttons {
+      position: relative;
+      display: flex;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 5px;
+      border-radius: 35px;
+      border: 1px solid #2a3142;
     }
-    .auth-buttons button {
+
+    .nav-indicator {
+      position: absolute;
+      height: calc(100% - 10px);
+      top: 5px;
+      left: 0;
+      background: #10b981;
+      border-radius: 30px;
+      z-index: 1;
+      opacity: 0; /* Prevents the "teleport" jump on first load */
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: left, width;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .nav-btn {
+      position: relative;
+      z-index: 2;
       padding: 10px 24px;
+      color: #8b92a8;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .nav-btn.active {
+      color: #0f1419;
+    }
+
+    .nav-btn:hover:not(.active) {
+      color: #10b981;
+    }
+
+    /* --- AUTH BUTTONS --- */
+    .auth-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .sign-in-btn {
+      padding: 10px 24px;
+      background: transparent;
+      color: #8b92a8;
+      border: 1px solid #2a3142;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sign-in-btn:hover {
+      color: #10b981;
+      border-color: #10b981;
+    }
+
+    .get-started-btn {
+      padding: 10px 24px;
+      background: #10b981;
+      color: #0f1419;
       border: none;
       border-radius: 30px;
       font-weight: bold;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .sign-in-btn {
-      background: transparent;
-      color: #333;
-      margin-right: 10px;
+
+    .get-started-btn:hover {
+      background: #059669;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
     }
-    .get-started-btn {
-      background: #10b981;
-      color: white;
-    }
+
+    /* --- HERO & CONTENT --- */
     .hero {
       text-align: center;
       padding: 100px 20px;
       max-width: 900px;
       margin: 0 auto;
     }
-    .badge {
-      display: inline-block;
-      background: #d0fdf5;
-      color: #10b981;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
+
     .hero-title {
       font-size: 56px;
       line-height: 1.2;
       margin-bottom: 20px;
+      color: #e4e6eb;
     }
+
     .hero-title span {
       color: #10b981;
+      text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
     }
+
     .hero-subtitle {
       font-size: 18px;
-      color: #666;
+      color: #8b92a8;
       margin-bottom: 50px;
       line-height: 1.6;
+      font-family: monospace;
     }
+
     .cta-buttons button {
       padding: 16px 32px;
       font-size: 18px;
       border-radius: 50px;
       margin: 0 10px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
+
     .primary-cta {
       background: #10b981;
-      color: white;
+      color: #0f1419;
       border: none;
     }
+
+    .primary-cta:hover {
+      background: #059669;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+    }
+
     .secondary-cta {
       background: transparent;
-      color: #333;
-      border: 2px solid #ddd;
+      color: #8b92a8;
+      border: 2px solid #2a3142;
+    }
+
+    .secondary-cta:hover {
+      color: #10b981;
+      border-color: #10b981;
     }
 
     /* How It Works Section */
     .how-section {
       padding: 100px 20px;
-      background: white;
+      background: #1a1f2e;
       text-align: center;
     }
     .how-title {
       font-size: 40px;
       margin-bottom: 20px;
+      color: #e4e6eb;
     }
     .how-subtitle {
       font-size: 18px;
-      color: #666;
+      color: #8b92a8;
       margin-bottom: 60px;
       max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto 60px;
     }
     .steps {
       display: grid;
@@ -120,30 +204,53 @@
       margin: 0 auto;
     }
     .step-card {
-      background: white;
+      background: #0f1419;
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       text-align: center;
+      border: 1px solid #2a3142;
+      transition: all 0.3s ease;
     }
-    .step-icon {
-      width: 80px;
-      height: 80px;
-      background: #d0fdf5;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 30px;
-      font-size: 36px;
+    .step-card:hover {
+      border-color: #10b981;
+      transform: translateY(-5px);
+    }
+    .step-icon-svg {
+      color: #10b981;
+      margin-bottom: 25px;
     }
     .step-title {
       font-size: 24px;
       margin-bottom: 20px;
+      color: #e4e6eb;
     }
     .step-desc {
-      color: #666;
+      color: #8b92a8;
       line-height: 1.6;
+    }
+
+    /* Concept Section */
+    .concept-section {
+      padding: 100px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+    .concept-text h2 { color: #10b981; font-size: 32px; }
+    .concept-text p { color: #8b92a8; font-size: 17px; line-height: 1.8; }
+    .code-box {
+      background: #011627;
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+      font-family: 'Courier New', Courier, monospace;
+      color: #addb67;
+      font-size: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
 
     /* Logged In Hero */
@@ -156,102 +263,47 @@
     .welcome-back {
       font-size: 48px;
       margin-bottom: 20px;
+      color: #e4e6eb;
     }
     .dashboard-btn {
       padding: 18px 40px;
       font-size: 20px;
       background: #10b981;
-      color: white;
+      color: #0f1419;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 6px 20px rgba(16,185,129,0.3);
       transition: all 0.3s ease;
     }
-    .dashboard-btn:hover {
-      background: #059669;
-      transform: translateY(-2px);
-    }
-
-    /* Social Proof */
-    .social-proof {
-      margin: 100px auto;
-      text-align: center;
-      color: #666;
-    }
-    .avatars {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: white;
-    }
-    .avatar:nth-child(1) { background: #10b981; }
-    .avatar:nth-child(2) { background: #3b82f6; }
-    .avatar:nth-child(3) { background: #8b5cf6; }
-    .avatar:nth-child(4) { background: #f59e0b; }
 
     /* Footer */
     footer {
       background: #111827;
-      color: #e0e0e0;
+      color: #8b92a8;
       padding: 80px 20px 40px;
       text-align: center;
-    }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
+      border-top: 1px solid #1f2937;
     }
     .footer-links {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 40px;
       margin-bottom: 60px;
-    }
-    .footer-links h4 {
-      color: white;
-      margin-bottom: 20px;
-    }
-    .footer-links a {
-      display: block;
-      color: #999;
-      text-decoration: none;
-      margin-bottom: 12px;
-    }
-    .footer-links a:hover {
-      color: #10b981;
+      text-align: left;
+      max-width: 1000px;
+      margin: 0 auto 60px;
     }
     .contact-btn {
       display: inline-block;
       padding: 16px 40px;
       background: #10b981;
-      color: white;
+      color: #0f1419;
       font-weight: bold;
       font-size: 18px;
       text-decoration: none;
       border-radius: 50px;
-      box-shadow: 0 6px 20px rgba(16,185,129,0.3);
       transition: all 0.3s ease;
-    }
-    .contact-btn:hover {
-      background: #059669;
-      transform: translateY(-2px);
-    }
-    .footer-bottom {
-      padding-top: 30px;
-      border-top: 1px solid #333;
-      color: #666;
-      font-size: 14px;
     }
 
     /* Modal Styles */
@@ -259,116 +311,79 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.8);
       align-items: center;
       justify-content: center;
       z-index: 1000;
     }
-    .modal.active {
-      display: flex;
-    }
+    .modal.active { display: flex; }
     .modal-content {
-      background: white;
+      background: #1a1f2e;
       padding: 40px;
       border-radius: 16px;
       width: 400px;
       text-align: center;
       position: relative;
+      border: 1px solid #2a3142;
     }
     .modal-content input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border: 1px solid #ddd;
+      border: 1px solid #2a3142;
       border-radius: 8px;
       box-sizing: border-box;
+      background: #0f1419;
+      color: #e4e6eb;
     }
     .modal-content button {
       width: 100%;
       padding: 14px;
       background: #10b981;
-      color: white;
+      color: #0f1419;
       border: none;
       border-radius: 50px;
       font-size: 16px;
       margin-top: 20px;
       cursor: pointer;
+      font-weight: bold;
     }
     .close-modal {
       cursor: pointer;
       font-size: 30px;
       position: absolute;
-      top: 10px;
-      right: 20px;
-      color: #999;
-    }
-    .switch-link {
-      margin-top: 20px;
-      color: #666;
-    }
-    .switch-link a {
-      color: #10b981;
-      text-decoration: none;
-      font-weight: bold;
+      top: 10px; right: 20px;
+      color: #6b7280;
     }
   </style>
 </head>
 <body>
 
   <header class="header">
-    <div class="logo">Vekron</div>
-    <div class="nav-links">
-      <a href="explore.html">Explore</a>
+    <div class="logo-nav">
+      <div class="logo">Vekron</div>
+      <div id="nav-buttons">
+        </div>
     </div>
     <div class="auth-buttons" id="auth-buttons">
-      <!-- Filled by JS -->
-    </div>
+      </div>
   </header>
 
-  <!-- Default Hero (Not Logged In) -->
   <section class="hero" id="default-hero">
-    
-    <h1 class="hero-title">Opportunities,<br>personalized for how you <span>learn and grow.</span></h1>
+    <h1 class="hero-title">Opportunities,<br>personalized via <span>latent-space matching.</span></h1>
     <p class="hero-subtitle">
-      Discover internships, jobs, and career opportunities tailored to your<br>
-      skills, interests, and real behavior. No spam. Just intelligent matching.
+      // Analyzing $V_{user} \cdot V_{opportunity}$ to surface high-precision career growth.
+      No spam. Just deterministic algorithmic matching.
     </p>
     <div class="cta-buttons">
       <button class="primary-cta" onclick="openModal('register-modal')">Get Started →</button>
-      <button class="secondary-cta" onclick="window.location.href='dashboard.html'">Explore Opportunities</button>
+      <button class="secondary-cta" onclick="window.location.href='explore.html'">Explore Opportunities</button>
     </div>
   </section>
 
-  <!-- How Vekron Works -->
-  <section class="how-section">
-    <h2 class="how-title">How Vekron Works</h2>
-    <p class="how-subtitle">Our machine learning algorithms understand your unique profile to surface opportunities that actually matter.</p>
-    <div class="steps">
-      <div class="step-card">
-        <div class="step-icon">🎯</div>
-        <h3 class="step-title">Step 1 — Understand You</h3>
-        <p class="step-desc">VEKRON transforms your skills, experience, and preferences into a structured ML profile.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-icon">✨</div>
-        <h3 class="step-title">Step 2 — Match Intelligently</h3>
-        <p class="step-desc">Hybrid recommendation models score thousands of opportunities to find the best fit.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-icon">📈</div>
-        <h3 class="step-title">Step 3 — Learn From You</h3>
-        <p class="step-desc">Your interactions continuously refine recommendations, making them smarter over time.</p>
-      </div>
-    </div>
-  </section>
-
-  
-  
-
-  <!-- Logged In Hero (Hidden by default) -->
   <section class="hero logged-in-hero" id="logged-in-hero" style="display: none;">
     <h1 class="welcome-back" id="welcome-name">Welcome back!</h1>
-    <p style="font-size: 20px; color: #666; margin-bottom: 50px;">
+    <p style="font-size: 20px; color: #8b92a8; margin-bottom: 50px;">
       Your personalized recommendations are ready.
     </p>
     <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">
@@ -376,62 +391,85 @@
     </button>
   </section>
 
-  <!-- Footer -->
+  <section class="how-section">
+    <h2 class="how-title">The Matching Pipeline</h2>
+    <p class="how-subtitle">Vekron leverages transformer-based models to align your technical trajectory with the global opportunity graph.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon-svg">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="step-title">Stage 1: Vectorization</h3>
+        <p class="step-desc">We convert your raw skills and experience into a high-dimensional feature vector for precise semantic analysis.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon-svg">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 class="step-title">Stage 2: Scoring</h3>
+        <p class="step-desc">Our hybrid recommendation models rank thousands of data points to find the absolute intersection of your talent and market needs.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon-svg">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="step-title">Stage 3: Optimization</h3>
+        <p class="step-desc">Your interaction data feeds back into the loop, continuously refining the inference engine for better future matches.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept-section">
+    <div class="concept-text">
+        <h2>The Architecture of Vekron</h2>
+        <p>Vekron doesn't just look for keywords. It maps the <strong>latent features</strong> of professional roles. By analyzing the proximity between a user's skill-graph and job requirements in a multi-dimensional space, we eliminate the noise of traditional recruitment.</p>
+        <p>We use <strong>Cosine Similarity</strong> to determine how closely your trajectory aligns with available opportunities, providing a deterministic score for every match.</p>
+    </div>
+    <div class="code-box">
+<pre>
+{
+  "engine": "Neural_V3",
+  "matching_logic": "Vector_Similarity",
+  "user_vector": [0.12, 0.88, -0.45, ...],
+  "threshold": 0.85,
+  "status": "Inference_Complete"
+}
+</pre>
+    </div>
+  </section>
+
   <footer>
-    <div class="footer-content">
-      <div class="footer-links">
-        <div>
-          <div style="font-size: 32px; font-weight: bold; color: #10b981; margin-bottom: 20px;">Vekron</div>
-          <p style="color: #999;">Personalized opportunities for how you learn and grow.</p>
-        </div>
-        <div>
-          <h4 style="color: white; margin-bottom: 20px;">Product</h4>
-          <a href="how-it-works.html" style="display: block; color: #999; text-decoration: none; margin-bottom: 12px;">How It Works</a>
-          <a href="explore.html" style="display: block; color: #999; text-decoration: none; margin-bottom: 12px;">Explore</a>
-          <a href="#" style="display: block; color: #999; text-decoration: none;">Features</a>
-        </div>
-        
-        
-      </div>
-
-      <!-- Centered Contact Button -->
-      <div style="margin: 60px 0;">
-        <a href="mailto:vecr0n.adm1n@gmail.com?subject=Inquiry%20from%20Vekron%20User&body=Hello%20Vekron%20Team,%0D%0A%0D%0AI'd%20like%20to%20know%20more%20about..."
-           class="contact-btn">
-          Contact Us →
-        </a>
-      </div>
-
-      <div class="footer-bottom">
-        © 2026 Vekron. All rights reserved.
-      </div>
+    <div class="footer-links">
+    <div>
+      <div class="logo" style="margin-bottom: 20px;">Vekron</div>
+      <p>Personalized opportunities for how you learn and grow.</p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="explore.html">Explore</a>
+      <a href="#">Features</a>
+    </div>
+</div>
+    <div style="margin: 60px 0;">
+      <a href="mailto:vecr0n.adm1n@gmail.com" class="contact-btn">Contact Us →</a>
+    </div>
+    <div style="font-size: 14px; border-top: 1px solid #1f2937; padding-top: 30px;">
+      © 2026 Vekron. All rights reserved.
     </div>
   </footer>
 
-  <!-- Logout Confirmation Modal -->
-  <div id="logout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: white; padding: 40px; border-radius: 16px; text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
-      <div>
-        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">Yes</button>
-        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #e5e7eb; color: #333; border: none; border-radius: 30px; margin: 0 15px; cursor: pointer; font-weight: bold;">No</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Login Modal -->
   <div id="login-modal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal('login-modal')">×</span>
       <h2>Sign In</h2>
       <input type="email" id="login-email" placeholder="Email">
       <input type="password" id="login-password" placeholder="Password">
-      <button onclick="loginUser()">Sign In</button>
-      <p class="switch-link">Don't have an account? <a onclick="openModal('register-modal'); closeModal('login-modal')">Register</a></p>
+      <button onclick="loginUser(event)">Sign In</button>
+      <p style="margin-top: 20px; color: #8b92a8;">Don't have an account? <a onclick="openModal('register-modal'); closeModal('login-modal')" style="color:#10b981; cursor:pointer;">Register</a></p>
     </div>
   </div>
 
-  <!-- Register Modal -->
   <div id="register-modal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal('register-modal')">×</span>
@@ -440,52 +478,48 @@
       <input type="email" id="email" placeholder="Email">
       <input type="password" id="password" placeholder="Password">
       <button onclick="registerUser()">Get Started</button>
-      <p class="switch-link">Already have an account? <a onclick="openModal('login-modal'); closeModal('register-modal')">Sign in</a></p>
+      <p style="margin-top: 20px; color: #8b92a8;">Already have an account? <a onclick="openModal('login-modal'); closeModal('register-modal')" style="color:#10b981; cursor:pointer;">Sign in</a></p>
+    </div>
+  </div>
+
+  <div id="logout-modal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
+      <button onclick="confirmLogout()" style="background: #ef4444; color: white; margin-bottom: 10px; width: 100%; border: none; padding: 14px; border-radius: 50px; font-weight: bold; cursor: pointer;">Yes</button>
+      <button onclick="closeModal('logout-modal')" style="background: #2a3142; color: white; width: 100%; border: none; padding: 14px; border-radius: 50px; font-weight: bold; cursor: pointer;">No</button>
     </div>
   </div>
 
   <script src="js/api.js"></script>
   <script src="script.js"></script>
-
   <script>
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add("active");
-    }
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove("active");
-    }
+    function openModal(id) { document.getElementById(id).classList.add("active"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
-    window.addEventListener("click", function(event) {
-      if (event.target.classList.contains("modal")) {
-        event.target.classList.remove("active");
-      }
-    });
-
-    // Check login status and update landing page
     function updateLandingPage() {
       const token = localStorage.getItem("access_token");
       const fullName = localStorage.getItem("full_name") || "there";
+      
+      // Initialize the sliding nav
+      if (typeof updateNavigation === "function") {
+        updateNavigation();
+      }
 
+      const authContainer = document.getElementById("auth-buttons");
       if (token) {
-        // Logged in — show personalized view
         document.getElementById("default-hero").style.display = "none";
         document.getElementById("logged-in-hero").style.display = "block";
         document.getElementById("welcome-name").textContent = `Welcome back, ${fullName}!`;
-
-        // Update header buttons
-        document.getElementById("auth-buttons").innerHTML = `
-          <button onclick="window.location.href='dashboard.html'" style="padding: 10px 24px; background: transparent; color: #333; border: 1px solid #ddd; border-radius: 30px; font-weight: bold; cursor: pointer; margin-right: 10px;">Dashboard</button>
-          <button onclick="showLogoutModal()" style="padding: 10px 24px; background: #ef4444; color: white; border: none; border-radius: 30px; font-weight: bold; cursor: pointer;">Logout</button>
+        authContainer.innerHTML = `
+          <button onclick="openModal('logout-modal')" style="background: #ef4444; color: white; border: none; border-radius:30px; padding: 10px 24px; font-weight: bold; cursor: pointer;">Logout</button>
         `;
       } else {
-        // Not logged in — keep default
-        document.getElementById("auth-buttons").innerHTML = `
+        authContainer.innerHTML = `
           <button class="sign-in-btn" onclick="openModal('login-modal')">Sign in</button>
           <button class="get-started-btn" onclick="openModal('register-modal')">Get Started</button>
         `;
       }
     }
-
     document.addEventListener("DOMContentLoaded", updateLandingPage);
   </script>
 </body>

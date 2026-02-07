@@ -2,160 +2,187 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Skills & Interests</title>
+  <title>Vekron | Skills & Interests</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    :root {
+      --bg-dark: #0f1419;
+      --paper-dark: #1a1f2e;
+      --accent-green: #10b981;
+      --text-main: #e4e6eb;
+      --text-muted: #8b92a8;
+      --border-dim: #2a3142;
+    }
+
+    body { 
+      background: var(--bg-dark); 
+      margin: 0; 
+      padding: 0; 
+      color: var(--text-main);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* SHARED HEADER */
+    .header {
+      background: var(--paper-dark);
+      padding: 20px 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    
+    .logo { 
+      font-size: 28px; font-weight: bold; color: var(--accent-green); 
+      text-decoration: none;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .auth-controls {
+      display: flex; align-items: center; gap: 20px;
+      position: relative; margin-left: auto;
+    }
+
+    .profile-icon {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-weight: bold; color: #0f1419;
+      border: 3px solid var(--accent-green);
+    }
+
+    /* PROFILE CARD STYLING */
     .profile-card {
       max-width: 700px;
-      margin: 40px auto;
-      background: white;
+      margin: 60px auto;
+      background: var(--paper-dark);
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-dim);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
+
     .progress {
       text-align: center;
       margin-bottom: 40px;
+      color: var(--text-muted);
     }
+
     .step {
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-      background: #e0e0e0;
+      width: 35px; height: 35px; line-height: 35px;
+      background: var(--border-dim);
       border-radius: 50%;
-      margin: 0 15px;
+      margin: 0 10px;
       font-weight: bold;
     }
+
     .step.done {
-      background: #4CAF50;
-      color: white;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
     }
+
     .step.active {
-      background: #4CAF50;
-      color: white;
+      background: var(--accent-green);
+      color: #0f1419;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
     }
+
     .pill-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 20px 0;
+      display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0 25px;
     }
+
     .pill {
-      padding: 12px 24px;
-      border: 1px solid #ddd;
+      padding: 10px 20px;
+      border: 1px solid var(--border-dim);
       border-radius: 30px;
-      background: white;
+      background: rgba(255, 255, 255, 0.05);
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 15px;
+      color: var(--text-muted);
+      font-size: 14px;
     }
+
+    .pill:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
     .pill.selected {
-      background: #4CAF50;
-      color: white;
-      border-color: #4CAF50;
+      background: var(--accent-green);
+      color: #0f1419;
+      border-color: var(--accent-green);
+      font-weight: 600;
     }
+
+    label strong { color: var(--accent-green); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    small { color: var(--text-muted); display: block; margin-bottom: 5px; }
+
     .btn-group {
       display: flex;
       justify-content: space-between;
-      margin-top: 50px;
+      margin-top: 40px;
+      gap: 20px;
     }
+
     .btn {
       padding: 14px 30px;
-      border: none;
       border-radius: 50px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      transition: 0.3s;
+      border: none;
+      flex: 1;
     }
+
     .back-btn {
-      background: #f0f0f0;
-      color: #333;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      border: 1px solid var(--border-dim);
     }
+
+    .back-btn:hover { background: #2a3142; }
+
     .complete-btn {
-      background: #4CAF50;
-      color: white;
+      background: var(--accent-green);
+      color: #0f1419;
     }
+
+    .complete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+    }
+
     .skip {
-      text-align: center;
-      margin-top: 30px;
-      color: #666;
-      cursor: pointer;
-      /* Light mode (default) */
-:root {
-  --bg: #f8f9fa;
-  --text: #333;
-  --card-bg: white;
-  --header-bg: white;
-  --shadow: 0 4px 15px rgba(0,0,0,0.05);
-  --primary: #10b981;
-  --border: #ddd;
-  --modal-bg: white;
-}
-
-/* Dark mode */
-[data-theme="dark"] {
-  --bg: #121212;
-  --text: #e0e0e0;
-  --card-bg: #1e1e1e;
-  --header-bg: #1a1a1a;
-  --shadow: 0 4px 15px rgba(0,0,0,0.4);
-  --border: #333;
-  --modal-bg: #1e1e1e;
-}
-
-/* Apply variables */
-body {
-  background: var(--bg);
-  color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.header {
-  background: var(--header-bg);
-  transition: background 0.3s ease;
-}
-
-.job-card, .profile-card, .stat-card, .modal-content {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-input, button, select {
-  background: var(--card-bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.tag, .match-badge {
-  opacity: 0.9;
-}
-
-.modal {
-  background: rgba(0,0,0,0.8);
-}
+      text-align: center; margin-top: 25px; color: var(--text-muted);
+      cursor: pointer; font-size: 14px;
     }
+    .skip:hover { color: var(--accent-green); }
   </style>
 </head>
 <body>
-  <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" style="cursor: pointer; font-size: 24px; margin-left: 20px;">
-  🌙
+
+  <div class="header">
+    <a href="dashboard.html" class="logo">Vekron</a>
+    <div class="auth-controls">
+      <div class="profile-icon">
+        <span id="profile-initials">U</span>
+      </div>
+    </div>
   </div>
+
   <div class="profile-card">
     <div class="progress">
       <span class="step done">1</span>
-      <span style="font-size:20px;">—</span>
+      <span style="font-size:20px; opacity: 0.3;">—</span>
       <span class="step active">2</span>
     </div>
 
-    <h2 style="text-align: center; margin-bottom: 10px;">Skills & Interests</h2>
-    <p style="text-align: center; color: #666; margin-bottom: 40px;">Personalize your experience</p>
+    <h2 style="text-align: center; margin-bottom: 5px;">Skills & Interests</h2>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Personalize your engine's output</p>
 
-    <label><strong>Your Skills</strong><br><small>Select skills you have or want to develop</small></label>
+    <label><strong>Your Skills</strong></label>
+    <small>Select skills you have or want to develop</small>
     <div class="pill-group" id="skills-group">
-        
         <div class="pill" onclick="togglePill(this)">Python</div>
         <div class="pill" onclick="togglePill(this)">JavaScript</div>
         <div class="pill" onclick="togglePill(this)">React</div>
@@ -164,28 +191,20 @@ input, button, select {
         <div class="pill" onclick="togglePill(this)">Java</div>
         <div class="pill" onclick="togglePill(this)">SQL</div>
         <div class="pill" onclick="togglePill(this)">AWS</div>
-        <div class="pill" onclick="togglePill(this)">Docker</div>
-        <div class="pill" onclick="togglePill(this)">Kubernetes</div>
         <div class="pill" onclick="togglePill(this)">Machine Learning</div>
-        <div class="pill" onclick="togglePill(this)">Data Analysis</div>
-        <div class="pill" onclick="togglePill(this)">Pandas</div>
-        <div class="pill" onclick="togglePill(this)">TensorFlow</div>
-        <div class="pill" onclick="togglePill(this)">Git</div>
         <div class="pill" onclick="togglePill(this)">UI/UX Design</div>
-        <div class="pill" onclick="togglePill(this)">Figma</div>
-        <div class="pill" onclick="togglePill(this)">Product Management</div>
-        <div class="pill" onclick="togglePill(this)">Agile</div>
+        <div class="pill" onclick="togglePill(this)">Git</div>
         <div class="pill" onclick="togglePill(this)">Communication</div>
     </div>
 
-    <label style="margin-top: 40px;"><strong>What are you looking for?</strong><br><small>This helps us personalize your recommendations</small></label>
+    <label style="display:block; margin-top: 30px;"><strong>What are you looking for?</strong></label>
+    <small>This helps us prioritize recommendations</small>
     <div class="pill-group" id="interests-group">
       <div class="pill" onclick="togglePill(this)">Internships</div>
       <div class="pill" onclick="togglePill(this)">Full-time Jobs</div>
       <div class="pill" onclick="togglePill(this)">Remote Roles</div>
       <div class="pill" onclick="togglePill(this)">Research Positions</div>
       <div class="pill" onclick="togglePill(this)">Freelance</div>
-      <div class="pill" onclick="togglePill(this)">Part-time</div>
     </div>
 
     <div class="btn-group">
@@ -194,16 +213,6 @@ input, button, select {
     </div>
 
     <div class="skip" onclick="window.location.href='dashboard.html'">Skip for now</div>
-  </div>
-     <!-- Logout Confirmation Modal -->
-  <div id="logout-modal" class="modal" style="display: none;">
-    <div class="modal-content" style="text-align: center; padding: 40px; width: 350px; background: white; border-radius: 16px;">
-      <h3 style="margin-bottom: 30px;">Are you sure you want to log out?</h3>
-      <div>
-        <button onclick="confirmLogout()" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 30px; margin: 0 10px; cursor: pointer; font-weight: bold;">Yes</button>
-        <button onclick="closeLogoutModal()" style="padding: 12px 30px; background: #e5e7eb; color: #333; border: none; border-radius: 30px; margin: 0 10px; cursor: pointer; font-weight: bold;">No</button>
-      </div>
-    </div>
   </div>
 
   <script src="js/api.js"></script>
@@ -230,45 +239,45 @@ input, button, select {
     }
 
     async function completeSetup() {
-        if (selectedSkills.size === 0) {
-    alert("Please select at least one skill");
-    return;
+      if (selectedSkills.size === 0) {
+        alert("Please select at least one skill");
+        return;
+      }
+
+      const tempStr = localStorage.getItem("temp_profile");
+      if (!tempStr) {
+        alert("Profile data missing — go back to first page");
+        return;
+      }
+      const temp = JSON.parse(tempStr);
+
+      const payload = {
+        user_id: Number(localStorage.getItem("user_id")),
+        experience_level: temp.experience_level || "Beginner",
+        preferred_category: temp.preferred_category || "General",
+        preferred_location: temp.preferred_location || "Anywhere",
+        skills: Array.from(selectedSkills).join(", "),
+        preferred_workplace: temp.preferred_workplace || "Remote",
+        preferred_employment_type: Array.from(selectedInterests).join(", ") || "Full-time"
+      };
+
+      try {
+        await apiFetch("/auth/complete-profile", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        localStorage.removeItem("temp_profile");
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        alert("Error: " + (err.message || "Save failed"));
+      }
     }
 
-  // Load data from first page
-        const tempStr = localStorage.getItem("temp_profile");
-        if (!tempStr) {
-            alert("Profile data missing — go back to first page");
-            return;
-     }
-        const temp = JSON.parse(tempStr);
-
-        const payload = {
-            user_id: Number(localStorage.getItem("user_id")),
-            experience_level: temp.experience_level || "Beginner",
-            preferred_category: temp.preferred_category || "Data",
-            preferred_location: temp.preferred_location || "Anywhere",
-            skills: Array.from(selectedSkills).join(", "),
-            preferred_workplace: temp.preferred_workplace || "Remote",
-            // Interests as employment type if needed
-            preferred_employment_type: Array.from(selectedInterests).join(", ") || "Full-time"
-        };
-
-        try {
-            const res = await apiFetch("/auth/complete-profile", {
-                method: "POST",
-                body: JSON.stringify(payload)
-         });
-
-            // Clean up
-            localStorage.removeItem("temp_profile");
-
-            alert("Setup complete! Loading recommendations...");
-            window.location.href = "dashboard.html";
-        }   catch (err) {
-            alert("Error: " + (err.message || "Save failed"));
-        }
-}
+    document.addEventListener("DOMContentLoaded", () => {
+      const fullName = localStorage.getItem("full_name") || "User";
+      document.getElementById('profile-initials').textContent = fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+    });
   </script>
 </body>
 </html>
