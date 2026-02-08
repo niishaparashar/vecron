@@ -694,7 +694,6 @@ copies or substantial portions of the Software.
 
 - 🌐 **Website**: [vecron.onrender.com](https://vecron.onrender.com/)
 - 📧 **Email**: vecr0n.adm1n@gmail.com
-- 💼 **LinkedIn**: [Connect on LinkedIn](https://www.linkedin.com/in/niishaparashar)
 - 🐙 **GitHub**: [@niishaparashar](https://github.com/niishaparashar)
 
 ---
@@ -705,17 +704,6 @@ copies or substantial portions of the Software.
 - **Flask** - For the lightweight web framework
 - **Render** - For free hosting
 - **Open Source Community** - For inspiration and tools
-
----
-
-## 📚 Documentation
-
-For detailed documentation, visit:
-
-- [API Documentation](docs/API.md)
-- [Developer Guide](docs/DEVELOPER.md)
-- [User Manual](docs/USER_GUIDE.md)
-- [Architecture Deep Dive](docs/ARCHITECTURE.md)
 
 ---
 
