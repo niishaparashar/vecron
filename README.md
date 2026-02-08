@@ -11,8 +11,7 @@
 
 *Opportunities, personalized via latent-space matching*
 
-[Live Demo](https://vecron.onrender.com/) • [Documentation](#documentation) • [Features](#features) • [Installation](#installation)
-
+[Live Demo](https://vecron.onrender.com/)
 </div>
 
 ---
