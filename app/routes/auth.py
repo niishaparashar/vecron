@@ -168,3 +168,26 @@ def get_my_profile(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
 
     return dict(row)
+
+@router.post("/reset-admin")
+def reset_admin(secret: str, new_password: str):
+
+    # Change this secret to something random
+    if secret != "VECRON_RESET_2026":
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    hashed = hash_password(new_password)
+
+    cursor.execute("""
+        UPDATE users
+        SET password_hash = ?
+        WHERE email = ?
+    """, (hashed, "vecr0n.adm1n@gmail.com"))
+
+    conn.commit()
+    conn.close()
+
+    return {"message": "Admin password reset"}
