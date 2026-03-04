@@ -1,121 +1,142 @@
 opportunity_id,company_name,title,employment_type,experience_level,skills_required,department,category,location,workplace_type,posted_on
-1,Infosys,Data Scientist,Part-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Hyderabad,Remote,2025-12-20
-2,StartupLabs,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Bangalore,On-site,2025-12-01
-3,Infosys,Data Analyst,Full-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Hyderabad,On-site,2025-11-20
-4,Zoho,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Remote,Hybrid,2025-12-14
-5,Freshworks,DevOps Engineer,Internship,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,On-site,2025-12-01
-6,Oracle,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Pune,Remote,2025-12-23
-7,Accenture,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Remote,Hybrid,2025-11-07
-8,CloudNova,Data Analyst,Internship,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Bangalore,Hybrid,2025-12-23
-9,PhonePe,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Remote,Remote,2025-11-13
-10,TCS,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,Remote,2025-11-04
-11,Accenture,Software Engineer,Internship,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Chennai,On-site,2025-11-05
-12,Capgemini,Frontend Developer,Internship,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Hyderabad,On-site,2025-12-11
-13,Paytm,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Remote,On-site,2025-12-13
-14,Amazon,Machine Learning Engineer,Internship,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Remote,Remote,2025-11-15
-15,DataEdge,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Bangalore,Hybrid,2025-12-03
-16,Wipro,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Pune,Remote,2025-11-17
-17,KPMG,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Hybrid,2025-12-20
-18,CloudNova,Software Engineer,Part-time,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Pune,On-site,2025-11-21
-19,Freshworks,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Hyderabad,Remote,2025-11-26
-20,Wipro,DevOps Engineer,Full-time,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,On-site,2025-12-18
-21,Paytm,Business Analyst,Full-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,On-site,2025-11-29
-22,Zoho,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Bangalore,On-site,2025-11-02
-23,DataEdge,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Bangalore,Hybrid,2025-12-01
-24,Amazon,Machine Learning Engineer,Full-time,Mid,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Pune,On-site,2025-11-10
-25,Microsoft,Machine Learning Engineer,Full-time,Mid,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Pune,On-site,2025-11-26
-26,Cognizant,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Remote,On-site,2025-10-31
-27,Paytm,Data Analyst,Internship,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Bangalore,Remote,2025-10-30
-28,Deloitte,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Hyderabad,On-site,2025-10-29
-29,Wipro,Data Scientist,Part-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Bangalore,On-site,2025-11-09
-30,Cognizant,Machine Learning Engineer,Part-time,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Remote,Remote,2025-12-12
-31,Tech Mahindra,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Hyderabad,On-site,2025-12-09
-32,StartupLabs,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,On-site,2025-11-30
-33,IBM,Data Scientist,Full-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,Remote,2025-11-21
-34,Freshworks,Software Engineer,Full-time,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Bangalore,On-site,2025-11-18
-35,IBM,Data Analyst,Full-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Pune,Remote,2025-11-26
-36,Oracle,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Hyderabad,On-site,2025-12-20
-37,IBM,DevOps Engineer,Internship,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Remote,2025-12-22
-38,EY,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,On-site,2025-12-25
-39,TCS,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,Remote,2025-12-13
-40,Tech Mahindra,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Hyderabad,Hybrid,2025-12-17
-41,Amazon,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Chennai,On-site,2025-12-22
-42,PhonePe,Data Analyst,Part-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Bangalore,Remote,2025-12-18
-43,Google,Business Analyst,Internship,Fresher,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,Remote,2025-12-18
-44,Infosys,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,Hybrid,2025-12-01
-45,Cognizant,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Remote,2025-11-21
-46,CloudNova,Data Analyst,Internship,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Bangalore,On-site,2025-11-28
-47,TCS,Machine Learning Engineer,Part-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Hyderabad,Remote,2025-11-20
-48,StartupLabs,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Bangalore,On-site,2025-12-13
-49,Paytm,Data Analyst,Full-time,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Remote,On-site,2025-11-25
-50,Oracle,Frontend Developer,Full-time,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Pune,Remote,2025-12-12
-51,Cognizant,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Pune,Hybrid,2025-12-08
-52,Infosys,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Remote,Remote,2025-12-24
-53,Microsoft,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Pune,Remote,2025-11-02
-54,EY,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Chennai,On-site,2025-11-13
-55,Paytm,Backend Developer,Part-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Bangalore,On-site,2025-11-06
-56,StartupLabs,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Pune,Remote,2025-11-02
-57,CloudNova,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,Hybrid,2025-11-20
-58,NextGen Tech,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Pune,On-site,2025-11-27
-59,TCS,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Chennai,Hybrid,2025-12-26
-60,PwC,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Pune,Remote,2025-11-11
-61,Zoho,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Remote,Remote,2025-12-21
-62,NextGen Tech,Data Scientist,Full-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Bangalore,Hybrid,2025-11-21
-63,Flipkart,Machine Learning Engineer,Full-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Pune,Hybrid,2025-11-01
-64,EY,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Hyderabad,On-site,2025-12-22
-65,DataEdge,Frontend Developer,Part-time,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Remote,On-site,2025-12-19
-66,Capgemini,Software Engineer,Full-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Bangalore,Remote,2025-11-11
-67,Flipkart,Frontend Developer,Part-time,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Hyderabad,Hybrid,2025-12-18
-68,KPMG,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Hyderabad,Remote,2025-11-06
-69,EY,DevOps Engineer,Internship,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Remote,2025-11-16
-70,KPMG,Software Engineer,Internship,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Bangalore,Hybrid,2025-12-06
-71,StartupLabs,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Bangalore,Remote,2025-11-02
-72,Capgemini,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Bangalore,Remote,2025-11-20
-73,EY,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,On-site,2025-11-26
-74,KPMG,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,Remote,2025-11-13
-75,Infosys,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Hyderabad,Hybrid,2025-12-01
-76,StartupLabs,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,On-site,2025-11-04
-77,CloudNova,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Pune,On-site,2025-12-02
-78,KPMG,Frontend Developer,Part-time,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Remote,Remote,2025-12-16
-79,StartupLabs,Business Analyst,Internship,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Hyderabad,On-site,2025-11-22
-80,KPMG,Backend Developer,Part-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Pune,Hybrid,2025-12-15
-81,Freshworks,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Pune,Hybrid,2025-11-30
-82,StartupLabs,DevOps Engineer,Full-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Chennai,On-site,2025-12-18
-83,Deloitte,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Remote,Hybrid,2025-12-23
-84,StartupLabs,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Hyderabad,Remote,2025-12-27
-85,IBM,Data Analyst,Internship,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Bangalore,Hybrid,2025-12-02
-86,NextGen Tech,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Chennai,Hybrid,2025-12-13
-87,PhonePe,Machine Learning Engineer,Part-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Bangalore,Hybrid,2025-12-14
-88,NextGen Tech,Machine Learning Engineer,Part-time,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Analytics & AI,Bangalore,On-site,2025-12-13
-89,Amazon,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Remote,On-site,2025-11-20
-90,DataEdge,Frontend Developer,Internship,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Remote,Hybrid,2025-11-05
-91,Capgemini,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Chennai,Hybrid,2025-11-10
-92,PhonePe,Software Engineer,Internship,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Chennai,On-site,2025-12-13
-93,Amazon,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Pune,Remote,2025-12-11
-94,PwC,Frontend Developer,Part-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Hyderabad,Remote,2025-12-14
-95,NextGen Tech,Business Analyst,Full-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Hyderabad,Remote,2025-12-02
-96,PwC,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,Remote,2025-12-15
-97,KPMG,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Bangalore,On-site,2025-12-04
-98,Infosys,DevOps Engineer,Internship,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Chennai,Hybrid,2025-11-24
-99,Google,Software Engineer,Full-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Chennai,Hybrid,2025-12-27
-100,PwC,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Chennai,On-site,2025-12-18
-101,Cognizant,DevOps Engineer,Part-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Bangalore,Hybrid,2025-11-21
-102,Wipro,Data Analyst,Part-time,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Hyderabad,Hybrid,2025-12-17
-103,Oracle,Data Analyst,Internship,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Hyderabad,Hybrid,2025-12-08
-104,DataEdge,Frontend Developer,Internship,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Chennai,Hybrid,2025-11-05
-105,Google,Data Scientist,Full-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Remote,Remote,2025-10-29
-106,IBM,Frontend Developer,Part-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Software Engineering,Bangalore,Remote,2025-10-29
-107,Tech Mahindra,Software Engineer,Full-time,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Software Engineering,Hyderabad,Remote,2025-12-20
-108,StartupLabs,DevOps Engineer,Full-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Hybrid,2025-11-14
-109,DataEdge,Backend Developer,Internship,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Remote,On-site,2025-11-11
-110,DataEdge,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Bangalore,On-site,2025-12-27
-111,Freshworks,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Chennai,On-site,2025-12-16
-112,Freshworks,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Analytics & AI,Hyderabad,Remote,2025-11-14
-113,StartupLabs,Backend Developer,Part-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Remote,Remote,2025-12-06
-114,StartupLabs,Business Analyst,Internship,Fresher,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Business & Strategy,Remote,On-site,2025-12-07
-115,Flipkart,Data Analyst,Internship,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Analytics & AI,Chennai,Hybrid,2025-11-18
-116,NextGen Tech,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,On-site,2025-11-25
-117,Paytm,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Chennai,Hybrid,2025-11-06
-118,PwC,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Software Engineering,Pune,Hybrid,2025-12-13
-119,Freshworks,DevOps Engineer,Part-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Chennai,Hybrid,2025-12-27
-120,PwC,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Infrastructure,Hyderabad,Hybrid,2025-11-07
+1684,Infosys,Data Scientist,Part-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Hyderabad,Remote,2025-12-20
+1685,StartupLabs,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Bangalore,On-site,2025-12-01
+1686,Infosys,Data Analyst,Full-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Hyderabad,On-site,2025-11-20
+1687,Zoho,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Remote,Hybrid,2025-12-14
+1688,Freshworks,DevOps Engineer,Internship,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,On-site,2025-12-01
+1689,Oracle,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Pune,Remote,2025-12-23
+1690,Accenture,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Remote,Hybrid,2025-11-07
+1691,CloudNova,Data Analyst,Internship,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Bangalore,Hybrid,2025-12-23
+1692,PhonePe,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Remote,Remote,2025-11-13
+1693,TCS,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,Remote,2025-11-04
+1694,Accenture,Software Engineer,Internship,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Chennai,On-site,2025-11-05
+1695,Capgemini,Frontend Developer,Internship,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Hyderabad,On-site,2025-12-11
+1696,Paytm,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Remote,On-site,2025-12-13
+1697,Amazon,Machine Learning Engineer,Internship,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Remote,Remote,2025-11-15
+1698,DataEdge,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Bangalore,Hybrid,2025-12-03
+1699,Wipro,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Pune,Remote,2025-11-17
+1700,KPMG,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Hybrid,2025-12-20
+1701,CloudNova,Software Engineer,Part-time,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Pune,On-site,2025-11-21
+1702,Freshworks,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Hyderabad,Remote,2025-11-26
+1703,Wipro,DevOps Engineer,Full-time,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,On-site,2025-12-18
+1704,Paytm,Business Analyst,Full-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,On-site,2025-11-29
+1705,Zoho,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Bangalore,On-site,2025-11-02
+1706,DataEdge,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Bangalore,Hybrid,2025-12-01
+1707,Amazon,Machine Learning Engineer,Full-time,Mid,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Pune,On-site,2025-11-10
+1708,Microsoft,Machine Learning Engineer,Full-time,Mid,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Pune,On-site,2025-11-26
+1709,Cognizant,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Remote,On-site,2025-10-31
+1710,Paytm,Data Analyst,Internship,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Bangalore,Remote,2025-10-30
+1711,Deloitte,Frontend Developer,Full-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Hyderabad,On-site,2025-10-29
+1712,Wipro,Data Scientist,Part-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Bangalore,On-site,2025-11-09
+1713,Cognizant,Machine Learning Engineer,Part-time,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Remote,Remote,2025-12-12
+1714,Tech Mahindra,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Hyderabad,On-site,2025-12-09
+1715,StartupLabs,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,On-site,2025-11-30
+1716,IBM,Data Scientist,Full-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,Remote,2025-11-21
+1717,Freshworks,Software Engineer,Full-time,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Bangalore,On-site,2025-11-18
+1718,IBM,Data Analyst,Full-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Pune,Remote,2025-11-26
+1719,Oracle,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Hyderabad,On-site,2025-12-20
+1720,IBM,DevOps Engineer,Internship,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Remote,2025-12-22
+1721,EY,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,On-site,2025-12-25
+1722,TCS,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,Remote,2025-12-13
+1723,Tech Mahindra,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Hyderabad,Hybrid,2025-12-17
+1724,Amazon,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Chennai,On-site,2025-12-22
+1725,PhonePe,Data Analyst,Part-time,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Bangalore,Remote,2025-12-18
+1726,Google,Business Analyst,Internship,Fresher,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,Remote,2025-12-18
+1727,Infosys,Business Analyst,Internship,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,Hybrid,2025-12-01
+1728,Cognizant,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Remote,2025-11-21
+1729,CloudNova,Data Analyst,Internship,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Bangalore,On-site,2025-11-28
+1730,TCS,Machine Learning Engineer,Part-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Hyderabad,Remote,2025-11-20
+1731,StartupLabs,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Bangalore,On-site,2025-12-13
+1732,Paytm,Data Analyst,Full-time,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Remote,On-site,2025-11-25
+1733,Oracle,Frontend Developer,Full-time,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Pune,Remote,2025-12-12
+1734,Cognizant,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Pune,Hybrid,2025-12-08
+1735,Infosys,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Remote,Remote,2025-12-24
+1736,Microsoft,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Pune,Remote,2025-11-02
+1737,EY,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Chennai,On-site,2025-11-13
+1738,Paytm,Backend Developer,Part-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Bangalore,On-site,2025-11-06
+1739,StartupLabs,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Pune,Remote,2025-11-02
+1740,CloudNova,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,Hybrid,2025-11-20
+1741,NextGen Tech,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Pune,On-site,2025-11-27
+1742,TCS,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Chennai,Hybrid,2025-12-26
+1743,PwC,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Pune,Remote,2025-11-11
+1744,Zoho,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Remote,Remote,2025-12-21
+1745,NextGen Tech,Data Scientist,Full-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Bangalore,Hybrid,2025-11-21
+1746,Flipkart,Machine Learning Engineer,Full-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Pune,Hybrid,2025-11-01
+1747,EY,Data Analyst,Full-time,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Hyderabad,On-site,2025-12-22
+1748,DataEdge,Frontend Developer,Part-time,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Remote,On-site,2025-12-19
+1749,Capgemini,Software Engineer,Full-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Bangalore,Remote,2025-11-11
+1750,Flipkart,Frontend Developer,Part-time,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Hyderabad,Hybrid,2025-12-18
+1751,KPMG,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Hyderabad,Remote,2025-11-06
+1752,EY,DevOps Engineer,Internship,Fresher,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Remote,2025-11-16
+1753,KPMG,Software Engineer,Internship,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Bangalore,Hybrid,2025-12-06
+1754,StartupLabs,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Bangalore,Remote,2025-11-02
+1755,Capgemini,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Bangalore,Remote,2025-11-20
+1756,EY,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,On-site,2025-11-26
+1757,KPMG,Data Scientist,Part-time,Fresher,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,Remote,2025-11-13
+1758,Infosys,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Hyderabad,Hybrid,2025-12-01
+1759,StartupLabs,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,On-site,2025-11-04
+1760,CloudNova,Data Scientist,Internship,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Pune,On-site,2025-12-02
+1761,KPMG,Frontend Developer,Part-time,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Remote,Remote,2025-12-16
+1762,StartupLabs,Business Analyst,Internship,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Hyderabad,On-site,2025-11-22
+1763,KPMG,Backend Developer,Part-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Pune,Hybrid,2025-12-15
+1764,Freshworks,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Pune,Hybrid,2025-11-30
+1765,StartupLabs,DevOps Engineer,Full-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Chennai,On-site,2025-12-18
+1766,Deloitte,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Remote,Hybrid,2025-12-23
+1767,StartupLabs,Software Engineer,Internship,Fresher,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Hyderabad,Remote,2025-12-27
+1768,IBM,Data Analyst,Internship,Mid,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Bangalore,Hybrid,2025-12-02
+1769,NextGen Tech,Software Engineer,Part-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Chennai,Hybrid,2025-12-13
+1770,PhonePe,Machine Learning Engineer,Part-time,Fresher,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Bangalore,Hybrid,2025-12-14
+1771,NextGen Tech,Machine Learning Engineer,Part-time,Junior,"Python, TensorFlow, PyTorch, MLOps, SQL, Docker",Data,Data,Bangalore,On-site,2025-12-13
+1772,Amazon,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Remote,On-site,2025-11-20
+1773,DataEdge,Frontend Developer,Internship,Mid,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Remote,Hybrid,2025-11-05
+1774,Capgemini,DevOps Engineer,Part-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Chennai,Hybrid,2025-11-10
+1775,PhonePe,Software Engineer,Internship,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Chennai,On-site,2025-12-13
+1776,Amazon,Backend Developer,Full-time,Mid,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Pune,Remote,2025-12-11
+1777,PwC,Frontend Developer,Part-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Hyderabad,Remote,2025-12-14
+1778,NextGen Tech,Business Analyst,Full-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Hyderabad,Remote,2025-12-02
+1779,PwC,Business Analyst,Part-time,Junior,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,Remote,2025-12-15
+1780,KPMG,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Bangalore,On-site,2025-12-04
+1781,Infosys,DevOps Engineer,Internship,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Chennai,Hybrid,2025-11-24
+1782,Google,Software Engineer,Full-time,Junior,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Chennai,Hybrid,2025-12-27
+1783,PwC,Business Analyst,Part-time,Mid,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Chennai,On-site,2025-12-18
+1784,Cognizant,DevOps Engineer,Part-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Bangalore,Hybrid,2025-11-21
+1785,Wipro,Data Analyst,Part-time,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Hyderabad,Hybrid,2025-12-17
+1786,Oracle,Data Analyst,Internship,Junior,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Hyderabad,Hybrid,2025-12-08
+1787,DataEdge,Frontend Developer,Internship,Junior,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Chennai,Hybrid,2025-11-05
+1788,Google,Data Scientist,Full-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Remote,Remote,2025-10-29
+1789,IBM,Frontend Developer,Part-time,Fresher,"HTML, CSS, JavaScript, React, Git, Responsive Design",Engineering,Engineering,Bangalore,Remote,2025-10-29
+1790,Tech Mahindra,Software Engineer,Full-time,Mid,"Python, Java, Data Structures, Algorithms, Git, REST APIs",Engineering,Engineering,Hyderabad,Remote,2025-12-20
+1791,StartupLabs,DevOps Engineer,Full-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Hybrid,2025-11-14
+1792,DataEdge,Backend Developer,Internship,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Remote,On-site,2025-11-11
+1793,DataEdge,Data Scientist,Full-time,Junior,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Bangalore,On-site,2025-12-27
+1794,Freshworks,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Chennai,On-site,2025-12-16
+1795,Freshworks,Data Scientist,Part-time,Mid,"Python, Machine Learning, SQL, Statistics, Pandas, Scikit-learn",Data,Data,Hyderabad,Remote,2025-11-14
+1796,StartupLabs,Backend Developer,Part-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Remote,Remote,2025-12-06
+1797,StartupLabs,Business Analyst,Internship,Fresher,"SQL, Excel, Business Analysis, Stakeholder Management, Documentation",Product,Product,Remote,On-site,2025-12-07
+1798,Flipkart,Data Analyst,Internship,Fresher,"Python, SQL, Excel, Pandas, Data Visualization, Statistics",Data,Data,Chennai,Hybrid,2025-11-18
+1799,NextGen Tech,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,On-site,2025-11-25
+1800,Paytm,Backend Developer,Part-time,Junior,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Chennai,Hybrid,2025-11-06
+1801,PwC,Backend Developer,Full-time,Fresher,"Python, SQL, APIs, Microservices, Git, Docker",Engineering,Engineering,Pune,Hybrid,2025-12-13
+1802,Freshworks,DevOps Engineer,Part-time,Mid,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Chennai,Hybrid,2025-12-27
+1803,PwC,DevOps Engineer,Full-time,Junior,"AWS, Docker, Kubernetes, CI/CD, Linux, Monitoring",Operations,Operations,Hyderabad,Hybrid,2025-11-07
+1804,Acme Labs,Backend Developer,Full-time,Junior,"Python, FastAPI, SQL, Docker",Engineering,Software Engineering,Remote,Remote,2026-03-02
+1805,DataWorks,Data Analyst,Internship,Fresher,"SQL, Excel, Python, Power BI",Data,Analytics & AI,Bangalore,Hybrid,2026-03-02
+1806,Coalition Technologies,Copywriter,Full-time,Junior,"accounting, excel, research, data analysis, bookkeeping, google sheets, quickbooks, data entry, insurance, G Suite",Engineering,Software Engineering,Worldwide,On-site,2026-03-02
+1807,GNO Partners,Senior Amazon Brand Manager,Full-time,Junior,"amazon, backend, project management, PPC",Engineering,Software Engineering,Worldwide,On-site,2026-02-26
+1808,VONQ NL,🇩🇪 Account Director (m/w/d),Full-time,Junior,"account management, R, REST",Engineering,Software Engineering,Germany,On-site,2026-02-25
+1809,Lumitekno Kreasi Global,Red Team Specialist (Offensive Security),Full-time,Junior,"security, SOLID, testing, shell, CMS",Engineering,Software Engineering,Worldwide,On-site,2026-02-23
+1810,Exaware,Order Management and Operations Manager,Full-time,Junior,"excel, documentation, CRM, hardware, business operations, microsoft office, outlook",Engineering,Software Engineering,USA,On-site,2026-02-19
+1811,shopware AG,AI-Native Cloud Infrastructure Generalist (m/f/d),Full-time,Junior,"cloud, ecommerce, fullstack, kubernetes, security, AI/ML, documentation, hardware, onboarding, startup, serverless, infrastructure, GPU",Data,Analytics & AI,"Europe, Germany",On-site,2026-02-19
+1812,Marketerx,Senior DevOps Engineer,Full-time,Junior,"AWS, cloud, docker, kubernetes, security, SRE, AI/ML, CI/CD, terraform, startup, ansible, infrastructure",Operations,Infrastructure,USA,On-site,2026-02-18
+1813,"Fluence International, Inc.","Full-Stack Developer (6 months, extendable)",Full-time,Junior,"admin, api, AWS, backend, frontend, fullstack, javascript, react, security, UI/UX, AI/ML, documentation, healthcare, Typescript, web applications, SOLID, serverless, next.js, github, REST, mental health, BaaS, datadog",Engineering,Software Engineering,Worldwide,On-site,2026-02-18
+1814,Clipboard Health,Client Support Specialist,Full-time,Junior,"documentation, zendesk, account management, startup, Linux/Unix",Engineering,Software Engineering,"Europe, Canada, South Africa, Philippines, Jamaica",On-site,2026-02-16
+1815,A.Team,Senior Independent AI Engineer / Architect,Full-time,Junior,"go, UI/UX, wordpress, chat, apple, testing, catalyst",Data,Analytics & AI,"Americas, Europe, Israel",On-site,2026-02-16
+1816,A.Team,Senior Independent Software Developer,Full-time,Junior,"go, wordpress, chat, apple, testing, catalyst",Engineering,Software Engineering,"Americas, Europe, Israel",On-site,2026-02-16
+1817,Mitre Media,Tech Lead Full-Stack Rails Engineer,Full-time,Junior,"api, CSS, docker, elasticsearch, fullstack, html, javascript, kubernetes, postgresql, react, ror, ruby/rails, AI/ML, CAD, advertising, Redis, ES6, web applications, MySQL, NLP, fintech, Micro services, github, system architecture",Data,Analytics & AI,"USA, Canada, USA timezones",On-site,2026-02-14
+1818,Mitre Media,Tech Lead Databricks Data Engineer,Full-time,Junior,"apache, api, AWS, big data, cloud, java, python, scala, sql, AI/ML, documentation, CAD, CI/CD, analytics, advertising, spark, tableau, GCP, ETL, data engineering, SOLID, fintech, Micro services, backbone, github",Data,Analytics & AI,"USA, Canada, USA timezones",On-site,2026-02-14
+1819,Coalition Technologies,Office Assistant,Full-time,Junior,"CSS, excel, frontend, git, html, illustrator, magento, photoshop, php, shopify, wordpress, MySQL, startup, responsive, themes, bootstrap, insurance, jQuery, Ajax",Engineering,Software Engineering,Worldwide,On-site,2026-02-11
+1820,nooro,iOS Developer,Full-time,Junior,"api, backend, git, ios, security, swift, UI/UX, Figma, agile, healthcare, startup, core data, github, REST, MVVM, mobile development",Engineering,Software Engineering,USA,On-site,2026-02-09
+1821,"Credit Wellness, LLC",Inside Sales Contractor,Full-time,Junior,"CRM, google sheets, financial services, Inside Sales",Engineering,Software Engineering,Worldwide,On-site,2026-02-08
+1822,SKYCATCHFIRE,Senior Python Backend Developer,Full-time,Junior,"api, backend, django, excel, python, react, AI/ML, automation, CRM, flask, business operations, ETL, next.js, software systems",Engineering,Software Engineering,USA,On-site,2026-02-06
+1823,TELUS Digital,Content Reviewer,Part-time,Junior,"android, go, ios, social media, AI/ML, diversity",Engineering,Software Engineering,USA,On-site,2026-02-06
+1824,IAPWE,Freelance Writer,Full-time,Junior,REST,Engineering,Software Engineering,Worldwide,On-site,2026-02-04

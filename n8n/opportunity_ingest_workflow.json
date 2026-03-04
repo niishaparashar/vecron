@@ -1,0 +1,128 @@
+{
+  "name": "VECRON - Opportunity Sync (24h)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "b8d1d2a8-8f53-4aa2-81b8-9cd74498b221",
+      "name": "Every 24 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.JOBS_SOURCE_URL || 'https://remotive.com/api/remote-jobs?limit=100'}}",
+        "options": {}
+      },
+      "id": "73e4c621-4f2f-4c90-8210-6f1a5d9d0d3d",
+      "name": "Fetch Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.first().json;\nconst rawJobs = input.jobs || input.results || [];\n\nfunction asText(value, fallback = 'Unknown') {\n  const text = (value ?? '').toString().trim();\n  return text || fallback;\n}\n\nfunction mapEmploymentType(value) {\n  const source = asText(value, '').toLowerCase();\n  if (source.includes('intern')) return 'Internship';\n  if (source.includes('part')) return 'Part-time';\n  return 'Full-time';\n}\n\nfunction mapExperience(text) {\n  const source = asText(text, '').toLowerCase();\n  if (source.includes('senior') || source.includes('lead') || source.includes('5+') || source.includes('6+')) return 'Mid';\n  if (source.includes('junior') || source.includes('1+') || source.includes('2+')) return 'Junior';\n  if (source.includes('intern') || source.includes('entry') || source.includes('fresher')) return 'Fresher';\n  return 'Junior';\n}\n\nfunction mapDepartment(title) {\n  const source = asText(title, '').toLowerCase();\n  if (source.includes('data') || source.includes('ml') || source.includes('ai')) return 'Data';\n  if (source.includes('devops') || source.includes('site reliability') || source.includes('sre')) return 'Operations';\n  if (source.includes('analyst') || source.includes('product')) return 'Product';\n  return 'Engineering';\n}\n\nfunction mapCategory(title, department) {\n  const source = asText(title, '').toLowerCase();\n  if (department === 'Data') return 'Analytics & AI';\n  if (department === 'Operations') return 'Infrastructure';\n  if (source.includes('analyst') || source.includes('product')) return 'Business & Strategy';\n  return 'Software Engineering';\n}\n\nfunction mapWorkplaceType(candidate) {\n  const source = asText(candidate, '').toLowerCase();\n  if (source.includes('hybrid')) return 'Hybrid';\n  if (source.includes('remote')) return 'Remote';\n  return 'On-site';\n}\n\nfunction extractSkills(job) {\n  const candidates = [\n    job.tags,\n    job.skills,\n    job.keywords,\n  ];\n\n  for (const candidate of candidates) {\n    if (Array.isArray(candidate) && candidate.length) {\n      return candidate.map((x) => asText(x, '')).filter(Boolean).join(', ');\n    }\n    if (typeof candidate === 'string' && candidate.trim()) {\n      return candidate.trim();\n    }\n  }\n\n  return 'Communication, Problem Solving';\n}\n\nfunction toIsoDate(value) {\n  const parsed = new Date(value || Date.now());\n  if (Number.isNaN(parsed.getTime())) {\n    return new Date().toISOString().slice(0, 10);\n  }\n  return parsed.toISOString().slice(0, 10);\n}\n\nconst opportunities = rawJobs.map((job) => {\n  const title = asText(job.title, 'Software Engineer');\n  const company = asText(job.company_name || job.company || job.companyName, 'Unknown Company');\n  const employmentType = mapEmploymentType(job.job_type || job.employment_type || job.type);\n  const experienceLevel = mapExperience(job.candidate_required_location || title);\n  const department = mapDepartment(title);\n  const category = mapCategory(title, department);\n  const location = asText(job.candidate_required_location || job.location, 'Remote');\n  const workplaceType = mapWorkplaceType(location);\n\n  return {\n    company_name: company,\n    title,\n    employment_type: employmentType,\n    experience_level: experienceLevel,\n    skills_required: extractSkills(job),\n    department: department,\n    category: category,\n    location: location,\n    workplace_type: workplaceType,\n    posted_on: toIsoDate(job.publication_date || job.posted_on || job.created_at)\n  };\n});\n\nconst cleaned = opportunities.filter((o) => o.company_name && o.title && o.location && o.posted_on);\n\nreturn [{ json: { opportunities: cleaned } }];"
+      },
+      "id": "4c9bd53f-6725-44ca-a399-8db1f84e8230",
+      "name": "Normalize Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        770,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{($env.VECRON_API_BASE_URL || 'http://localhost:8000') + '/admin/opportunities/ingest'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Ingestion-Key",
+              "value": "={{$env.N8N_INGESTION_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json}}",
+        "options": {}
+      },
+      "id": "e179ddf5-2ec8-4efa-b2cb-f88af1ec7fe7",
+      "name": "Push to VECRON",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Every 24 Hours": {
+      "main": [
+        [
+          {
+            "node": "Fetch Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Jobs": {
+      "main": [
+        [
+          {
+            "node": "Normalize Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Jobs": {
+      "main": [
+        [
+          {
+            "node": "Push to VECRON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "a9b9fc6f-9a0e-4d6d-94fe-3a9f0306f18f",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "vecron-opportunity-sync",
+  "tags": []
+}

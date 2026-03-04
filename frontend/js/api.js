@@ -1,6 +1,7 @@
 console.log("api.js loaded");
 
-const API_BASE = "https://vecron.onrender.com";
+const API_BASE = window.location.origin;
+
 
 
 

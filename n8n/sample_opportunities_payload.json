@@ -1,0 +1,28 @@
+{
+  "opportunities": [
+    {
+      "company_name": "Acme Labs",
+      "title": "Backend Developer",
+      "employment_type": "Full-time",
+      "experience_level": "Junior",
+      "skills_required": "Python, FastAPI, SQL, Docker",
+      "department": "Engineering",
+      "category": "Software Engineering",
+      "location": "Remote",
+      "workplace_type": "Remote",
+      "posted_on": "2026-03-02"
+    },
+    {
+      "company_name": "DataWorks",
+      "title": "Data Analyst",
+      "employment_type": "Internship",
+      "experience_level": "Fresher",
+      "skills_required": "SQL, Excel, Python, Power BI",
+      "department": "Data",
+      "category": "Analytics & AI",
+      "location": "Bangalore",
+      "workplace_type": "Hybrid",
+      "posted_on": "2026-03-02"
+    }
+  ]
+}
