@@ -30,8 +30,16 @@ class OpportunityInSchema(BaseModel):
     location: str = Field(min_length=1)
     workplace_type: str = Field(min_length=1)
     posted_on: str = Field(min_length=10, max_length=10)
+    career_page_url: str = ""
+    apply_url: str = ""
+    job_description: str = ""
 
 
 class OpportunityBatchInSchema(BaseModel):
     opportunities: List[OpportunityInSchema]
+
+
+class InteractionInSchema(BaseModel):
+    opportunity_id: int
+    interaction_type: str
 

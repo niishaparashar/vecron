@@ -177,6 +177,43 @@
       border: 1px solid rgba(16, 185, 129, 0.2);
     }
     .posted { color: #6b7280; font-size: 13px; margin-top: 20px; border-top: 1px solid #2a3142; padding-top: 15px;}
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .action-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .view-btn {
+      background: #10b981;
+      color: #0f1419;
+    }
+    .view-btn:hover {
+      background: #059669;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+    .save-btn {
+      background: #2a3142;
+      color: #e4e6eb;
+    }
+    .save-btn:hover {
+      background: #374151;
+    }
+    .apply-btn {
+      background: #10b981;
+      color: #0f1419;
+    }
+    .apply-btn:hover {
+      background: #059669;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
   </style>
 </head>
 <body>
@@ -267,6 +304,13 @@
               ${job.skills_required ? job.skills_required.split(',').slice(0,4).map(s => `<span class="tag">${s.trim()}</span>`).join('') : ''}
             </div>
             <div class="posted">Posted recently</div>
+            <div class="actions">
+              <div>
+                <button class="action-btn view-btn" onclick="openJobDetails(${job.opportunity_id})">View Details</button>
+                <button class="action-btn save-btn" onclick="saveJob(${job.opportunity_id})">Save</button>
+                <button class="action-btn apply-btn" onclick="applyForJob(${job.opportunity_id})">Apply</button>
+              </div>
+            </div>
           `;
           container.appendChild(card);
         });

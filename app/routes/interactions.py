@@ -1,25 +1,29 @@
-from fastapi import APIRouter
-from app.database import get_db  # ← Use your centralized DB function
 from datetime import datetime
-from fastapi import Depends  
+from fastapi import APIRouter, Depends
+from app.database import get_db
 from app.core.deps import get_current_user
+from app.schemas import InteractionInSchema
 
-router = APIRouter(prefix="/interactions", tags=["Interactions"])  # ← add prefix & tags for clarity
+router = APIRouter(prefix="/interactions", tags=["Interactions"])
+
 
 @router.post("/interact")
-def log_interaction(opportunity_id: int, interaction_type: str,):
-
+def log_interaction(
+    payload: InteractionInSchema,
+    user_id: int = Depends(get_current_user),
+):
     weight_map = {
         "view": 1,
         "save": 3,
-        "apply": 5
+        "apply": 5,
     }
-    weight = weight_map.get(interaction_type, 1)
-    
+    weight = weight_map.get(payload.interaction_type, 1)
+
     conn = get_db()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT INTO interactions(
             user_id,
             opportunity_id,
@@ -28,13 +32,17 @@ def log_interaction(opportunity_id: int, interaction_type: str,):
             interacted_at
         )
         VALUES (?, ?, ?, ?, ?)
-    """, (user_id, opportunity_id, interaction_type, weight, datetime.now().isoformat()))
+        """,
+        (
+            user_id,
+            payload.opportunity_id,
+            payload.interaction_type,
+            weight,
+            datetime.now().isoformat(),
+        ),
+    )
 
     conn.commit()
     conn.close()
 
     return {"status": "interaction logged"}
-
-
-
-

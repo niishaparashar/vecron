@@ -23,6 +23,9 @@ The backend then:
   - `location`
   - `workplace_type`
   - `posted_on`
+  - `career_page_url`
+  - `apply_url`
+  - `job_description`
 
 ## Backend setup
 
@@ -38,7 +41,7 @@ Import:
 
 Set these env vars in n8n:
 
-- `VECRON_API_BASE_URL` (example: `http://localhost:8000`)
+- `VECRON_API_BASE_URL` (example: `https://vecron.onrender.com`)
 - `N8N_INGESTION_KEY` (must match backend)
 - `JOBS_SOURCE_URL` (optional override)
   - default in workflow: `https://remotive.com/api/remote-jobs?limit=100`
@@ -48,6 +51,7 @@ Set these env vars in n8n:
 - Dedupe key is: `company_name + title + location + posted_on`.
 - Workflow is scheduled every 24 hours.
 - If the job source changes fields, update the "Normalize Jobs" code node in n8n.
+- `career_page_url` is derived from `apply_url` domain when available; otherwise it stays blank.
 
 ## 2-minute local smoke test
 
@@ -63,3 +67,14 @@ Optional custom payload:
 ```powershell
 .\test_ingest.ps1 -ApiBaseUrl "http://localhost:8000" -PayloadPath ".\sample_opportunities_payload.json"
 ```
+
+## Render deployment
+
+For Render, keep the frontend using `window.location.origin` in [api.js](/d:/vecron-clone/vecron/frontend/js/api.js) so the deployed UI calls the same deployed backend.
+
+Recommended Render environment variables:
+
+- `N8N_INGESTION_KEY=<your-secret>`
+- `DB_PATH=/var/data/vecron.db`
+
+If you stay on SQLite, mount a persistent disk in Render at `/var/data` so registrations, interactions, and imported opportunities survive redeploys.

@@ -641,7 +641,7 @@ async function loadAdminData() {
         <td><span class="badge">${user.experience_level || "Beginner"}</span></td>
         <td><span class="skills-text">${user.skills || "-"}</span></td>
         <td>${user.preferred_location || "Remote"}</td>
-        <td><span class="date-text">${user.joined_on ? new Date(user.joined_on).toLocaleDateString() : "-"}</span></td>
+        <td><span class="date-text">${user.joined_on ? new Date(user.joined_on).toLocaleString() : "-"}</span></td>
       `;
       tbody.appendChild(tr);
     });
@@ -654,6 +654,7 @@ async function loadAdminData() {
 document.addEventListener("DOMContentLoaded", () => {
   setProfileInitials();
   loadAdminData();
+  setInterval(loadAdminData, 60000);
 });
 </script>
 

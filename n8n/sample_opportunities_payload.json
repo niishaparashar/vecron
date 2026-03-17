@@ -10,7 +10,10 @@
       "category": "Software Engineering",
       "location": "Remote",
       "workplace_type": "Remote",
-      "posted_on": "2026-03-02"
+      "posted_on": "2026-03-02",
+      "career_page_url": "https://www.acmelabs.com/careers",
+      "apply_url": "https://www.acmelabs.com/careers/backend-developer",
+      "job_description": "Build and maintain backend APIs, improve reliability, and collaborate with frontend and data teams."
     },
     {
       "company_name": "DataWorks",
@@ -22,7 +25,10 @@
       "category": "Analytics & AI",
       "location": "Bangalore",
       "workplace_type": "Hybrid",
-      "posted_on": "2026-03-02"
+      "posted_on": "2026-03-02",
+      "career_page_url": "https://www.dataworks.com/careers",
+      "apply_url": "https://www.dataworks.com/careers/data-analyst-intern",
+      "job_description": "Analyze business datasets, build dashboards, and support cross-team reporting initiatives."
     }
   ]
 }

@@ -1,5 +1,6 @@
 import csv
 import os
+from urllib.parse import quote_plus, urlparse
 from fastapi import APIRouter, Header, HTTPException
 from app.database import get_db
 from datetime import date
@@ -21,7 +22,28 @@ CSV_HEADERS = [
     "location",
     "workplace_type",
     "posted_on",
+    "career_page_url",
+    "apply_url",
+    "job_description",
 ]
+
+
+def _ensure_opportunity_columns(conn):
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(opportunities)")
+    existing = {row[1] for row in cursor.fetchall()}
+
+    required_columns = {
+        "career_page_url": "TEXT DEFAULT ''",
+        "apply_url": "TEXT DEFAULT ''",
+        "job_description": "TEXT DEFAULT ''",
+    }
+
+    for col_name, col_type in required_columns.items():
+        if col_name not in existing:
+            cursor.execute(f"ALTER TABLE opportunities ADD COLUMN {col_name} {col_type}")
+
+    conn.commit()
 
 
 def _sync_opportunity_csv(conn):
@@ -39,7 +61,10 @@ def _sync_opportunity_csv(conn):
             category,
             location,
             workplace_type,
-            posted_on
+            posted_on,
+            career_page_url,
+            apply_url,
+            job_description
         FROM opportunities
         ORDER BY opportunity_id
         """
@@ -51,6 +76,55 @@ def _sync_opportunity_csv(conn):
         writer.writerow(CSV_HEADERS)
         for row in rows:
             writer.writerow([row[key] for key in CSV_HEADERS])
+
+
+def _domain_root_from_url(url: str) -> str:
+    if not url:
+        return ""
+    try:
+        parsed = urlparse(url)
+        if not parsed.scheme or not parsed.netloc:
+            return ""
+        return f"{parsed.scheme}://{parsed.netloc}"
+    except Exception:
+        return ""
+
+
+def _career_search_url(company_name: str) -> str:
+    company = (company_name or "").strip()
+    if not company:
+        return ""
+    query = quote_plus(f"{company} careers")
+    return f"https://www.google.com/search?q={query}"
+
+
+def _resolve_career_url(company_name: str, career_page_url: str, apply_url: str) -> str:
+    explicit = _domain_root_from_url(career_page_url) if career_page_url else ""
+    if explicit:
+        return career_page_url
+
+    domain_root = _domain_root_from_url(apply_url)
+    if domain_root:
+        return f"{domain_root}/careers"
+
+    return _career_search_url(company_name)
+
+
+def _fallback_job_description(
+    company_name: str,
+    title: str,
+    skills_required: str,
+    location: str,
+    employment_type: str,
+    experience_level: str,
+) -> str:
+    skills = [s.strip() for s in (skills_required or "").split(",") if s.strip()]
+    skills_text = ", ".join(skills[:6]) if skills else "relevant technical and communication skills"
+    return (
+        f"{company_name} is hiring a {title} role ({employment_type}, {experience_level}) "
+        f"based in {location}. The role focuses on delivering project outcomes, collaborating with teams, "
+        f"and applying skills such as {skills_text}."
+    )
 
 @router.get("/analytics")
 def get_admin_insights():
@@ -153,12 +227,31 @@ def ingest_opportunities(
         raise HTTPException(status_code=401, detail="Invalid ingestion key")
 
     conn = get_db()
+    _ensure_opportunity_columns(conn)
     cursor = conn.cursor()
 
     inserted = 0
     updated = 0
 
     for job in payload.opportunities:
+        career_page_url = (job.career_page_url or "").strip()
+        apply_url = (job.apply_url or "").strip()
+        job_description = (job.job_description or "").strip()
+        career_page_url = _resolve_career_url(
+            job.company_name,
+            career_page_url,
+            apply_url,
+        )
+        if not job_description:
+            job_description = _fallback_job_description(
+                job.company_name,
+                job.title,
+                job.skills_required,
+                job.location,
+                job.employment_type,
+                job.experience_level,
+            )
+
         cursor.execute(
             """
             SELECT opportunity_id
@@ -183,7 +276,10 @@ def ingest_opportunities(
                     skills_required = ?,
                     department = ?,
                     category = ?,
-                    workplace_type = ?
+                    workplace_type = ?,
+                    career_page_url = ?,
+                    apply_url = ?,
+                    job_description = ?
                 WHERE opportunity_id = ?
                 """,
                 (
@@ -193,6 +289,9 @@ def ingest_opportunities(
                     job.department,
                     job.category,
                     job.workplace_type,
+                    career_page_url,
+                    apply_url,
+                    job_description,
                     existing["opportunity_id"],
                 ),
             )
@@ -210,9 +309,12 @@ def ingest_opportunities(
                     category,
                     location,
                     workplace_type,
-                    posted_on
+                    posted_on,
+                    career_page_url,
+                    apply_url,
+                    job_description
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     job.company_name,
@@ -225,6 +327,9 @@ def ingest_opportunities(
                     job.location,
                     job.workplace_type,
                     job.posted_on,
+                    career_page_url,
+                    apply_url,
+                    job_description,
                 ),
             )
             inserted += 1
