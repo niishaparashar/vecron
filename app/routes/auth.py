@@ -33,12 +33,14 @@ def _oauth_configured(provider: str) -> bool:
     return False
 
 
-def _local_oauth_redirect_uri(provider: str) -> str:
-    port = os.getenv("PORT", "8006").strip() or "8006"
-    return f"http://localhost:{port}/auth/callback/{provider}"
+def _get_redirect_uri(provider: str) -> str:
+    base_url = os.getenv("APP_BASE_URL", "").strip()
+    if not base_url:
+        port = os.getenv("PORT", "8006").strip() or "8006"
+        base_url = f"http://localhost:{port}"
+    return f"{base_url}/auth/callback/{provider}"
 
 EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
-
 
 def _validate_email(email: str):
     if not email:
@@ -337,7 +339,7 @@ async def google_login(request: Request):
             status_code=503,
             detail="Google OAuth is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, then restart the server.",
         )
-    redirect_uri = _local_oauth_redirect_uri("google")
+    redirect_uri = _get_redirect_uri("google")
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get("/callback/google", name="google_callback")
