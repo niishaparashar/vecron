@@ -1,8 +1,8 @@
 console.log("auth.js loaded");
 
 async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("login-email")?.value.trim();
+  const password = document.getElementById("login-password")?.value;
 
   try {
     const data = await apiFetch("/auth/login", {
@@ -11,6 +11,8 @@ async function login() {
     });
 
     localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("user_email", email);
+    localStorage.setItem("is_admin", data.is_admin ? "true" : "false");
     // after successful login
     if (data.is_admin) {
       window.location.href = "admin.html";
@@ -24,9 +26,9 @@ async function login() {
 }
 
 async function registerUser() {
-  const full_name = document.getElementById("full_name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const full_name = document.getElementById("register-full-name")?.value.trim();
+  const email = document.getElementById("register-email")?.value.trim();
+  const password = document.getElementById("register-password")?.value;
 
   try {
     await apiFetch("/auth/register", {

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from app.routes.auth import router as auth_router
 from app.routes.recommendations import router as recommend_router
 from app.routes.interactions import router as interaction_router
@@ -11,8 +11,29 @@ from app.routes.opportunities import router as opportunities_router
 
 
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+from starlette.middleware.sessions import SessionMiddleware
 import os
+from db.create_tables import create_tables
+
 app = FastAPI()
+create_tables()
+
+
+@app.middleware("http")
+async def canonical_localhost_redirect(request: Request, call_next):
+    host = request.url.hostname or ""
+    if host in {"127.0.0.1", "::1"}:
+        port = request.url.port or int(os.getenv("PORT", "8006"))
+        target = request.url.replace(netloc=f"localhost:{port}")
+        return RedirectResponse(url=str(target), status_code=307)
+    return await call_next(request)
+
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SESSION_SECRET", "VECRON_SUPER_SECRET_SESSION_KEY_2026")
+)
 
 app.include_router(auth_router)
 app.include_router(recommend_router)

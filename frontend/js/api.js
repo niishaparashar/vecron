@@ -11,6 +11,7 @@ function getToken() {
 
 async function apiFetch(endpoint, options = {}) {
   const token = getToken();
+  const normalizedEndpoint = endpoint.split("?")[0];
 
   const headers = {
     "Content-Type": "application/json",
@@ -25,6 +26,14 @@ async function apiFetch(endpoint, options = {}) {
   const data = await response.json();
 
   if (!response.ok) {
+    const isAuthEndpoint =
+      normalizedEndpoint.startsWith("/auth/login") ||
+      normalizedEndpoint.startsWith("/auth/register");
+
+    if (response.status === 401 && !isAuthEndpoint) {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
     throw new Error(data.detail || "Request failed");
   }
 

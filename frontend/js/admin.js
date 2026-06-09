@@ -2,8 +2,7 @@ console.log("admin.js loaded");
 
 async function loadAdminAnalytics() {
   try {
-    const res = await fetch("/admin/analytics");
-    const data = await res.json();
+    const data = await apiFetch("/admin/analytics");
 
     const totalUsers = document.getElementById("total-users");
     const todayUsers = document.getElementById("today-users");

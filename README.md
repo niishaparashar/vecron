@@ -374,60 +374,86 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Core dependencies:**
-```
-Flask==2.3.0
-pandas==2.0.0
-numpy==1.24.0
-scikit-learn==1.3.0
-beautifulsoup4==4.12.0
-requests==2.31.0
-python-dotenv==1.0.0
-```
+The app runs on FastAPI + Starlette with SQLite, Authlib OAuth support, and the existing recommender stack.
 
 ### Step 4: Configure Environment
 
-```bash
-# Copy environment template
-cp .env.example .env
+Create environment variables locally or in Render.
 
-# Edit .env with your configuration
-nano .env
-```
-
-**Example .env:**
 ```env
-FLASK_APP=main.py
-FLASK_ENV=development
-SECRET_KEY=your-secret-key-here
-DATABASE_URL=sqlite:///vecron.db
-API_RATE_LIMIT=100
+DB_PATH=vecron.db
+SESSION_SECRET=replace-with-a-long-random-string
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+N8N_INGESTION_KEY=...
+VECRON_API_BASE_URL=http://localhost:8000
 ```
+
+If you only need the base app locally, the OAuth values can be dummy placeholders. Production should use real secrets.
 
 ### Step 5: Initialize Database
 
 ```bash
-# Create database and tables
-python scripts/populate_db.py
-
-# Or manually:
-sqlite3 vecron.db < db/schema.sql
+python db/create_tables.py
 ```
 
 ### Step 6: Run the Application
 
 ```bash
-# Development mode
-python main.py
-
-# Or with Flask
-flask run
-
-# Production mode (with gunicorn)
-gunicorn -w 4 -b 0.0.0.0:5000 main:app
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Visit **http://localhost:5000** to access Vecron!
+Visit **http://localhost:8000** to access Vecron.
+
+### OAuth Setup
+
+Google and GitHub login are available through Authlib.
+
+1. Register OAuth apps in Google Cloud Console and GitHub Developer Settings.
+2. Add redirect URIs for local and production:
+   - `http://localhost:8000/auth/callback/google`
+   - `http://localhost:8000/auth/callback/github`
+   - `https://vecron.onrender.com/auth/callback/google`
+   - `https://vecron.onrender.com/auth/callback/github`
+3. Set the client IDs and secrets in your local environment or Render service settings.
+4. Keep `SESSION_SECRET` stable across restarts so OAuth state cookies remain valid.
+
+The callback handlers create a Vecron JWT and store it in `localStorage`, then send new OAuth users to `profile.html` until their profile is completed.
+
+### n8n Local Testing
+
+The workflow in [n8n/opportunity_ingest_workflow.json](n8n/opportunity_ingest_workflow.json) polls a job source every 24 hours, normalizes the payload, and posts it to the backend ingestion endpoint.
+
+1. Start Vecron locally with the same `DB_PATH` you intend to test.
+2. Set the ingestion secret before running the smoke test:
+   ```powershell
+   $env:N8N_INGESTION_KEY = "your-shared-secret"
+   ```
+3. Run the PowerShell smoke test from the `n8n` folder:
+   ```powershell
+   .\test_ingest.ps1 -ApiBaseUrl "http://localhost:8000"
+   ```
+4. Import [n8n/opportunity_ingest_workflow.json](n8n/opportunity_ingest_workflow.json) into n8n and set these environment variables:
+   - `VECRON_API_BASE_URL`
+   - `N8N_INGESTION_KEY`
+   - `JOBS_SOURCE_URL` if you want a custom feed
+
+The ingest route is `POST /admin/opportunities/ingest` and is protected by the `X-Ingestion-Key` header.
+
+### Render Deployment
+
+For production on Render:
+
+1. Deploy the FastAPI service with the start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+2. Add a persistent disk and mount it at `/var/data`.
+3. Set `DB_PATH=/var/data/vecron.db`.
+4. Add the OAuth, session, and ingestion environment variables listed above.
+5. In Google and GitHub OAuth settings, register the Render callback URLs.
+6. Configure your n8n workflow to point `VECRON_API_BASE_URL` at `https://vecron.onrender.com`.
+
+The existing SQLite-backed recommendation engine stays unchanged; only auth, validation, and ingestion wiring need the configuration above.
 
 ---
 

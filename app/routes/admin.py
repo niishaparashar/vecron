@@ -1,15 +1,16 @@
 import csv
 import os
 from urllib.parse import quote_plus, urlparse
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Depends
 from app.database import get_db
+from app.core.deps import get_current_admin
 from datetime import date
 from app.schemas import OpportunityBatchInSchema
 
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-CSV_PATH = os.path.join(BASE_DIR, "db", "opportunity.csv")
+CSV_PATH = os.getenv("OPPORTUNITY_CSV_PATH", os.path.join(BASE_DIR, "db", "opportunity.csv"))
 CSV_HEADERS = [
     "opportunity_id",
     "company_name",
@@ -71,6 +72,7 @@ def _sync_opportunity_csv(conn):
     )
     rows = cursor.fetchall()
 
+    os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
     with open(CSV_PATH, "w", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(CSV_HEADERS)
@@ -127,7 +129,7 @@ def _fallback_job_description(
     )
 
 @router.get("/analytics")
-def get_admin_insights():
+def get_admin_insights(admin_id: int = Depends(get_current_admin)):
     conn = get_db()
     cursor = conn.cursor()
 
@@ -181,7 +183,7 @@ def get_admin_insights():
 
 
 @router.get("/users")
-def recent_users(limit: int | None=None):
+def recent_users(limit: int | None=None, admin_id: int = Depends(get_current_admin)):
     conn = get_db()
     cursor = conn.cursor()
 

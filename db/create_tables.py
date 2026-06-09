@@ -1,6 +1,24 @@
+import os
 import sqlite3
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "vecron.db")
+DB_PATH = os.getenv("DB_PATH", DEFAULT_DB_PATH)
+
+
+def _ensure_columns(conn, table_name, columns):
+   cursor = conn.cursor()
+   cursor.execute(f"PRAGMA table_info({table_name})")
+   existing = {row[1] for row in cursor.fetchall()}
+
+   for column_name, column_definition in columns.items():
+      if column_name not in existing:
+         cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_definition}")
+
+
 def create_tables():
- conn= sqlite3.connect("vecron.db")
+ conn= sqlite3.connect(DB_PATH)
  cursor = conn.cursor()
 
  cursor.execute("""
@@ -9,6 +27,8 @@ def create_tables():
         full_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
+        is_admin INTEGER NOT NULL DEFAULT 0,
+        profile_completed INTEGER NOT NULL DEFAULT 0,
         current_status TEXT,
         education_level TEXT,
         branch TEXT,
@@ -32,9 +52,12 @@ def create_tables():
     skills_required TEXT NOT NULL,
     department TEXT NOT NULL,
     category TEXT NOT NULL,
-    location TEXT 
+   location TEXT,
     workplace_type TEXT NOT NULL,
-    posted_on DATE NOT NULL
+   posted_on DATE NOT NULL,
+   career_page_url TEXT DEFAULT '',
+   apply_url TEXT DEFAULT '',
+   job_description TEXT DEFAULT ''
  )
  """)
 
@@ -52,7 +75,20 @@ def create_tables():
  """)
 
 
+
+ _ensure_columns(conn, "users", {
+    "is_admin": "INTEGER NOT NULL DEFAULT 0",
+    "profile_completed": "INTEGER NOT NULL DEFAULT 0",
+ })
+
+ _ensure_columns(conn, "opportunities", {
+    "career_page_url": "TEXT DEFAULT ''",
+    "apply_url": "TEXT DEFAULT ''",
+    "job_description": "TEXT DEFAULT ''",
+ })
+
  conn.commit()
  conn.close() 
 
-create_tables()
+if __name__ == "__main__":
+    create_tables()

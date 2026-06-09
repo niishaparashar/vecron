@@ -11,7 +11,45 @@ function getToken() {
 }
 
 function showError(msg) {
+  const activeModal = document.querySelector(".modal.active .form-error");
+  if (activeModal) {
+    activeModal.textContent = msg;
+    return;
+  }
   alert(msg);
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isAdminUser() {
+  const adminValue = localStorage.getItem("is_admin");
+  return adminValue === "true" || adminValue === "1";
+}
+
+function clearAuthErrors(prefix) {
+  const formError = document.getElementById(`${prefix}-form-error`);
+  if (formError) formError.textContent = "";
+
+  ["full-name", "email", "password"].forEach((field) => {
+    const fieldError = document.getElementById(`${prefix}-${field}-error`);
+    if (fieldError) fieldError.textContent = "";
+  });
+}
+
+function setFieldError(prefix, field, message) {
+  const fieldError = document.getElementById(`${prefix}-${field}-error`);
+  if (fieldError) fieldError.textContent = message;
+}
+
+function setFormError(prefix, message) {
+  const formError = document.getElementById(`${prefix}-form-error`);
+  if (formError) {
+    formError.textContent = message;
+    return;
+  }
+  alert(message);
 }
 
 const opportunityCache = {};
@@ -198,15 +236,35 @@ async function applyForJob(opportunityId, url) {
 // ================= REGISTER =================
 
 async function registerUser() {
+  const prefix = "register";
+  clearAuthErrors(prefix);
 
-  const full_name = document.getElementById("full_name")?.value.trim();
-  const email = document.getElementById("email")?.value.trim();
-  const password = document.getElementById("password")?.value;
+  const full_name = document.getElementById("register-full-name")?.value.trim();
+  const email = document.getElementById("register-email")?.value.trim();
+  const password = document.getElementById("register-password")?.value;
 
-  if (!full_name || !email || !password) {
-    showError("All fields are required");
-    return;
+  let hasError = false;
+
+  if (!full_name) {
+    setFieldError(prefix, "full-name", "Full name is required");
+    hasError = true;
   }
+  if (!email) {
+    setFieldError(prefix, "email", "Email is required");
+    hasError = true;
+  } else if (!isValidEmail(email)) {
+    setFieldError(prefix, "email", "Enter a valid email address");
+    hasError = true;
+  }
+  if (!password) {
+    setFieldError(prefix, "password", "Password is required");
+    hasError = true;
+  } else if (password.length < 6) {
+    setFieldError(prefix, "password", "Password must be at least 6 characters");
+    hasError = true;
+  }
+
+  if (hasError) return;
 
   try {
 
@@ -219,19 +277,22 @@ async function registerUser() {
     const data = await res.json();
 
     if (!res.ok) {
-      showError(data.detail || "Registration failed");
+      setFormError(prefix, data.detail || "Registration failed");
       return;
     }
 
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("user_id", data.user_id);
     localStorage.setItem("full_name", full_name);
+    localStorage.setItem("user_email", email);
+    localStorage.setItem("is_admin", data.is_admin ? "true" : "false");
+    localStorage.setItem("profile_completed", data.profile_completed ? "1" : "0");
 
     alert("Registered successfully!");
     window.location.href = "profile.html";
 
   } catch {
-    showError("Server not reachable");
+    setFormError(prefix, "Server not reachable");
   }
 }
 
@@ -239,15 +300,29 @@ async function registerUser() {
 
 async function loginUser(event) {
 
-  event.preventDefault();
+  if (event) event.preventDefault();
+
+  const prefix = "login";
+  clearAuthErrors(prefix);
 
   const email = document.getElementById("login-email")?.value.trim();
   const password = document.getElementById("login-password")?.value;
 
-  if (!email || !password) {
-    alert("Enter email and password");
-    return;
+  let hasError = false;
+
+  if (!email) {
+    setFieldError(prefix, "email", "Email is required");
+    hasError = true;
+  } else if (!isValidEmail(email)) {
+    setFieldError(prefix, "email", "Enter a valid email address");
+    hasError = true;
   }
+  if (!password) {
+    setFieldError(prefix, "password", "Password is required");
+    hasError = true;
+  }
+
+  if (hasError) return;
 
   showCenterLoader("Signing you in...");
 
@@ -263,7 +338,7 @@ async function loginUser(event) {
 
     if (!res.ok) {
       hideCenterLoader();
-      alert(data.detail || "Invalid login");
+      setFormError(prefix, data.detail || "Invalid login");
       return;
     }
 
@@ -277,9 +352,9 @@ async function loginUser(event) {
     );
 
     localStorage.setItem("user_email", email);
-    localStorage.setItem("is_admin", data.is_admin);
+    localStorage.setItem("is_admin", data.is_admin ? "true" : "false");
 
-    if (email === "vecr0n.adm1n@gmail.com") {
+    if (data.is_admin) {
       window.location.href = "admin.html";
     } else {
       window.location.href = "dashboard.html";
@@ -288,7 +363,7 @@ async function loginUser(event) {
   } catch (err) {
     hideCenterLoader();
     console.error(err);
-    alert("Login failed");
+    setFormError(prefix, "Login failed");
   }
 }
 
@@ -558,9 +633,7 @@ function updateHeader() {
   const old = document.getElementById("logout-btn");
   if (old) old.remove();
 
-  const email = localStorage.getItem("user_email");
-
-  if (email === "vecr0n.adm1n@gmail.com") {
+  if (isAdminUser()) {
 
     let btn = document.getElementById("admin-btn");
 
