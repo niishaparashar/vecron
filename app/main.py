@@ -5,11 +5,6 @@ from app.routes.interactions import router as interaction_router
 from app.routes.admin import router as admin_router
 from app.routes.opportunities import router as opportunities_router
 
-
-
-
-
-
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
@@ -19,6 +14,10 @@ from db.create_tables import create_tables
 app = FastAPI()
 create_tables()
 
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SESSION_SECRET", "VECRON_SUPER_SECRET_SESSION_KEY_2026")
+)
 
 @app.middleware("http")
 async def canonical_localhost_redirect(request: Request, call_next):
@@ -29,23 +28,13 @@ async def canonical_localhost_redirect(request: Request, call_next):
         return RedirectResponse(url=str(target), status_code=307)
     return await call_next(request)
 
-
-app.add_middleware(
-    SessionMiddleware,
-    secret_key=os.getenv("SESSION_SECRET", "VECRON_SUPER_SECRET_SESSION_KEY_2026")
-)
-
 app.include_router(auth_router)
 app.include_router(recommend_router)
 app.include_router(interaction_router)
 app.include_router(admin_router)
 app.include_router(opportunities_router)
-'''@app.get("/")
-def root():
-    return {"status": "VECRON backend running"}'''
 
 # Serve frontend files
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
-app.mount("/static", StaticFiles(directory=os.path.join(frontend_path, "js")), name="js")  # optional for /static/js
+app.mount("/static", StaticFiles(directory=os.path.join(frontend_path, "js")), name="js")
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
-
