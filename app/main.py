@@ -18,7 +18,13 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SESSION_SECRET", "VECRON_SUPER_SECRET_SESSION_KEY_2026")
 )
-
+@app.get("/debug-env")
+def debug_env():
+    return {
+        "APP_BASE_URL": os.getenv("APP_BASE_URL"),
+        "GOOGLE_CLIENT_ID": os.getenv("GOOGLE_CLIENT_ID", "")[:10] + "...",
+        "SESSION_SECRET": os.getenv("SESSION_SECRET", "")[:5] + "...",
+    }
 @app.middleware("http")
 async def canonical_localhost_redirect(request: Request, call_next):
     host = request.url.hostname or ""
