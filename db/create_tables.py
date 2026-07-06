@@ -74,6 +74,18 @@ def create_tables():
   )
  """)
 
+ cursor.execute("""
+  CREATE TABLE IF NOT EXISTS ingestion_logs(
+    ingestion_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    status TEXT NOT NULL,
+    received_count INTEGER NOT NULL DEFAULT 0,
+    inserted_count INTEGER NOT NULL DEFAULT 0,
+    updated_count INTEGER NOT NULL DEFAULT 0,
+    error_message TEXT DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )
+ """)
+
 
 
  _ensure_columns(conn, "users", {

@@ -47,6 +47,73 @@ def _ensure_opportunity_columns(conn):
     conn.commit()
 
 
+def _ensure_ingestion_log_table(conn):
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS ingestion_logs(
+            ingestion_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            status TEXT NOT NULL,
+            received_count INTEGER NOT NULL DEFAULT 0,
+            inserted_count INTEGER NOT NULL DEFAULT 0,
+            updated_count INTEGER NOT NULL DEFAULT 0,
+            error_message TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
+    conn.commit()
+
+
+def _record_ingestion_log(
+    conn,
+    status: str,
+    received_count: int = 0,
+    inserted_count: int = 0,
+    updated_count: int = 0,
+    error_message: str = "",
+):
+    _ensure_ingestion_log_table(conn)
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO ingestion_logs (
+            status,
+            received_count,
+            inserted_count,
+            updated_count,
+            error_message
+        )
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (
+            status,
+            received_count,
+            inserted_count,
+            updated_count,
+            (error_message or "")[:500],
+        ),
+    )
+    conn.commit()
+
+
+def _record_ingestion_failure_without_blocking(received_count: int, error_message: str):
+    conn = None
+    try:
+        conn = get_db()
+        _record_ingestion_log(
+            conn,
+            status="failed",
+            received_count=received_count,
+            error_message=error_message,
+        )
+    except Exception:
+        pass
+    finally:
+        if conn:
+            conn.close()
+
+
 def _sync_opportunity_csv(conn):
     cursor = conn.cursor()
     cursor.execute(
@@ -214,6 +281,39 @@ def recent_users(limit: int | None=None, admin_id: int = Depends(get_current_adm
     }
 
 
+@router.get("/ingestion-logs")
+def get_ingestion_logs(limit: int = 10, admin_id: int = Depends(get_current_admin)):
+    limit = min(max(limit, 1), 50)
+    conn = get_db()
+    _ensure_ingestion_log_table(conn)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            ingestion_log_id,
+            status,
+            received_count,
+            inserted_count,
+            updated_count,
+            error_message,
+            created_at
+        FROM ingestion_logs
+        ORDER BY datetime(created_at) DESC, ingestion_log_id DESC
+        LIMIT ?
+        """,
+        (limit,),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    logs = [dict(row) for row in rows]
+    return {
+        "latest": logs[0] if logs else None,
+        "logs": logs,
+    }
+
+
 @router.post("/opportunities/ingest")
 def ingest_opportunities(
     payload: OpportunityBatchInSchema,
@@ -221,123 +321,153 @@ def ingest_opportunities(
 ):
     expected_key = os.getenv("N8N_INGESTION_KEY")
     if not expected_key:
+        _record_ingestion_failure_without_blocking(
+            len(payload.opportunities),
+            "N8N_INGESTION_KEY is not configured on the backend",
+        )
         raise HTTPException(
             status_code=500,
             detail="N8N_INGESTION_KEY is not configured on the backend",
         )
     if x_ingestion_key != expected_key:
+        _record_ingestion_failure_without_blocking(
+            len(payload.opportunities),
+            "Invalid ingestion key",
+        )
         raise HTTPException(status_code=401, detail="Invalid ingestion key")
 
     conn = get_db()
     _ensure_opportunity_columns(conn)
+    _ensure_ingestion_log_table(conn)
     cursor = conn.cursor()
 
     inserted = 0
     updated = 0
 
-    for job in payload.opportunities:
-        career_page_url = (job.career_page_url or "").strip()
-        apply_url = (job.apply_url or "").strip()
-        job_description = (job.job_description or "").strip()
-        career_page_url = _resolve_career_url(
-            job.company_name,
-            career_page_url,
-            apply_url,
-        )
-        if not job_description:
-            job_description = _fallback_job_description(
+    try:
+        for job in payload.opportunities:
+            career_page_url = (job.career_page_url or "").strip()
+            apply_url = (job.apply_url or "").strip()
+            job_description = (job.job_description or "").strip()
+            career_page_url = _resolve_career_url(
                 job.company_name,
-                job.title,
-                job.skills_required,
-                job.location,
-                job.employment_type,
-                job.experience_level,
+                career_page_url,
+                apply_url,
             )
-
-        cursor.execute(
-            """
-            SELECT opportunity_id
-            FROM opportunities
-            WHERE lower(company_name) = lower(?)
-              AND lower(title) = lower(?)
-              AND lower(location) = lower(?)
-              AND date(posted_on) = date(?)
-            LIMIT 1
-            """,
-            (job.company_name, job.title, job.location, job.posted_on),
-        )
-        existing = cursor.fetchone()
-
-        if existing:
-            cursor.execute(
-                """
-                UPDATE opportunities
-                SET
-                    employment_type = ?,
-                    experience_level = ?,
-                    skills_required = ?,
-                    department = ?,
-                    category = ?,
-                    workplace_type = ?,
-                    career_page_url = ?,
-                    apply_url = ?,
-                    job_description = ?
-                WHERE opportunity_id = ?
-                """,
-                (
-                    job.employment_type,
-                    job.experience_level,
-                    job.skills_required,
-                    job.department,
-                    job.category,
-                    job.workplace_type,
-                    career_page_url,
-                    apply_url,
-                    job_description,
-                    existing["opportunity_id"],
-                ),
-            )
-            updated += 1
-        else:
-            cursor.execute(
-                """
-                INSERT INTO opportunities (
-                    company_name,
-                    title,
-                    employment_type,
-                    experience_level,
-                    skills_required,
-                    department,
-                    category,
-                    location,
-                    workplace_type,
-                    posted_on,
-                    career_page_url,
-                    apply_url,
-                    job_description
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
+            if not job_description:
+                job_description = _fallback_job_description(
                     job.company_name,
                     job.title,
+                    job.skills_required,
+                    job.location,
                     job.employment_type,
                     job.experience_level,
-                    job.skills_required,
-                    job.department,
-                    job.category,
-                    job.location,
-                    job.workplace_type,
-                    job.posted_on,
-                    career_page_url,
-                    apply_url,
-                    job_description,
-                ),
-            )
-            inserted += 1
+                )
 
-    conn.commit()
-    _sync_opportunity_csv(conn)
+            cursor.execute(
+                """
+                SELECT opportunity_id
+                FROM opportunities
+                WHERE lower(company_name) = lower(?)
+                  AND lower(title) = lower(?)
+                  AND lower(location) = lower(?)
+                  AND date(posted_on) = date(?)
+                LIMIT 1
+                """,
+                (job.company_name, job.title, job.location, job.posted_on),
+            )
+            existing = cursor.fetchone()
+
+            if existing:
+                cursor.execute(
+                    """
+                    UPDATE opportunities
+                    SET
+                        employment_type = ?,
+                        experience_level = ?,
+                        skills_required = ?,
+                        department = ?,
+                        category = ?,
+                        workplace_type = ?,
+                        career_page_url = ?,
+                        apply_url = ?,
+                        job_description = ?
+                    WHERE opportunity_id = ?
+                    """,
+                    (
+                        job.employment_type,
+                        job.experience_level,
+                        job.skills_required,
+                        job.department,
+                        job.category,
+                        job.workplace_type,
+                        career_page_url,
+                        apply_url,
+                        job_description,
+                        existing["opportunity_id"],
+                    ),
+                )
+                updated += 1
+            else:
+                cursor.execute(
+                    """
+                    INSERT INTO opportunities (
+                        company_name,
+                        title,
+                        employment_type,
+                        experience_level,
+                        skills_required,
+                        department,
+                        category,
+                        location,
+                        workplace_type,
+                        posted_on,
+                        career_page_url,
+                        apply_url,
+                        job_description
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        job.company_name,
+                        job.title,
+                        job.employment_type,
+                        job.experience_level,
+                        job.skills_required,
+                        job.department,
+                        job.category,
+                        job.location,
+                        job.workplace_type,
+                        job.posted_on,
+                        career_page_url,
+                        apply_url,
+                        job_description,
+                    ),
+                )
+                inserted += 1
+
+        conn.commit()
+        _sync_opportunity_csv(conn)
+        _record_ingestion_log(
+            conn,
+            status="success",
+            received_count=len(payload.opportunities),
+            inserted_count=inserted,
+            updated_count=updated,
+        )
+    except Exception as exc:
+        conn.rollback()
+        _record_ingestion_log(
+            conn,
+            status="failed",
+            received_count=len(payload.opportunities),
+            inserted_count=inserted,
+            updated_count=updated,
+            error_message=str(exc),
+        )
+        conn.close()
+        raise HTTPException(status_code=500, detail="Opportunity ingestion failed")
+
     conn.close()
 
     return {

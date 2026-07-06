@@ -347,6 +347,68 @@
       font-size: 14px;
     }
 
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .monitor-box {
+      background: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 12px;
+      padding: 22px;
+      min-height: 105px;
+    }
+
+    .monitor-value {
+      color: #e4e6eb;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .monitor-label {
+      color: #8b92a8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: capitalize;
+      border: 1px solid #2a3142;
+      background: #242b3a;
+      color: #cbd5e1;
+    }
+
+    .status-pill.success {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #10b981;
+    }
+
+    .status-pill.failed {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+    }
+
+    .error-text {
+      color: #fca5a5;
+      max-width: 360px;
+      overflow-wrap: anywhere;
+    }
+
     /* Logout Modal */
     .modal {
       display: none;
@@ -518,6 +580,52 @@
     </div>
   </div>
 
+  <!-- Ingestion Monitoring Section -->
+  <div class="table-section">
+    <div class="section-header">
+      <h2 class="section-title">Ingestion Monitoring</h2>
+    </div>
+
+    <div class="monitor-grid">
+      <div class="monitor-box">
+        <div class="monitor-value" id="ingestion-status">-</div>
+        <div class="monitor-label">Last Status</div>
+      </div>
+      <div class="monitor-box">
+        <div class="monitor-value" id="ingestion-last-run">-</div>
+        <div class="monitor-label">Last Run</div>
+      </div>
+      <div class="monitor-box">
+        <div class="monitor-value" id="ingestion-received">0</div>
+        <div class="monitor-label">Received</div>
+      </div>
+      <div class="monitor-box">
+        <div class="monitor-value" id="ingestion-inserted">0</div>
+        <div class="monitor-label">Inserted</div>
+      </div>
+      <div class="monitor-box">
+        <div class="monitor-value" id="ingestion-updated">0</div>
+        <div class="monitor-label">Updated</div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <table id="ingestion-table">
+        <thead>
+          <tr>
+            <th>Run</th>
+            <th>Status</th>
+            <th>Received</th>
+            <th>Inserted</th>
+            <th>Updated</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Users Table Section -->
   <div class="table-section">
     <div class="section-header">
@@ -620,10 +728,23 @@ function confirmLogout() {
 // Load Admin Data
 document.documentElement.setAttribute("data-theme", "dark");
 
+function formatAdminDate(value) {
+  if (!value) return "-";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString();
+}
+
+function statusBadge(status) {
+  const safeStatus = status || "unknown";
+  return `<span class="status-pill ${safeStatus}">${safeStatus}</span>`;
+}
+
 async function loadAdminData() {
   try {
     const analytics = await apiFetch("/admin/analytics");
     const usersRes = await apiFetch("/admin/users?limit=1000");
+    const ingestionRes = await apiFetch("/admin/ingestion-logs?limit=10");
 
     document.getElementById("total-users").textContent =
       analytics.total_users || 0;
@@ -636,6 +757,34 @@ async function loadAdminData() {
 
     document.getElementById("top-skill").textContent =
       analytics.top_skills.map(s => s.skill).join(", ");
+
+    const latestIngestion = ingestionRes.latest;
+    document.getElementById("ingestion-status").innerHTML =
+      latestIngestion ? statusBadge(latestIngestion.status) : "-";
+    document.getElementById("ingestion-last-run").textContent =
+      latestIngestion ? formatAdminDate(latestIngestion.created_at) : "-";
+    document.getElementById("ingestion-received").textContent =
+      latestIngestion ? latestIngestion.received_count : 0;
+    document.getElementById("ingestion-inserted").textContent =
+      latestIngestion ? latestIngestion.inserted_count : 0;
+    document.getElementById("ingestion-updated").textContent =
+      latestIngestion ? latestIngestion.updated_count : 0;
+
+    const ingestionTbody = document.querySelector("#ingestion-table tbody");
+    ingestionTbody.innerHTML = "";
+
+    (ingestionRes.logs || []).forEach(log => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><span class="date-text">${formatAdminDate(log.created_at)}</span></td>
+        <td>${statusBadge(log.status)}</td>
+        <td>${log.received_count || 0}</td>
+        <td>${log.inserted_count || 0}</td>
+        <td>${log.updated_count || 0}</td>
+        <td><span class="error-text">${log.error_message || "-"}</span></td>
+      `;
+      ingestionTbody.appendChild(tr);
+    });
 
     const tbody = document.querySelector("#users-table tbody");
     tbody.innerHTML = "";
