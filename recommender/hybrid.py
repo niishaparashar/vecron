@@ -6,7 +6,7 @@ import sqlite3
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-DB_NAME = os.path.join(PROJECT_ROOT, "vecron.db")
+DB_NAME = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "vecron.db"))
 
 
 def recommend_jobs_hybrid(user_id, top_n=5, candidate_items=None):

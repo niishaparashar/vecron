@@ -13,7 +13,7 @@ def time_decay(interacted_at, decay_rate=0.05):
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-DB_NAME = os.path.join(PROJECT_ROOT, "vecron.db")
+DB_NAME = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "vecron.db"))
 
 
 
