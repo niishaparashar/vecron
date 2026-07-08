@@ -262,14 +262,33 @@
       background: #1a1f2e;
       border: 1px solid #2a3142;
       border-radius: 16px;
-      overflow: hidden;
+      overflow-x: auto;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     table {
       width: 100%;
+      min-width: 900px;
       border-collapse: collapse;
+      table-layout: fixed;
     }
+
+    /* All Users table column widths */
+    #users-table th:nth-child(1), #users-table td:nth-child(1) { width: 8%; }
+    #users-table th:nth-child(2), #users-table td:nth-child(2) { width: 18%; }
+    #users-table th:nth-child(3), #users-table td:nth-child(3) { width: 22%; }
+    #users-table th:nth-child(4), #users-table td:nth-child(4) { width: 13%; }
+    #users-table th:nth-child(5), #users-table td:nth-child(5) { width: 22%; }
+    #users-table th:nth-child(6), #users-table td:nth-child(6) { width: 10%; }
+    #users-table th:nth-child(7), #users-table td:nth-child(7) { width: 17%; }
+
+    /* Ingestion Monitoring table column widths */
+    #ingestion-table th:nth-child(1), #ingestion-table td:nth-child(1) { width: 20%; }
+    #ingestion-table th:nth-child(2), #ingestion-table td:nth-child(2) { width: 12%; }
+    #ingestion-table th:nth-child(3), #ingestion-table td:nth-child(3) { width: 12%; }
+    #ingestion-table th:nth-child(4), #ingestion-table td:nth-child(4) { width: 12%; }
+    #ingestion-table th:nth-child(5), #ingestion-table td:nth-child(5) { width: 12%; }
+    #ingestion-table th:nth-child(6), #ingestion-table td:nth-child(6) { width: 32%; }
 
     th {
       padding: 20px 25px;
@@ -281,12 +300,17 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       border-bottom: 1px solid #2a3142;
+      white-space: nowrap;
     }
 
     td {
       padding: 20px 25px;
       border-bottom: 1px solid #2a3142;
       color: #e4e6eb;
+      vertical-align: middle;
+      line-height: 1.6;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     tr:last-child td {
@@ -319,6 +343,7 @@
       justify-content: center;
       font-size: 16px;
       box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+      flex-shrink: 0;
     }
 
     .user-name {
@@ -335,16 +360,20 @@
       background: rgba(16, 185, 129, 0.15);
       color: #10b981;
       border: 1px solid rgba(16, 185, 129, 0.3);
+      white-space: nowrap;
     }
 
     .skills-text {
       color: #8b92a8;
       font-size: 14px;
+      display: block;
+      line-height: 1.6;
     }
 
     .date-text {
       color: #6b7280;
       font-size: 14px;
+      display: block;
     }
 
     .monitor-grid {
@@ -389,6 +418,7 @@
       border: 1px solid #2a3142;
       background: #242b3a;
       color: #cbd5e1;
+      white-space: nowrap;
     }
 
     .status-pill.success {
@@ -407,6 +437,7 @@
       color: #fca5a5;
       max-width: 360px;
       overflow-wrap: anywhere;
+      display: block;
     }
 
     /* Logout Modal */
@@ -526,7 +557,7 @@
 <!-- Sidebar -->
 <aside class="sidebar">
   <div class="logo">Vekron.</div>
-  
+
   <!-- Back to Home Button -->
   <a href="index.html" class="nav-item back-btn">
     <span class="nav-icon">
@@ -536,7 +567,7 @@
     </span>
     <span>Back to Home</span>
   </a>
-  
+
   <a href="admin.html" class="nav-item active">
     <span class="nav-icon">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -691,7 +722,7 @@ function closeProfileDropdown() {
 document.addEventListener('click', function(event) {
   const profileIcon = document.getElementById('profile-icon');
   const dropdown = document.getElementById('profile-dropdown');
-  
+
   if (!profileIcon.contains(event.target) && !dropdown.contains(event.target)) {
     closeProfileDropdown();
   }
@@ -706,7 +737,7 @@ function setProfileInitials() {
     .join('')
     .toUpperCase()
     .substring(0, 2);
-  
+
   document.getElementById('profile-initials').textContent = initials;
 }
 
