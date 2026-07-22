@@ -1,6 +1,6 @@
 import os
-import sqlite3
 import pandas as pd
+from app.database import get_db
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 from math import exp
@@ -13,13 +13,12 @@ def time_decay(interacted_at, decay_rate=0.05):
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-DB_NAME = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "vecron.db"))
 
 
 
 
 def load_interactions():
-    conn = sqlite3.connect(DB_NAME)
+    conn = get_db()
     interactions = pd.read_sql("""
         SELECT
         user_id,

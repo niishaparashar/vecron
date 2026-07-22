@@ -1,6 +1,5 @@
-import sqlite3
-DB_NAME="vecron.db"
-conn = sqlite3.connect(DB_NAME)
+from app.database import get_db
+conn = get_db()
 cursor = conn.cursor()
 
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")

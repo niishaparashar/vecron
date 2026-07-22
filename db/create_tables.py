@@ -1,16 +1,19 @@
 import os
-import sqlite3
 
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_DB_PATH = os.path.join(BASE_DIR, "vecron.db")
-DB_PATH = os.getenv("DB_PATH", DEFAULT_DB_PATH)
+import psycopg
 
 
 def _ensure_columns(conn, table_name, columns):
    cursor = conn.cursor()
-   cursor.execute(f"PRAGMA table_info({table_name})")
-   existing = {row[1] for row in cursor.fetchall()}
+   cursor.execute(
+      """
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_schema = current_schema() AND table_name = %s
+      """,
+      (table_name,),
+   )
+   existing = {row[0] for row in cursor.fetchall()}
 
    for column_name, column_definition in columns.items():
       if column_name not in existing:
@@ -18,12 +21,16 @@ def _ensure_columns(conn, table_name, columns):
 
 
 def create_tables():
- conn= sqlite3.connect(DB_PATH)
+ database_url = os.getenv("DATABASE_URL")
+ if not database_url:
+    raise RuntimeError("DATABASE_URL must be configured for PostgreSQL access")
+
+ conn = psycopg.connect(database_url)
  cursor = conn.cursor()
 
  cursor.execute("""
   CREATE TABLE IF NOT EXISTS users(
-     user_id INTEGER PRIMARY KEY ,
+     user_id SERIAL PRIMARY KEY,
         full_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
@@ -44,7 +51,7 @@ def create_tables():
 
  cursor.execute("""
  CREATE TABLE IF NOT EXISTS opportunities(
-    opportunity_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    opportunity_id SERIAL PRIMARY KEY,
     company_name TEXT NOT NULL,
     title TEXT NOT NULL,
     employment_type TEXT NOT NULL,
@@ -63,8 +70,8 @@ def create_tables():
 
  cursor.execute("""
   CREATE TABLE IF NOT EXISTS interactions(
-    interaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL, 
+    interaction_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
     opportunity_id INTEGER NOT NULL,
     interaction_type TEXT NOT NULL,
     interaction_weight INTEGER NOT NULL,
@@ -76,7 +83,7 @@ def create_tables():
 
  cursor.execute("""
   CREATE TABLE IF NOT EXISTS ingestion_logs(
-    ingestion_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ingestion_log_id SERIAL PRIMARY KEY,
     status TEXT NOT NULL,
     received_count INTEGER NOT NULL DEFAULT 0,
     inserted_count INTEGER NOT NULL DEFAULT 0,
@@ -85,8 +92,6 @@ def create_tables():
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )
  """)
-
-
 
  _ensure_columns(conn, "users", {
     "is_admin": "INTEGER NOT NULL DEFAULT 0",
@@ -100,7 +105,8 @@ def create_tables():
  })
 
  conn.commit()
- conn.close() 
+ conn.close()
+
 
 if __name__ == "__main__":
     create_tables()

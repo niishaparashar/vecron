@@ -45,7 +45,7 @@ For the Vecron backend to authorize the automated pushes, configure these enviro
 | Variable | Description | Example / Recommended Value |
 | :--- | :--- | :--- |
 | `N8N_INGESTION_KEY` | Must match the `N8N_INGESTION_KEY` in n8n. | `<your-strong-shared-secret>` |
-| `DB_PATH` | Path to persistent SQLite DB. | `/var/data/vecron.db` |
+| `DATABASE_URL` | PostgreSQL connection URL used by the backend. | `<Render PostgreSQL internal URL>` |
 | `SESSION_SECRET` | Secret used to sign Starlette sessions. | `<random-session-secret>` |
 
 ---
@@ -75,13 +75,9 @@ You can run a local smoke test using the PowerShell script [test_ingest.ps1](fil
 
 To ensure that job data, users, and recommendations persist across redeploys, follow these steps in your Render Dashboard:
 1. Go to your Vecron Web Service.
-2. Under **Advanced**, click **Add Disk**.
-3. Configure the disk:
-   - **Name**: `vecron-db-data`
-   - **Mount Path**: `/var/data`
-   - **Size**: `1 GiB`
-4. Go to **Environment Variables** and add:
-   - `DB_PATH = /var/data/vecron.db`
+2. Create a managed PostgreSQL instance and attach it to the web service.
+3. Go to **Environment Variables** and add:
+   - `DATABASE_URL = <Render PostgreSQL internal URL>`
    - `N8N_INGESTION_KEY = <your-secret>`
    - `SESSION_SECRET = <your-session-secret>`
-5. Save the configuration. This will redeploy the application with persistent storage.
+4. Remove any old `DB_PATH` variable and save the configuration to redeploy with persistent storage.

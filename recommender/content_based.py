@@ -1,12 +1,11 @@
-import sqlite3
 import pandas as pd
+from app.database import get_db
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-DB_NAME = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "vecron.db"))
 
 
 
@@ -18,7 +17,7 @@ def extract_skills_overlap(user_skills, job_skills, max_skills=3):
     return overlap[:max_skills] 
 
 def load_data():
-    conn= sqlite3.connect(DB_NAME)
+    conn = get_db()
     
     user= pd.read_sql("""SELECT 
                       user_id,
@@ -148,8 +147,7 @@ def recommend_jobs_for_user(user_id, top_n=5):
     return recommendations
 
 if __name__ == "__main__":
-    import sqlite3
-    conn = sqlite3.connect(DB_NAME)
+    conn = get_db()
     first_user_id = conn.execute("SELECT user_id FROM users LIMIT 1").fetchone()[0]
     conn.close()
     

@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends
 from starlette.requests import Request
 from fastapi.responses import HTMLResponse
 from passlib.context import CryptContext
-import sqlite3
 import re
 import os
 import json
@@ -86,6 +85,7 @@ def register(user: RegisterSchema):
     cursor.execute("""
         INSERT INTO users (full_name, email, password_hash, joined_on)
         VALUES (?,?,?,?)
+        RETURNING user_id
     """, (
         full_name,
         email,
@@ -93,8 +93,9 @@ def register(user: RegisterSchema):
         datetime.now().isoformat()
     ))
 
+    row = cursor.fetchone()
+    user_id = row["user_id"]
     conn.commit()
-    user_id = cursor.lastrowid
     conn.close()
 
     from app.core.security import create_access_token
@@ -294,9 +295,11 @@ def handle_oauth_user(email: str, full_name: str):
         cursor.execute("""
             INSERT INTO users (full_name, email, password_hash, is_admin, profile_completed, joined_on)
             VALUES (?, ?, ?, 0, 0, ?)
+            RETURNING user_id
         """, (full_name, email, hashed_pw, datetime.now().isoformat()))
+        row = cursor.fetchone()
+        user_id = row["user_id"]
         conn.commit()
-        user_id = cursor.lastrowid
 
     conn.close()
 

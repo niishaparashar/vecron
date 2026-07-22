@@ -374,14 +374,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The app runs on FastAPI + Starlette with SQLite, Authlib OAuth support, and the existing recommender stack.
+The app runs on FastAPI + Starlette with PostgreSQL, Authlib OAuth support, and the existing recommender stack.
 
 ### Step 4: Configure Environment
 
 Create environment variables locally or in Render.
 
 ```env
-DB_PATH=vecron.db
+DATABASE_URL=postgresql://user:password@localhost:5432/vecron
 SESSION_SECRET=replace-with-a-long-random-string
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
@@ -426,7 +426,7 @@ The callback handlers create a Vecron JWT and store it in `localStorage`, then s
 
 The workflow in [n8n/opportunity_ingest_workflow.json](n8n/opportunity_ingest_workflow.json) polls a job source every 24 hours, normalizes the payload, and posts it to the backend ingestion endpoint.
 
-1. Start Vecron locally with the same `DB_PATH` you intend to test.
+1. Start Vecron locally with the configured `DATABASE_URL`.
 2. Set the ingestion secret before running the smoke test:
    ```powershell
    $env:N8N_INGESTION_KEY = "your-shared-secret"
@@ -447,13 +447,13 @@ The ingest route is `POST /admin/opportunities/ingest` and is protected by the `
 For production on Render:
 
 1. Deploy the FastAPI service with the start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-2. Add a persistent disk and mount it at `/var/data`.
-3. Set `DB_PATH=/var/data/vecron.db`.
-4. Add the OAuth, session, and ingestion environment variables listed above.
+2. Create a managed PostgreSQL instance and copy its internal connection URL.
+3. Set `DATABASE_URL` to that URL on the web service.
+4. Add the OAuth, session, and ingestion environment variables listed above, and remove any old `DB_PATH` variable.
 5. In Google and GitHub OAuth settings, register the Render callback URLs.
 6. Configure your n8n workflow to point `VECRON_API_BASE_URL` at `https://vecron.onrender.com`.
 
-The existing SQLite-backed recommendation engine stays unchanged; only auth, validation, and ingestion wiring need the configuration above.
+The application and recommendation engine now use PostgreSQL for persistent storage.
 
 ---
 

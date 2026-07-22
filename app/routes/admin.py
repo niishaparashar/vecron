@@ -31,8 +31,15 @@ CSV_HEADERS = [
 
 def _ensure_opportunity_columns(conn):
     cursor = conn.cursor()
-    cursor.execute("PRAGMA table_info(opportunities)")
-    existing = {row[1] for row in cursor.fetchall()}
+    cursor.execute(
+        """
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_schema = current_schema() AND table_name = ?
+        """,
+        ("opportunities",),
+    )
+    existing = {row["column_name"] for row in cursor.fetchall()}
 
     required_columns = {
         "career_page_url": "TEXT DEFAULT ''",
@@ -52,7 +59,7 @@ def _ensure_ingestion_log_table(conn):
     cursor.execute(
         """
         CREATE TABLE IF NOT EXISTS ingestion_logs(
-            ingestion_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ingestion_log_id SERIAL PRIMARY KEY,
             status TEXT NOT NULL,
             received_count INTEGER NOT NULL DEFAULT 0,
             inserted_count INTEGER NOT NULL DEFAULT 0,
@@ -208,7 +215,7 @@ def get_admin_insights(admin_id: int = Depends(get_current_admin)):
     cursor.execute("""
         SELECT COUNT(*) 
         FROM users 
-        WHERE joined_on >=  date('now', 'localtime')
+        WHERE joined_on >= CURRENT_DATE
     """)
     registered_today = cursor.fetchone()[0]
 
@@ -299,7 +306,7 @@ def get_ingestion_logs(limit: int = 10, admin_id: int = Depends(get_current_admi
             error_message,
             created_at
         FROM ingestion_logs
-        ORDER BY datetime(created_at) DESC, ingestion_log_id DESC
+        ORDER BY created_at DESC, ingestion_log_id DESC
         LIMIT ?
         """,
         (limit,),

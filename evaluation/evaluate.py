@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 from recommender.hybrid import recommend_jobs_hybrid
-import sqlite3
+from app.database import get_db
 
-conn = sqlite3.connect("vecron.db")
+conn = get_db()
 interactions = pd.read_sql("SELECT * FROM interactions", conn)
 conn.close()
 

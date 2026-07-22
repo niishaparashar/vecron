@@ -52,8 +52,15 @@ def _fallback_job_description(item: dict) -> str:
 
 
 def _has_column(cursor, col_name: str) -> bool:
-    cursor.execute("PRAGMA table_info(opportunities)")
-    return any(row[1] == col_name for row in cursor.fetchall())
+    cursor.execute(
+        """
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_schema = current_schema() AND table_name = ?
+        """,
+        ("opportunities",),
+    )
+    return any(row["column_name"] == col_name for row in cursor.fetchall())
 
 @router.get("/all")
 def get_all_opportunities():

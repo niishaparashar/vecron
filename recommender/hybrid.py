@@ -2,11 +2,10 @@ import pandas as pd
 from recommender.content_based import recommend_jobs_for_user as cb_recommend
 from recommender.collaborative import recommend_jobs_cf as cf_recommend
 import os
-import sqlite3
+from app.database import get_db
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
-DB_NAME = os.getenv("DB_PATH", os.path.join(PROJECT_ROOT, "vecron.db"))
 
 
 def recommend_jobs_hybrid(user_id, top_n=5, candidate_items=None):
@@ -56,11 +55,8 @@ def recommend_jobs_hybrid(user_id, top_n=5, candidate_items=None):
     return hybrid.head(top_n)
     hybrid= apply_interaction_boost(hybrid, user_id)
 
-import sqlite3
-
 def apply_interaction_boost(hybrid_df, user_id):
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
+    conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute("""
