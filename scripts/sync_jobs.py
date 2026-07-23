@@ -5,6 +5,7 @@ Runs on a schedule via GitHub Actions instead of n8n.
 """
 import os
 import sys
+import time
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
@@ -13,6 +14,8 @@ import requests
 REMOTIVE_URL = "https://remotive.com/api/remote-jobs?limit=100"
 VECRON_URL = "https://vecron.onrender.com/admin/opportunities/ingest"
 INGESTION_KEY = os.environ["VECRON_INGESTION_KEY"]  # set as a GitHub Actions secret
+PUSH_TIMEOUT_SECONDS = 120
+MAX_PUSH_ATTEMPTS = 3
 
 
 def as_text(value, fallback="Unknown"):
@@ -160,15 +163,25 @@ def main():
     opportunities = normalize(raw_jobs)
     print(f"Fetched {len(raw_jobs)} jobs, normalized {len(opportunities)}")
 
-    push_resp = requests.post(
-        VECRON_URL,
-        json={"opportunities": opportunities},
-        headers={
-            "X-Ingestion-Key": INGESTION_KEY,
-            "Content-Type": "application/json",
-        },
-        timeout=60,
-    )
+    push_resp = None
+    for attempt in range(1, MAX_PUSH_ATTEMPTS + 1):
+        try:
+            push_resp = requests.post(
+                VECRON_URL,
+                json={"opportunities": opportunities},
+                headers={
+                    "X-Ingestion-Key": INGESTION_KEY,
+                    "Content-Type": "application/json",
+                },
+                timeout=PUSH_TIMEOUT_SECONDS,
+            )
+            break
+        except requests.exceptions.Timeout:
+            if attempt == MAX_PUSH_ATTEMPTS:
+                raise
+            wait_seconds = attempt * 5
+            print(f"Push attempt {attempt} timed out after {PUSH_TIMEOUT_SECONDS}s. Retrying in {wait_seconds}s...")
+            time.sleep(wait_seconds)
 
     print(f"Push status: {push_resp.status_code}")
     print(push_resp.text[:1000])
