@@ -203,14 +203,14 @@ Finding relevant job opportunities across different platforms is challenging due
 - **Responsive Design** - Mobile-friendly interface
 
 ### Data Pipeline
-- **n8n** (Planned) - Workflow automation
+- **GitHub Actions** - Scheduled opportunity synchronization
 - **Beautiful Soup/Scrapy** - Web scraping
 - **Requests** - HTTP client
 
 ### DevOps
 - **Git** - Version control
 - **Render** - Cloud hosting
-- **GitHub Actions** (Planned) - CI/CD
+- **GitHub Actions** - Scheduled jobs and CI/CD
 
 ---
 
@@ -387,6 +387,7 @@ GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
 GITHUB_CLIENT_ID=...
 GITHUB_CLIENT_SECRET=...
+ADMIN_EMAIL=vecr0n.adm1n@gmail.com
 N8N_INGESTION_KEY=...
 VECRON_API_BASE_URL=http://localhost:8000
 ```
@@ -422,23 +423,13 @@ Google and GitHub login are available through Authlib.
 
 The callback handlers create a Vecron JWT and store it in `localStorage`, then send new OAuth users to `profile.html` until their profile is completed.
 
-### n8n Local Testing
+### Scheduled Opportunity Sync
 
-The workflow in [n8n/opportunity_ingest_workflow.json](n8n/opportunity_ingest_workflow.json) polls a job source every 24 hours, normalizes the payload, and posts it to the backend ingestion endpoint.
+The [GitHub Actions workflow](.github/workflows/sync-jobs.yml) runs every 24 hours, normalizes jobs from Remotive, and posts them to the backend ingestion endpoint.
 
-1. Start Vecron locally with the configured `DATABASE_URL`.
-2. Set the ingestion secret before running the smoke test:
-   ```powershell
-   $env:N8N_INGESTION_KEY = "your-shared-secret"
-   ```
-3. Run the PowerShell smoke test from the `n8n` folder:
-   ```powershell
-   .\test_ingest.ps1 -ApiBaseUrl "http://localhost:8000"
-   ```
-4. Import [n8n/opportunity_ingest_workflow.json](n8n/opportunity_ingest_workflow.json) into n8n and set these environment variables:
-   - `VECRON_API_BASE_URL`
-   - `N8N_INGESTION_KEY`
-   - `JOBS_SOURCE_URL` if you want a custom feed
+1. Add `VECRON_INGESTION_KEY` as a repository secret.
+2. Start Vecron locally with the configured `DATABASE_URL` if you want to test the ingestion endpoint manually.
+3. Trigger **VECRON Opportunity Sync** manually from the repository's Actions tab when needed.
 
 The ingest route is `POST /admin/opportunities/ingest` and is protected by the `X-Ingestion-Key` header.
 
@@ -451,7 +442,7 @@ For production on Render:
 3. Set `DATABASE_URL` to that URL on the web service.
 4. Add the OAuth, session, and ingestion environment variables listed above, and remove any old `DB_PATH` variable.
 5. In Google and GitHub OAuth settings, register the Render callback URLs.
-6. Configure your n8n workflow to point `VECRON_API_BASE_URL` at `https://vecron.onrender.com`.
+6. Configure the `VECRON_INGESTION_KEY` repository secret used by the GitHub Actions opportunity sync.
 
 The application and recommendation engine now use PostgreSQL for persistent storage.
 
@@ -622,7 +613,7 @@ MRR: 0.76
 - [ ] Collaborative filtering integration
 - [ ] Advanced skill extraction (NER)
 - [ ] Real-time updates
-- [ ] n8n workflow automation
+- [x] Scheduled opportunity synchronization
 
 ### Phase 3: Scaling 📅
 - [ ] Microservices architecture

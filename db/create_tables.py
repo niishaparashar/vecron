@@ -104,6 +104,12 @@ def create_tables():
     "job_description": "TEXT DEFAULT ''",
  })
 
+ admin_email = os.getenv("ADMIN_EMAIL", "vecr0n.adm1n@gmail.com").strip().lower()
+ cursor.execute(
+    "UPDATE users SET is_admin = 1 WHERE LOWER(email) = %s",
+    (admin_email,),
+ )
+
  conn.commit()
  conn.close()
 

@@ -12,6 +12,7 @@ from authlib.integrations.starlette_client import OAuth
 
 router= APIRouter(prefix="/auth", tags=["Auth"])
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "vecr0n.adm1n@gmail.com").strip().lower()
 
 oauth = OAuth()
 oauth.register(
@@ -52,6 +53,11 @@ def _validate_non_empty(value: str, message: str):
     if not value:
         raise HTTPException(status_code=400, detail=message)
 
+
+def _normalize_email(email: str) -> str:
+    return email.strip().lower()
+
+
 def hash_password(password:str) -> str:
     return pwd_context.hash(password[:72])
 
@@ -61,7 +67,7 @@ def verify_password(password:str, hashed:str)-> bool:
 #-------------REGISTER-----------------------
 @router.post("/register")
 def register(user: RegisterSchema):
-    email = user.email.strip()
+    email = _normalize_email(user.email)
     full_name = user.full_name.strip()
     password = user.password
 
@@ -114,7 +120,7 @@ def register(user: RegisterSchema):
 #------------------LOGIN------------------------
 @router.post("/login")
 def login(user: LoginSchema):
-    email = user.email.strip()
+    email = _normalize_email(user.email)
     password = user.password
 
     _validate_email(email)
@@ -127,7 +133,7 @@ def login(user: LoginSchema):
     cursor.execute("""
         SELECT user_id, password_hash, full_name, email, is_admin, profile_completed
         FROM users
-        WHERE email=?
+        WHERE LOWER(email)=?
     """, (email,))
 
     row = cursor.fetchone()
@@ -260,9 +266,9 @@ def reset_admin(secret: str, new_password: str):
 
     cursor.execute("""
         UPDATE users
-        SET password_hash = ?
-        WHERE email = ?
-    """, (hashed, "vecr0n.adm1n@gmail.com"))
+        SET password_hash = ?, is_admin = 1
+        WHERE LOWER(email) = ?
+    """, (hashed, ADMIN_EMAIL))
 
     conn.commit()
     conn.close()

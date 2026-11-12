@@ -1,7 +1,6 @@
 """
-Replicates the n8n 'VECRON - Opportunity Sync (24h)' workflow:
-Fetch Jobs -> Normalize Jobs -> Push to VECRON
-Runs on a schedule via GitHub Actions instead of n8n.
+Fetch jobs, normalize them, and push them to VECRON.
+Runs on a schedule via GitHub Actions.
 """
 import os
 import sys
