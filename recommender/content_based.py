@@ -23,7 +23,8 @@ def load_data():
                       user_id,
                       skills,
                       preferred_category,
-                      experience_level
+                      experience_level,
+                      is_admin
                       FROM users""", conn)
     
     jobs = pd.read_sql("""SELECT 
@@ -75,7 +76,8 @@ def recommend_jobs_for_user(user_id, top_n=5):
     ]'''
     filtered_jobs = jobs.copy()
     
-    
+    if filtered_jobs.empty:
+        return pd.DataFrame()
 
     # Fallback if filtering is too strict
     if filtered_jobs.empty:      #<-- cold start

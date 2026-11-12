@@ -10,6 +10,8 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
 def recommend_jobs_hybrid(user_id, top_n=5, candidate_items=None):
     print("=====HYRBRID CALLED FOR USER=====", user_id)
+    if top_n <= 0:
+        return pd.DataFrame()
 
     # ---------- Content-based ----------
     if candidate_items is not None:
@@ -168,4 +170,3 @@ if __name__ == "__main__":
 
 
     
-

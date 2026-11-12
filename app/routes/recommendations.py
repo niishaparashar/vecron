@@ -6,7 +6,6 @@ router = APIRouter()
 
 @router.get("/recommend/{user_id}")
 def get_recommendations(user_id: int, top_n: int = 5):
-    recs = recommend_jobs_hybrid(user_id, top_n)
     conn = get_db()
     cur = conn.cursor()
     cur.execute("SELECT is_admin FROM users WHERE user_id = ?", (user_id,))
@@ -14,7 +13,12 @@ def get_recommendations(user_id: int, top_n: int = 5):
     conn.close()
 
     if row and row[0] == 1:
-        return [] 
+        return {
+            "user_id": user_id,
+            "recommendations": [],
+        }
+
+    recs = recommend_jobs_hybrid(user_id, top_n)
 
     if recs.empty:
         return {
