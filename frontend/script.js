@@ -113,6 +113,49 @@ function hideCenterLoader() {
   if (overlay) overlay.style.display = "none";
 }
 
+function sanitizeJobDescription(value) {
+  const rawDescription = String(value || "").trim();
+  if (!rawDescription) return "No detailed description provided for this role yet.";
+
+  const allowedTags = new Set([
+    "A", "B", "BR", "CODE", "EM", "H2", "H3", "H4", "I", "LI", "OL", "P",
+    "PRE", "STRONG", "UL",
+  ]);
+  const parser = new DOMParser();
+  const source = parser.parseFromString(rawDescription, "text/html").body;
+  const output = document.createDocumentFragment();
+
+  function appendSafe(node, parent) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      parent.appendChild(document.createTextNode(node.textContent || ""));
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+    const element = node;
+    const tagName = element.tagName.toUpperCase();
+    if (!allowedTags.has(tagName)) {
+      element.childNodes.forEach(child => appendSafe(child, parent));
+      return;
+    }
+
+    const safeElement = document.createElement(tagName.toLowerCase());
+    if (tagName === "A") {
+      const href = element.getAttribute("href") || "";
+      if (/^https?:\/\//i.test(href)) {
+        safeElement.href = href;
+        safeElement.target = "_blank";
+        safeElement.rel = "noopener noreferrer";
+      }
+    }
+    element.childNodes.forEach(child => appendSafe(child, safeElement));
+    parent.appendChild(safeElement);
+  }
+
+  source.childNodes.forEach(node => appendSafe(node, output));
+  return output;
+}
+
 function ensureOpportunityModal() {
   if (document.getElementById("job-detail-modal")) return;
 
@@ -132,7 +175,7 @@ function ensureOpportunityModal() {
       </div>
       <div style="margin-bottom:20px;">
         <h3 style="margin:0 0 8px 0;color:#e5e7eb;font-size:16px;">Job Description</h3>
-        <div id="job-detail-description" style="color:#d1d5db;line-height:1.6;white-space:pre-wrap;"></div>
+        <div id="job-detail-description" style="color:#d1d5db;line-height:1.6;"></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button id="job-detail-view" style="padding:10px 16px;background:#374151;color:#f3f4f6;border:none;border-radius:8px;cursor:pointer;">View Details</button>
@@ -175,8 +218,8 @@ async function openJobDetails(opportunityId) {
     document.getElementById("job-detail-meta").textContent =
       `${details.location || "Remote"} | ${details.employment_type || "Full-time"} | ${details.experience_level || "Any"} | ${details.workplace_type || "On-site"}`;
     document.getElementById("job-detail-skills").textContent = details.skills_required || "Not specified";
-    document.getElementById("job-detail-description").textContent =
-      details.job_description || "No detailed description provided for this role yet.";
+    const description = document.getElementById("job-detail-description");
+    description.replaceChildren(sanitizeJobDescription(details.job_description));
 
     const careerUrl = details.career_page_url || "";
     const applyUrl = details.apply_url || details.career_page_url || "#";
