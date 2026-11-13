@@ -11,6 +11,9 @@ from urllib.parse import urlparse
 import requests
 
 REMOTIVE_URL = "https://remotive.com/api/remote-jobs?limit=100"
+JOBICY_URL = "https://jobicy.com/api/v2/remote-jobs"
+HIMALAYAS_URL = "https://himalayas.app/jobs/api?limit=100"
+ARBEITNOW_URL = "https://arbeitnow.com/api/job-board-api"
 VECRON_URL = "https://vecron.onrender.com/admin/opportunities/ingest"
 INGESTION_KEY = os.environ["VECRON_INGESTION_KEY"]  # set as a GitHub Actions secret
 PUSH_TIMEOUT_SECONDS = 120
@@ -18,6 +21,8 @@ MAX_PUSH_ATTEMPTS = 3
 
 
 def as_text(value, fallback="Unknown"):
+    if isinstance(value, list):
+        value = ", ".join(as_text(item, "") for item in value)
     text = (str(value) if value is not None else "").strip()
     return text or fallback
 
@@ -73,19 +78,11 @@ def map_workplace_type(candidate):
     return "On-site"
 
 
-def extract_skills(job):
-    for key in ("tags", "skills", "keywords"):
-        candidate = job.get(key)
-        if isinstance(candidate, list) and candidate:
-            return ", ".join(as_text(x, "") for x in candidate if as_text(x, ""))
-        if isinstance(candidate, str) and candidate.strip():
-            return candidate.strip()
-    return "Communication, Problem Solving"
-
-
 def to_iso_date(value):
     if not value:
         return datetime.now(timezone.utc).date().isoformat()
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value, tz=timezone.utc).date().isoformat()
     for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
         try:
             return datetime.strptime(value[:19], fmt).date().isoformat()
@@ -109,27 +106,63 @@ def career_page_url_from_apply_url(apply_url):
         return ""
 
 
-def normalize(raw_jobs):
+def extract_skills(job):
+    for key in ("tags", "skills", "keywords", "jobIndustry", "categories"):
+        candidate = job.get(key)
+        if isinstance(candidate, list) and candidate:
+            return ", ".join(as_text(x, "") for x in candidate if as_text(x, ""))
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    return "Communication, Problem Solving"
+
+
+def normalize(raw_jobs, source):
     opportunities = []
     for job in raw_jobs:
-        title = as_text(job.get("title"), "Software Engineer")
+        title = as_text(job.get("title") or job.get("jobTitle"), "Software Engineer")
         company = as_text(
             job.get("company_name") or job.get("company") or job.get("companyName"),
             "Unknown Company",
         )
         employment_type = map_employment_type(
-            job.get("job_type") or job.get("employment_type") or job.get("type")
+            job.get("job_type")
+            or job.get("employment_type")
+            or job.get("jobType")
+            or job.get("type")
         )
-        experience_level = map_experience(job.get("candidate_required_location") or title)
+        experience_level = map_experience(
+            job.get("jobLevel")
+            or job.get("seniority")
+            or job.get("candidate_required_location")
+            or title
+        )
         department = map_department(title)
         category = map_category(title, department)
-        location = as_text(job.get("candidate_required_location") or job.get("location"), "Remote")
+        location = as_text(
+            job.get("candidate_required_location")
+            or job.get("jobGeo")
+            or job.get("location")
+            or job.get("locationRestrictions"),
+            "Remote",
+        )
         workplace_type = map_workplace_type(location)
         description = as_text(
-            job.get("description") or job.get("job_description") or job.get("body") or "",
+            job.get("description")
+            or job.get("jobDescription")
+            or job.get("job_description")
+            or job.get("body")
+            or "",
             "No detailed description provided.",
         )
-        apply_url = as_text(job.get("url") or job.get("apply_url") or job.get("apply_link") or "", "")
+        apply_url = as_text(
+            job.get("url")
+            or job.get("applicationLink")
+            or job.get("apply_url")
+            or job.get("apply_link")
+            or job.get("absolute_url")
+            or "",
+            "",
+        )
 
         opp = {
             "company_name": company,
@@ -153,14 +186,58 @@ def normalize(raw_jobs):
     return [o for o in opportunities if o["company_name"] and o["title"] and o["location"] and o["posted_on"]]
 
 
-def main():
-    resp = requests.get(REMOTIVE_URL, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
-    raw_jobs = data.get("jobs") or data.get("results") or []
+def fetch_source(name, url):
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+    payload = response.json()
+    if name == "arbeitnow":
+        jobs = payload.get("data", [])
+    else:
+        jobs = payload.get("jobs") or payload.get("results") or []
+    if not isinstance(jobs, list):
+        raise ValueError(f"{name} returned an invalid jobs payload")
+    print(f"{name}: fetched {len(jobs)} jobs")
+    return jobs
 
-    opportunities = normalize(raw_jobs)
-    print(f"Fetched {len(raw_jobs)} jobs, normalized {len(opportunities)}")
+
+def deduplicate(opportunities):
+    unique = {}
+    for opportunity in opportunities:
+        url = opportunity["apply_url"].strip().lower()
+        key = url or "|".join(
+            [
+                opportunity["company_name"].strip().lower(),
+                opportunity["title"].strip().lower(),
+                opportunity["location"].strip().lower(),
+                opportunity["posted_on"],
+            ]
+        )
+        unique[key] = opportunity
+    return list(unique.values())
+
+
+def main():
+    sources = [
+        ("remotive", REMOTIVE_URL),
+        ("jobicy", JOBICY_URL),
+        ("himalayas", HIMALAYAS_URL),
+        ("arbeitnow", ARBEITNOW_URL),
+    ]
+    opportunities = []
+    failures = []
+    for name, url in sources:
+        try:
+            opportunities.extend(normalize(fetch_source(name, url), name))
+        except (requests.RequestException, ValueError) as exc:
+            failures.append(f"{name}: {exc}")
+            print(f"WARNING: failed to fetch {name}: {exc}")
+
+    opportunities = deduplicate(opportunities)
+    print(f"Normalized and deduplicated {len(opportunities)} jobs")
+    if failures:
+        print("Source failures: " + "; ".join(failures))
+    if not opportunities:
+        raise RuntimeError("All job sources failed or returned no usable jobs")
 
     push_resp = None
     for attempt in range(1, MAX_PUSH_ATTEMPTS + 1):

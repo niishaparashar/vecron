@@ -425,7 +425,7 @@ The callback handlers create a Vecron JWT and store it in `localStorage`, then s
 
 ### Scheduled Opportunity Sync
 
-The [GitHub Actions workflow](.github/workflows/sync-jobs.yml) runs every 24 hours, normalizes jobs from Remotive, and posts them to the backend ingestion endpoint.
+The [GitHub Actions workflow](.github/workflows/sync-jobs.yml) runs every 24 hours, combines jobs from the free public Remotive, Jobicy, Himalayas, and Arbeitnow APIs, removes duplicates, and posts them to the backend ingestion endpoint. These sources do not require API keys.
 
 1. Add `VECRON_INGESTION_KEY` as a repository secret.
 2. Start Vecron locally with the configured `DATABASE_URL` if you want to test the ingestion endpoint manually.
