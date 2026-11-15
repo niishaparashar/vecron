@@ -77,8 +77,13 @@ def recommend_jobs_for_user(user_id, top_n=5):
     ]'''
     filtered_jobs = jobs.copy()
 
-    preferred_location = str(user["preferred_location"] or "").strip()
-    if preferred_location and preferred_location.lower() != "anywhere":
+    preferred_location_value = user.get("preferred_location")
+    preferred_location = (
+        str(preferred_location_value).strip()
+        if pd.notna(preferred_location_value)
+        else ""
+    )
+    if preferred_location and preferred_location.casefold() != "anywhere":
         filtered_jobs = filtered_jobs[
             filtered_jobs["location"].fillna("").str.strip().str.casefold()
             == preferred_location.casefold()
@@ -86,10 +91,6 @@ def recommend_jobs_for_user(user_id, top_n=5):
 
     if filtered_jobs.empty:
         return pd.DataFrame()
-
-    # Fallback if filtering is too strict
-    if filtered_jobs.empty:      #<-- cold start
-        filtered_jobs = jobs.copy()
 
     # --- VECTORIZE ---
     vectorizer, job_tfidf = build_vectorizer(filtered_jobs["skills_required"])

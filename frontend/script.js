@@ -822,7 +822,8 @@ function updateNavigation() {
   const navItems = [
     { name: "Home", file: "index.html" },
     { name: "Dashboard", file: "dashboard.html" },
-    { name: "Explore", file: "explore.html" }
+    { name: "Explore", file: "explore.html" },
+    { name: "Saved Jobs", file: "dashboard.html#saved-jobs" }
   ];
 
   // Handle root path as index.html
@@ -861,6 +862,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (location.pathname.includes("dashboard")) {
     loadRecommendations();
+    if (window.location.hash === "#saved-jobs") {
+      document.getElementById("saved-jobs")?.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
 });
