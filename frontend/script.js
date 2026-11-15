@@ -818,7 +818,38 @@ function updateHeader() {
 function updateNavigation() {
   const navContainer = document.getElementById("nav-buttons");
   if (!navContainer) return;
+
   navContainer.replaceChildren();
+  if (!getToken()) return;
+
+  const navItems = [
+    { name: "Dashboard", file: "dashboard.html" },
+    { name: "Explore", file: "explore.html" },
+    { name: "Saved Jobs", file: "saved.html" }
+  ];
+
+  const indicator = document.createElement("div");
+  indicator.className = "nav-indicator";
+  navContainer.appendChild(indicator);
+
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  navItems.forEach(item => {
+    const link = document.createElement("a");
+    link.href = item.file;
+    link.textContent = item.name;
+    link.className = "nav-btn";
+    if (currentPage === item.file) link.classList.add("active");
+    navContainer.appendChild(link);
+  });
+
+  requestAnimationFrame(() => {
+    const activeButton = navContainer.querySelector(".nav-btn.active");
+    if (activeButton) {
+      indicator.style.width = `${activeButton.offsetWidth}px`;
+      indicator.style.left = `${activeButton.offsetLeft}px`;
+      indicator.style.opacity = "1";
+    }
+  });
 }
 
 
