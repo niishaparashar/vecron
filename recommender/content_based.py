@@ -18,29 +18,31 @@ def extract_skills_overlap(user_skills, job_skills, max_skills=3):
 
 def load_data():
     conn = get_db()
-    
-    user= pd.read_sql("""SELECT 
-                      user_id,
-                      skills,
-                      preferred_category,
-                      experience_level,
-                      preferred_location,
-                      is_admin
-                      FROM users""", conn)
-    
-    jobs = pd.read_sql("""SELECT 
-                       opportunity_id,
-                       company_name,
-                       title,
-                       skills_required,
-                       category,
-                       experience_level,
-                       location, 
-                       workplace_type
-                       FROM opportunities""", conn)
- 
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT user_id, skills, preferred_category, experience_level,
+               preferred_location, is_admin
+        FROM users
+    """)
+    users = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("""
+        SELECT opportunity_id, company_name, title, skills_required, category,
+               experience_level, location, workplace_type
+        FROM opportunities
+    """)
+    jobs = [dict(row) for row in cursor.fetchall()]
     conn.close()
-    return user, jobs
+    return (
+        pd.DataFrame(users, columns=[
+            "user_id", "skills", "preferred_category", "experience_level",
+            "preferred_location", "is_admin"
+        ]),
+        pd.DataFrame(jobs, columns=[
+            "opportunity_id", "company_name", "title", "skills_required",
+            "category", "experience_level", "location", "workplace_type"
+        ]),
+    )
 
 def build_vectorizer(job_skills):
     vectorizer =TfidfVectorizer(

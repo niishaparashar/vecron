@@ -7,7 +7,9 @@ from math import exp
 from datetime import datetime
 
 def time_decay(interacted_at, decay_rate=0.05):
-    days = (datetime.now() - datetime.fromisoformat(interacted_at)).days
+    if isinstance(interacted_at, str):
+        interacted_at = datetime.fromisoformat(interacted_at)
+    days = (datetime.now() - interacted_at.replace(tzinfo=None)).days
     return exp(-decay_rate * days)
 
 
@@ -19,14 +21,15 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 
 def load_interactions():
     conn = get_db()
-    interactions = pd.read_sql("""
-        SELECT
-        user_id,
-        opportunity_id,
-        interaction_weight,
-        interacted_at   
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT user_id, opportunity_id, interaction_weight, interacted_at
         FROM interactions
-        """, conn)
+    """)
+    interactions = pd.DataFrame(
+        [dict(row) for row in cursor.fetchall()],
+        columns=["user_id", "opportunity_id", "interaction_weight", "interacted_at"],
+    )
     conn.close()
     return interactions
 
