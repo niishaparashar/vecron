@@ -314,7 +314,11 @@
           `;
           container.appendChild(card);
         });
-      } catch (err) { console.error(err); }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        hideCenterLoader();
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {

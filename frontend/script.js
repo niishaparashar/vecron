@@ -300,6 +300,8 @@ async function loadSavedJobs() {
   } catch (error) {
     console.error("Saved jobs error:", error);
     container.innerHTML = '<p class="empty-state">Unable to load saved jobs.</p>';
+  } finally {
+    hideCenterLoader();
   }
 }
 
@@ -618,6 +620,7 @@ async function loadRecommendations() {
 
   if (!user_id || !token) {
     confirmLogout();
+    hideCenterLoader();
     return;
   }
 
@@ -643,6 +646,7 @@ async function loadRecommendations() {
 
     if (recs.length === 0) {
       container.innerHTML = "<p>No recommendations yet.</p>";
+      hideCenterLoader();
       return;
     }
 
@@ -688,6 +692,8 @@ async function loadRecommendations() {
     console.error("Recommendation error:", err);
     document.getElementById("recommendations").innerHTML =
       "<p>Failed to load recommendations</p>";
+  } finally {
+    hideCenterLoader();
   }
 }
 
@@ -854,6 +860,13 @@ function updateNavigation() {
 document.addEventListener("DOMContentLoaded", () => {
 
   ensureCenterLoader();
+  if (
+    location.pathname.includes("dashboard") ||
+    location.pathname.includes("explore") ||
+    location.pathname.includes("saved")
+  ) {
+    showCenterLoader("Loading...");
+  }
   ensureOpportunityModal();
   updateHeader();
   updateNavigation();
