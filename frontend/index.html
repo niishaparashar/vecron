@@ -119,6 +119,58 @@
       box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
     }
 
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f1419;
+      font-weight: bold;
+      cursor: pointer;
+      border: 3px solid #10b981;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 65px;
+      right: 0;
+      display: none;
+      min-width: 180px;
+      background: #1a1f2e;
+      border: 1px solid #2a3142;
+      border-radius: 12px;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .profile-dropdown.active {
+      display: block;
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 14px 18px;
+      border: 0;
+      background: transparent;
+      color: #e4e6eb;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
     /* --- HERO & CONTENT --- */
     .hero {
       text-align: center;
@@ -437,7 +489,7 @@
       <div id="nav-buttons">
         </div>
     </div>
-    <div class="auth-buttons" id="auth-buttons">
+    <div class="auth-buttons" id="auth-buttons" style="position: relative;">
       </div>
   </header>
 
@@ -621,8 +673,15 @@
         document.getElementById("default-hero").style.display = "none";
         document.getElementById("logged-in-hero").style.display = "block";
         document.getElementById("welcome-name").textContent = `Welcome back, ${fullName}!`;
+        const initials = fullName.split(" ").map(part => part[0]).join("").toUpperCase().slice(0, 2);
         authContainer.innerHTML = `
-          <button onclick="openModal('logout-modal')" style="background: #ef4444; color: white; border: none; border-radius:30px; padding: 10px 24px; font-weight: bold; cursor: pointer;">Logout</button>
+          <div class="profile-icon" onclick="document.getElementById('landing-profile-dropdown').classList.toggle('active')">
+            ${initials}
+          </div>
+          <div class="profile-dropdown" id="landing-profile-dropdown">
+            <a href="dashboard.html">My Profile</a>
+            <button onclick="openModal('logout-modal')">Logout</button>
+          </div>
         `;
       } else {
         authContainer.innerHTML = `
