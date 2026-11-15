@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vekron | Saved Jobs</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #0f1419; color: #e4e6eb; }
+    .header { background: #1a1f2e; padding: 20px 60px; display: flex; align-items: center; border-bottom: 1px solid #2a3142; }
+    .logo-nav { display: flex; align-items: center; gap: 40px; }
+    .logo { font-size: 28px; font-weight: bold; color: #10b981; }
+    #nav-buttons { display: flex; gap: 10px; }
+    .nav-btn { padding: 10px 24px; color: #8b92a8; text-decoration: none; border-radius: 30px; }
+    .nav-btn.active, .nav-btn:hover { background: #10b981; color: #0f1419; }
+    .auth-controls { margin-left: auto; position: relative; }
+    .profile-icon { width: 50px; height: 50px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; color: #0f1419; font-weight: bold; cursor: pointer; }
+    .profile-dropdown { display: none; position: absolute; right: 0; top: 60px; z-index: 10; min-width: 180px; background: #1a1f2e; border: 1px solid #2a3142; border-radius: 10px; }
+    .profile-dropdown.active { display: block; }
+    .dropdown-item { padding: 14px 18px; cursor: pointer; }
+    .dropdown-item:hover { background: #2a3142; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 50px 30px; }
+    .welcome { margin-bottom: 8px; }
+    .subtitle { color: #8b92a8; margin-bottom: 35px; }
+    .jobs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .section-title { margin: 0 0 24px; }
+    .empty-state { color: #8b92a8; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-nav">
+      <div class="logo">Vekron</div>
+      <div id="nav-buttons"></div>
+    </div>
+    <div class="auth-controls">
+      <div class="profile-icon" onclick="toggleProfileDropdown()" id="profile-icon">
+        <span id="profile-initials">U</span>
+      </div>
+      <div class="profile-dropdown" id="profile-dropdown">
+        <div class="dropdown-item" onclick="openProfile(); closeProfileDropdown();">My Profile</div>
+        <div class="dropdown-item" onclick="confirmLogout()">Logout</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <h1 class="welcome">Saved Jobs</h1>
+    <p class="subtitle">Keep track of opportunities you want to revisit.</p>
+    <h2 class="section-title">🔖 Your Saved Opportunities</h2>
+    <div class="jobs-grid" id="saved-jobs">
+      <p class="empty-state">Loading saved jobs...</p>
+    </div>
+  </main>
+
+  <div id="profile-overlay" class="profile-overlay hidden"></div>
+  <div id="profile-drawer" class="profile-drawer hidden">
+    <div class="profile-header">
+      <h2>Your Profile</h2>
+      <button class="close-btn" onclick="closeProfile()">×</button>
+    </div>
+    <div id="profile-view" class="profile-section">
+      <div class="profile-row"><span class="label">Full Name</span><span id="pv-name" class="value">Not set</span></div>
+      <div class="profile-row"><span class="label">Email</span><span id="pv-email" class="value"></span></div>
+      <div class="profile-row"><span class="label">Experience Level</span><span id="pv-exp" class="value"></span></div>
+      <div class="profile-row"><span class="label">Skills</span><div id="pv-skills" class="skill-chips"></div></div>
+      <div class="profile-row"><span class="label">Preferred Location</span><span id="pv-location" class="value">Anywhere</span></div>
+      <button class="primary-btn" onclick="enableEdit()">Update</button>
+    </div>
+    <div id="profile-edit" class="profile-section hidden">
+      <label>Experience Level</label>
+      <select id="experience_level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+      <label>Skills</label>
+      <div class="skill-picker"><input id="skill-search" type="search" placeholder="Search and add skills"><div id="skill-options" class="skill-options"></div><div id="selected-skills" class="selected-skills"></div></div>
+      <label>Preferred Location</label>
+      <input id="preferred_location" type="text" placeholder="e.g. Bangalore, Hyderabad or Remote">
+      <label>Preferred Workplace</label>
+      <select id="preferred_workplace"><option>Remote</option><option>Hybrid</option><option>Onsite</option></select>
+      <button class="primary-btn" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=20261115"></script>
+  <script src="script.js?v=20261115"></script>
+  <script>
+    function toggleProfileDropdown() { document.getElementById("profile-dropdown").classList.toggle("active"); }
+    function closeProfileDropdown() { document.getElementById("profile-dropdown").classList.remove("active"); }
+    document.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("full_name") || "User";
+      document.getElementById("profile-initials").textContent = name.split(" ").map(part => part[0]).join("").toUpperCase().slice(0, 2);
+      loadSavedJobs();
+    });
+  </script>
+</body>
+</html>
