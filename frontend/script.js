@@ -825,9 +825,13 @@ function updateNavigation() {
 
   const navItems = [
     { name: "Home", file: "index.html" },
-    { name: "Dashboard", file: "dashboard.html" },
+    ...(getToken() ? [
+      { name: "Dashboard", file: "dashboard.html" }
+    ] : []),
     { name: "Explore", file: "explore.html" },
-    { name: "Saved Jobs", file: "saved.html" }
+    ...(getToken() ? [
+      { name: "Saved Jobs", file: "saved.html" }
+    ] : [])
   ];
 
   // Handle root path as index.html
