@@ -516,21 +516,10 @@ function renderProfileSkillPicker(filter = "") {
 async function loadProfile() {
 
   const user_id = getUserId();
-  const token = getToken();
-
-  if (!user_id || !token) return;
+  if (!user_id || !getToken()) return;
 
   try {
-
-    const res = await fetch(`${API_BASE}/auth/me/${user_id}`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) throw new Error("Profile failed");
-
-    const data = await res.json();
+    const data = await apiFetch(`/auth/me/${user_id}`);
 
     // View mode
     document.getElementById("pv-name").textContent = data.full_name || "Not set";

@@ -12,6 +12,12 @@ def get_recommendations(user_id: int, top_n: int = 5):
     row = cur.fetchone()
     conn.close()
 
+    if not row:
+        return {
+            "user_id": user_id,
+            "recommendations": [],
+        }
+
     if row and row[0] == 1:
         return {
             "user_id": user_id,

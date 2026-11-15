@@ -96,9 +96,20 @@ def create_tables():
  _ensure_columns(conn, "users", {
     "is_admin": "INTEGER NOT NULL DEFAULT 0",
     "profile_completed": "INTEGER NOT NULL DEFAULT 0",
+    "current_status": "TEXT",
+    "education_level": "TEXT",
+    "branch": "TEXT",
+    "experience_level": "TEXT",
+    "skills": "TEXT",
+    "preferred_category": "TEXT",
+    "preferred_workplace": "TEXT",
+    "preferred_employment_type": "TEXT",
+    "preferred_location": "TEXT",
  })
 
  _ensure_columns(conn, "opportunities", {
+    "location": "TEXT",
+    "workplace_type": "TEXT",
     "career_page_url": "TEXT DEFAULT ''",
     "apply_url": "TEXT DEFAULT ''",
     "job_description": "TEXT DEFAULT ''",
