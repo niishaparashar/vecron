@@ -263,8 +263,8 @@
     </div>
   </div>
 
-  <script src="js/api.js"></script>
-  <script src="script.js"></script>
+  <script src="js/api.js?v=20261115"></script>
+  <script src="script.js?v=20261115"></script>
 
   <script>
     function toggleProfileDropdown() { document.getElementById('profile-dropdown').classList.toggle('active'); }
@@ -321,6 +321,7 @@
       const fullName = localStorage.getItem("full_name") || "User";
       document.getElementById('profile-initials').textContent = fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
       loadAllOpportunities();
+      applySavedButtonStates();
     });
   </script>
   <!-- PROFILE OVERLAY -->

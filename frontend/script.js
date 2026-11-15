@@ -277,6 +277,15 @@ function setSaveButtonState(opportunityId) {
   }
 }
 
+async function applySavedButtonStates() {
+  try {
+    const data = await apiFetch("/interactions/saved");
+    (data.saved_jobs || []).forEach(job => setSaveButtonState(job.opportunity_id));
+  } catch (error) {
+    console.error("Saved button state error:", error);
+  }
+}
+
 async function loadSavedJobs() {
   const container = document.getElementById("saved-jobs");
   if (!container) return;
