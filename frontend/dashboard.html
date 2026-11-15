@@ -416,10 +416,6 @@
 
     <div class="jobs-grid" id="recommendations"></div>
 
-    <h2 class="section-title">🔖 Saved Jobs</h2>
-    <div class="jobs-grid" id="saved-jobs">
-      <p class="empty-state">You have not saved any jobs yet.</p>
-    </div>
   </div>
 
   <!-- Logout Modal -->
@@ -626,7 +622,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       setProfileInitials();
       loadRecommendations();
-      loadSavedJobs();
       applySavedButtonStates();
       updateHeader();  
     });

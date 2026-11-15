@@ -258,7 +258,7 @@ async function saveJob(opportunityId) {
   const ok = await logInteraction(opportunityId, "save");
   if (!ok) return;
   setSaveButtonState(opportunityId);
-  if (document.getElementById("saved-jobs")) {
+  if (window.location.pathname.endsWith("/saved.html") || window.location.pathname.endsWith("saved.html")) {
     await loadSavedJobs();
   }
 }
