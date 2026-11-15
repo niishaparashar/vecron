@@ -818,44 +818,7 @@ function updateHeader() {
 function updateNavigation() {
   const navContainer = document.getElementById("nav-buttons");
   if (!navContainer) return;
-
-  // Clear existing items but keep the logic consistent
-  navContainer.innerHTML = '<div class="nav-indicator"></div>';
-  const indicator = navContainer.querySelector(".nav-indicator");
-
-  const navItems = [
-    { name: "Home", file: "index.html" },
-    ...(getToken() ? [
-      { name: "Dashboard", file: "dashboard.html" }
-    ] : []),
-    { name: "Explore", file: "explore.html" },
-    ...(getToken() ? [
-      { name: "Saved Jobs", file: "saved.html" }
-    ] : [])
-  ];
-
-  // Handle root path as index.html
-  let currentPage = window.location.pathname.split("/").pop();
-  if (currentPage === "" || currentPage === "/") currentPage = "index.html";
-
-  navItems.forEach(item => {
-    const a = document.createElement("a");
-    a.href = item.file;
-    a.textContent = item.name;
-    a.classList.add("nav-btn");
-    if (currentPage === item.file) a.classList.add("active");
-    navContainer.appendChild(a);
-  });
-
-  // Calculate position after the browser has a chance to layout the buttons
-  requestAnimationFrame(() => {
-    const activeBtn = navContainer.querySelector(".nav-btn.active");
-    if (activeBtn) {
-      indicator.style.width = `${activeBtn.offsetWidth}px`;
-      indicator.style.left = `${activeBtn.offsetLeft}px`;
-      indicator.style.opacity = "1";
-    }
-  });
+  navContainer.replaceChildren();
 }
 
 
