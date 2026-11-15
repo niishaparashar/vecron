@@ -455,6 +455,11 @@
         <div id="pv-skills" class="skill-chips"></div>
       </div>
 
+      <div class="profile-row">
+        <span class="label">Preferred Location</span>
+        <span id="pv-location" class="value">Anywhere</span>
+      </div>
+
       <button class="primary-btn" onclick="enableEdit()">Update</button>
     </div>
 
@@ -468,7 +473,14 @@
       </select>
 
       <label>Skills</label>
-      <input id="skills" placeholder="Python, React, ML">
+      <div class="skill-picker" id="skill-picker">
+        <input id="skill-search" type="search" placeholder="Search and add skills">
+        <div id="skill-options" class="skill-options"></div>
+        <div id="selected-skills" class="selected-skills" aria-live="polite"></div>
+      </div>
+
+      <label>Preferred Location</label>
+      <input id="preferred_location" type="text" placeholder="e.g. Bangalore, Hyderabad or Remote">
 
       <label>Preferred Workplace</label>
       <select id="preferred_workplace">

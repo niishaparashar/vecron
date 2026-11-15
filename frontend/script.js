@@ -412,6 +412,45 @@ async function loginUser(event) {
 
 // ================= PROFILE =================
 
+const PROFILE_SKILLS = [
+  "Python", "JavaScript", "TypeScript", "Java", "C++", "C#",
+  "HTML", "CSS", "React", "Angular", "Vue.js", "Node.js",
+  "SQL", "PostgreSQL", "MongoDB", "Git", "Docker", "AWS",
+  "Machine Learning", "Data Analysis", "Pandas", "Power BI",
+  "UI/UX Design", "Figma", "Communication", "Project Management"
+];
+let selectedProfileSkills = new Set();
+
+function renderProfileSkillPicker(filter = "") {
+  const options = document.getElementById("skill-options");
+  const selected = document.getElementById("selected-skills");
+  if (!options || !selected) return;
+
+  const normalizedFilter = filter.trim().toLowerCase();
+  options.innerHTML = PROFILE_SKILLS
+    .filter(skill => !selectedProfileSkills.has(skill))
+    .filter(skill => !normalizedFilter || skill.toLowerCase().includes(normalizedFilter))
+    .map(skill => `<button type="button" class="skill-option" data-skill="${skill}">${skill}</button>`)
+    .join("");
+
+  selected.innerHTML = Array.from(selectedProfileSkills)
+    .map(skill => `<button type="button" class="selected-skill" data-skill="${skill}" aria-label="Remove ${skill}">${skill} ×</button>`)
+    .join("");
+
+  options.querySelectorAll("[data-skill]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedProfileSkills.add(button.dataset.skill);
+      renderProfileSkillPicker(document.getElementById("skill-search").value);
+    });
+  });
+  selected.querySelectorAll("[data-skill]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedProfileSkills.delete(button.dataset.skill);
+      renderProfileSkillPicker(document.getElementById("skill-search").value);
+    });
+  });
+}
+
 async function loadProfile() {
 
   const user_id = getUserId();
@@ -435,6 +474,7 @@ async function loadProfile() {
     document.getElementById("pv-name").textContent = data.full_name || "Not set";
     document.getElementById("pv-email").textContent = data.email || "Not set";
     document.getElementById("pv-exp").textContent = data.experience_level || "-";
+    document.getElementById("pv-location").textContent = data.preferred_location || "Anywhere";
 
     document.getElementById("pv-skills").innerHTML =
       (data.skills || "")
@@ -446,8 +486,12 @@ async function loadProfile() {
     document.getElementById("experience_level").value =
       data.experience_level || "Beginner";
 
-    document.getElementById("skills").value =
-      data.skills || "";
+    selectedProfileSkills = new Set(
+      (data.skills || "").split(",").map(skill => skill.trim()).filter(Boolean)
+    );
+    renderProfileSkillPicker();
+    document.getElementById("preferred_location").value =
+      data.preferred_location || "";
 
     document.getElementById("preferred_workplace").value =
       data.preferred_workplace || "Remote";
@@ -467,7 +511,8 @@ async function saveProfile() {
   const payload = {
     user_id: getUserId(),
     experience_level: experience_level.value,
-    skills: skills.value,
+    skills: Array.from(selectedProfileSkills).join(", "),
+    preferred_location: preferred_location.value.trim() || "Anywhere",
     preferred_workplace: preferred_workplace.value
   };
 
@@ -494,6 +539,14 @@ async function saveProfile() {
   } catch {
     alert("Profile update failed");
   }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const skillSearch = document.getElementById("skill-search");
+    if (skillSearch) {
+      skillSearch.addEventListener("input", () => renderProfileSkillPicker(skillSearch.value));
+      renderProfileSkillPicker();
+    }
+  });
 }
 
 // ================= RECOMMENDATIONS =================

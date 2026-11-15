@@ -202,12 +202,12 @@ def update_profile(payload: dict):
     cursor.execute("""
         UPDATE users
         SET
-            experience_level = ?,
-            preferred_category = ?,
-            skills = ?,
-            preferred_location = ?,
-            preferred_workplace = ?,
-            preferred_employment_type = ?
+            experience_level = COALESCE(?, experience_level),
+            preferred_category = COALESCE(?, preferred_category),
+            skills = COALESCE(?, skills),
+            preferred_location = COALESCE(?, preferred_location),
+            preferred_workplace = COALESCE(?, preferred_workplace),
+            preferred_employment_type = COALESCE(?, preferred_employment_type)
         WHERE user_id = ?
     """, (
         payload.get("experience_level"),

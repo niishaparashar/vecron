@@ -24,6 +24,7 @@ def load_data():
                       skills,
                       preferred_category,
                       experience_level,
+                      preferred_location,
                       is_admin
                       FROM users""", conn)
     
@@ -75,7 +76,14 @@ def recommend_jobs_for_user(user_id, top_n=5):
      (jobs["experience_level"] == user["experience_level"])
     ]'''
     filtered_jobs = jobs.copy()
-    
+
+    preferred_location = str(user["preferred_location"] or "").strip()
+    if preferred_location and preferred_location.lower() != "anywhere":
+        filtered_jobs = filtered_jobs[
+            filtered_jobs["location"].fillna("").str.strip().str.casefold()
+            == preferred_location.casefold()
+        ]
+
     if filtered_jobs.empty:
         return pd.DataFrame()
 
