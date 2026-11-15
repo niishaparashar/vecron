@@ -541,6 +541,7 @@
       document.getElementById("welcome-message").textContent = `Welcome back, ${fullName}!`;    
       
       if (!user_id) {
+        hideCenterLoader();
         window.location.href = "index.html";
         return;
       }
@@ -616,6 +617,8 @@
       } catch (err) {
         console.error(err);
         document.getElementById("recommendations").innerHTML = "<p style='color: #8b92a8;'>Failed to load recommendations. Try refreshing.</p>";
+      } finally {
+        hideCenterLoader();
       }
     }
    

@@ -871,8 +871,4 @@ document.addEventListener("DOMContentLoaded", () => {
   updateHeader();
   updateNavigation();
 
-  if (location.pathname.includes("dashboard")) {
-    loadRecommendations();
-  }
-
 });
