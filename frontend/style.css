@@ -218,6 +218,16 @@ body {
   color: #10b981;
 }
 
+.empty-state {
+  color: #8b92a8;
+}
+
+.save-btn.saved {
+  background: #10b981;
+  color: #0f1419;
+  cursor: default;
+}
+
 .selected-skills {
   margin-top: 10px;
 }

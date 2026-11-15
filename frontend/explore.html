@@ -307,7 +307,7 @@
             <div class="actions">
               <div>
                 <button class="action-btn view-btn" onclick="openJobDetails(${job.opportunity_id})">View Details</button>
-                <button class="action-btn save-btn" onclick="saveJob(${job.opportunity_id})">Save</button>
+                <button class="action-btn save-btn" data-save-job="${job.opportunity_id}" onclick="saveJob(${job.opportunity_id})">Save</button>
                 <button class="action-btn apply-btn" onclick="applyForJob(${job.opportunity_id})">Apply</button>
               </div>
             </div>

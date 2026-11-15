@@ -223,6 +223,11 @@ async function openJobDetails(opportunityId) {
 
     const careerUrl = details.career_page_url || "";
     const applyUrl = details.apply_url || details.career_page_url || "#";
+    const saveButton = document.getElementById("job-detail-save");
+    saveButton.dataset.opportunityId = String(opportunityId);
+    saveButton.textContent = "Save";
+    saveButton.classList.remove("saved");
+    saveButton.disabled = false;
 
     const careerLink = document.getElementById("job-detail-career");
     if (careerUrl) {
@@ -238,7 +243,7 @@ async function openJobDetails(opportunityId) {
     }
 
     document.getElementById("job-detail-view").onclick = () => logInteraction(opportunityId, "view");
-    document.getElementById("job-detail-save").onclick = () => saveJob(opportunityId);
+    saveButton.onclick = () => saveJob(opportunityId);
     document.getElementById("job-detail-apply").onclick = () => applyForJob(opportunityId, applyUrl);
 
     document.getElementById("job-detail-modal").style.display = "flex";
@@ -252,7 +257,64 @@ async function openJobDetails(opportunityId) {
 async function saveJob(opportunityId) {
   const ok = await logInteraction(opportunityId, "save");
   if (!ok) return;
-  alert("Saved to your profile.");
+  setSaveButtonState(opportunityId);
+  if (document.getElementById("saved-jobs")) {
+    await loadSavedJobs();
+  }
+}
+
+function setSaveButtonState(opportunityId) {
+  document.querySelectorAll(`[data-save-job="${opportunityId}"]`).forEach(button => {
+    button.textContent = "Saved";
+    button.classList.add("saved");
+    button.disabled = true;
+  });
+  const detailButton = document.getElementById("job-detail-save");
+  if (detailButton && detailButton.dataset.opportunityId === String(opportunityId)) {
+    detailButton.textContent = "Saved";
+    detailButton.classList.add("saved");
+    detailButton.disabled = true;
+  }
+}
+
+async function loadSavedJobs() {
+  const container = document.getElementById("saved-jobs");
+  if (!container) return;
+
+  try {
+    const data = await apiFetch("/interactions/saved");
+    const jobs = data.saved_jobs || [];
+    container.innerHTML = jobs.length
+      ? jobs.map(job => renderJobCard(job, true)).join("")
+      : '<p class="empty-state">You have not saved any jobs yet.</p>';
+    jobs.forEach(job => setSaveButtonState(job.opportunity_id));
+  } catch (error) {
+    console.error("Saved jobs error:", error);
+    container.innerHTML = '<p class="empty-state">Unable to load saved jobs.</p>';
+  }
+}
+
+function renderJobCard(job, saved = false) {
+  const saveLabel = saved ? "Saved" : "Save";
+  const saveClass = saved ? " saved" : "";
+  return `
+    <div class="job-card">
+      <div class="job-title">${job.title}</div>
+      <div class="company">${job.company_name}</div>
+      <div class="meta">
+        <span>📍 ${job.location || "Remote"}</span>
+        <span>🎓 ${job.experience_level || "Any"}</span>
+      </div>
+      <div class="tags">
+        ${(job.skills_required || "").split(",").slice(0, 5).map(skill => `<span class="tag">${skill.trim()}</span>`).join("")}
+      </div>
+      <div class="actions">
+        <button class="action-btn view-btn" onclick="openJobDetails(${job.opportunity_id})">View Details</button>
+        <button class="action-btn save-btn${saveClass}" data-save-job="${job.opportunity_id}" onclick="saveJob(${job.opportunity_id})" ${saved ? "disabled" : ""}>${saveLabel}</button>
+        <button class="action-btn apply-btn" onclick="applyForJob(${job.opportunity_id}, '${job.apply_url || job.career_page_url || ""}')">Apply</button>
+      </div>
+    </div>
+  `;
 }
 
 async function applyForJob(opportunityId, url) {
